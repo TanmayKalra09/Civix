@@ -13,7 +13,8 @@ import {
   MessageCircle,
   MapPin,
   Search,
-  Calendar
+  Calendar,
+  Bus
 } from "lucide-react";
 
 const UserDashboard = () => {
@@ -237,6 +238,14 @@ const UserDashboard = () => {
             icon={Calendar}
             gradient="from-emerald-600 to-teal-700"
             shadowColor="shadow-emerald-600/20"
+          />
+          <DashboardCard
+            title="Public Transport"
+            description="Powered by Delhi Transport Corporation the real-time transit information"
+            onClick={() => navigate("/transport")}
+            icon={Bus}
+            gradient="from-teal-500 to-teal-600"
+            shadowColor="shadow-teal-500/20"
           />
         </div>
       </main>
