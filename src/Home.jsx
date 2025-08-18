@@ -289,79 +289,94 @@ const questions = [
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px] items-center min-h-[calc(100vh-8rem)]">
               <div className="flex flex-col justify-center space-y-6 animate-on-scroll">
-                <div className="flex flex-col justify-center items-center">
-                  {/* <div className="inline-block">
-                    <span className="px-3 py-1 text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200 rounded-full">
-                      🏛️ Civic Engagement Platform
-                    </span>
-                  </div> */}
-                  <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none leading-tight col">
-                    Report Local Issues. <br />
-                    <span className="text-emerald-500 bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
-                      Make Your City Better.
-                    </span>
-                  </h1>
-                  <p className="max-w-[600px] text-muted-foreground md:text-xl leading-relaxed">
-                    Civix helps citizens report and track local civic issues like potholes, broken lights, and garbage collection problems. Join thousands making their communities better.
-                  </p>
-                </div>
-                <div className="flex flex-col justify-center items-center gap-3 min-[400px]:flex-row">
-                  <button
-                    className="flex h-12 items-center justify-center rounded-lg bg-emerald-500 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-emerald-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] group"
-                    onClick={() => navigate('/signup')}
-                  >
-                    Get Started
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
-                    >
-                      <path d="M5 12h14" />
-                      <path d="m12 5 7 7-7 7" />
-                    </svg>
-                  </button>
-                  <button
-                    className="flex h-12 items-center justify-center rounded-lg border border-gray-300 dark:border-gray-600 px-6 py-3 text-sm font-medium transition-all hover:bg-gray-50 dark:hover:bg-gray-800 duration-300 group"
-                    onClick={() => {
-                      document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="mr-2 h-4 w-4"
-                    >
-                      <polygon points="5,3 19,12 5,21" />
-                    </svg>
-                    Watch Demo
-                  </button>
-                </div>
-                <div className="flex items-center justify-center gap-4 pt-0">
-                  <div className="flex items-center gap-1">
-                    <div className="flex">
-                      {[...Array(5)].map((_, i) => (
-                        <svg key={i} className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
-                    </div>
-                    <span className="text-sm text-muted-foreground ml-2">4.8/5 from 2,500+ users</span>
-                  </div>
-                </div>
+                <div className="w-full bg-white dark:bg-gray-900 py-16">
+      <div className="max-w-6xl mx-auto px-6 flex flex-col items-center gap-12">
+        
+        {/* Text + Buttons + Stars */}
+        <div className="flex flex-col items-start text-left max-w-[600px] gap-6">
+          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl leading-tight">
+            Report Local Issues. <br />
+            <span className="text-emerald-500 bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
+              Make Your City Better.
+            </span>
+          </h1>
+
+          <p className="text-muted-foreground md:text-xl leading-relaxed">
+            Civix helps citizens report and track local civic issues like potholes,
+            broken lights, and garbage collection problems. Join thousands making their
+            communities better.
+          </p>
+
+          {/* Buttons aligned with text */}
+          <div className="flex flex-col gap-3 min-[400px]:flex-row">
+            <button
+              className="flex h-12 items-center justify-center rounded-lg bg-emerald-500 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-emerald-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] group"
+              onClick={() => navigate('/signup')}
+            >
+              Get Started
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+              >
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </button>
+
+        <button
+          className="flex h-12 items-center justify-center rounded-lg border border-gray-300 dark:border-gray-600 px-6 py-3 text-sm font-medium transition-all hover:bg-gray-50 dark:hover:bg-gray-800 duration-300 group"
+          onClick={() => {
+            document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mr-2 h-4 w-4"
+          >
+            <polygon points="5,3 19,12 5,21" />
+          </svg>
+          Watch Demo
+        </button>
+      </div>
+
+      {/* ⭐ Rating just below buttons */}
+      <div className="flex items-center gap-1 mt-4">
+        <div className="flex">
+          {[...Array(5)].map((_, i) => (
+            <svg
+              key={i}
+              className="w-4 h-4 text-yellow-400 fill-current"
+              viewBox="0 0 20 20"
+            >
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+          ))}
+        </div>
+        <span className="text-sm text-muted-foreground ml-2">
+          4.8/5 from 2,500+ users
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
               </div>
               <div className="flex items-center justify-center animate-on-scroll">
                 <div className="relative w-full max-w-[400px] aspect-[4/3] overflow-hidden rounded-xl border shadow-2xl transition-all duration-500 hover:shadow-3xl hover:scale-[1.02] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
