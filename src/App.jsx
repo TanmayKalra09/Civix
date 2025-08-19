@@ -49,6 +49,7 @@ import LostAndFoundPage from './Pages/Lost&Found';
 import CommunityHolidays from './Pages/CommunityHolidays';
 import Transport from './Pages/Transport';
 import CivicStatistics from './Pages/CivicStatistics'
+import Election from './Pages/Election';
 
 
 
@@ -126,6 +127,7 @@ const App = () => {
             <Route path='/community-holidays' element={<CommunityHolidays/>}/>
             <Route path='/transport' element={<Transport/>}/>
             <Route path='/civic-stats' element={<CivicStatistics/>}/>
+            <Route path='/elections-info' element={<Election/>}/>
             <Route
               path="/admin/dashboard"
               element={
