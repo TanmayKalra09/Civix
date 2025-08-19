@@ -16,7 +16,8 @@ import {
   Calendar,
   Bus,
   ChartColumn,
-  Vote
+  Vote,
+  Building2
 } from "lucide-react";
 
 const UserDashboard = () => {
@@ -264,6 +265,14 @@ const UserDashboard = () => {
             icon={Vote}
             gradient="from-teal-500 to-teal-600"
             shadowColor="shadow-teal-500/20"
+          />
+          <DashboardCard
+            title="Government Schemes"
+            description="Comprehensive Government Schemes & Financial Analytics"
+            onClick={() => navigate("/govt-schemes")}
+            icon={Building2}
+            gradient="from-green-600 to-emerald-700"
+            shadowColor="shadow-green-600/20"
           />
         </div>
       </main>
