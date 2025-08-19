@@ -27,6 +27,7 @@
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.516.0",
     "mongoose": "^8.16.0",
+    "papaparse": "^5.5.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",
