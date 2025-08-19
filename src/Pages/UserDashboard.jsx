@@ -14,7 +14,9 @@ import {
   MapPin,
   Search,
   Calendar,
-  Bus
+  Bus,
+  ChartColumn,
+  Vote
 } from "lucide-react";
 
 const UserDashboard = () => {
@@ -244,6 +246,22 @@ const UserDashboard = () => {
             description="Powered by Delhi Transport Corporation the real-time transit information"
             onClick={() => navigate("/transport")}
             icon={Bus}
+            gradient="from-teal-500 to-teal-600"
+            shadowColor="shadow-teal-500/20"
+          />
+          <DashboardCard
+            title="Civic Statistics"
+            description="Comprehensive Population & Water Resources Analytics."
+            onClick={() => navigate("/civic-stats")}
+            icon={ChartColumn}
+            gradient="from-teal-600 to-green-700"
+            shadowColor="shadow-teal-600/20"
+          />
+           <DashboardCard
+            title="Election & Governance Info"
+            description="Comprehensive Electoral Information & Voter Analytics."
+            onClick={() => navigate("/elections-info")}
+            icon={Vote}
             gradient="from-teal-500 to-teal-600"
             shadowColor="shadow-teal-500/20"
           />
