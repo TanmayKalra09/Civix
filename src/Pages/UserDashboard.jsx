@@ -17,7 +17,8 @@ import {
   Bus,
   ChartColumn,
   Vote,
-  Building2
+  Building2,
+  Car
 } from "lucide-react";
 
 const UserDashboard = () => {
@@ -273,6 +274,14 @@ const UserDashboard = () => {
             icon={Building2}
             gradient="from-green-600 to-emerald-700"
             shadowColor="shadow-green-600/20"
+          />
+           <DashboardCard
+            title="Traffic Fines & Vehicle Info"
+            description="Quick access to essential vehicle and transport services"
+            onClick={() => navigate("/vehical")}
+            icon={Car}
+            gradient="from-emerald-600 to-teal-700"
+            shadowColor="shadow-emerald-600/20"
           />
         </div>
       </main>
