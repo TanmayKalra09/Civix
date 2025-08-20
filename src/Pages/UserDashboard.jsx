@@ -278,7 +278,7 @@ const UserDashboard = () => {
            <DashboardCard
             title="Traffic Fines & Vehicle Info"
             description="Quick access to essential vehicle and transport services"
-            onClick={() => navigate("/vehicals")}
+            onClick={() => navigate("/vehical")}
             icon={Car}
             gradient="from-emerald-600 to-teal-700"
             shadowColor="shadow-emerald-600/20"
