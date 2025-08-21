@@ -251,39 +251,44 @@ function About() {
     </section>
 
         {/* WHY */}
-        <section className="why-section" data-aos="fade-up" data-aos-delay="300">
-          <div className="why-content">
-            <div className="why-text">
-              <h2 className="why-section-title">Why Choose Civix?</h2>
-              <p className="why-description">
-                Civix empowers citizens by simplifying the process to voice concerns and foster positive
-                change in communities. We connect the public with civic authorities for enhanced governance,
-                transparency, and real results that matter.
-              </p>
+        <section className="why-section py-16 px-6 md:px-12 bg-gradient-to-r from-green-600 to-emerald-500 rounded-2xl shadow-lg" data-aos="fade-up" data-aos-delay="300">
+  <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+    
+    {/* Left Content */}
+    <div className="why-text text-white md:w-2/3">
+      <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Civix?</h2>
+      <p className="text-lg opacity-90 leading-relaxed mb-8">
+        Civix empowers citizens by simplifying the process to voice concerns and foster positive
+        change in communities. We connect the public with civic authorities for enhanced governance,
+        transparency, and real results that matter.
+      </p>
 
-              <div className="stats-grid">
-                <div className="stat-item">
-                  <span className="stat-number">10K+</span>
-                  <span className="stat-label">Issues Resolved</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">50+</span>
-                  <span className="stat-label">Cities Connected</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-number">95%</span>
-                  <span className="stat-label">User Satisfaction</span>
-                </div>
-              </div>
-            </div>
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+        <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-md hover:scale-105 transition">
+          <span className="block text-2xl font-bold text-yellow-300">10K+</span>
+          <span className="block text-sm opacity-90">Issues Resolved</span>
+        </div>
+        <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-md hover:scale-105 transition">
+          <span className="block text-2xl font-bold text-blue-300">50+</span>
+          <span className="block text-sm opacity-90">Cities Connected</span>
+        </div>
+        <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-md hover:scale-105 transition">
+          <span className="block text-2xl font-bold text-pink-300">95%</span>
+          <span className="block text-sm opacity-90">User Satisfaction</span>
+        </div>
+      </div>
+    </div>
 
-            <div className="why-visual">
-              <div className="visual-element">
-                <div className="pulse-ring" />
-              </div>
-            </div>
-          </div>
-        </section>
+    {/* Right Visual */}
+    <div className="why-visual md:w-1/3 flex justify-center">
+      <div className="w-40 h-40 rounded-full bg-white/20 relative flex items-center justify-center">
+        <div className="w-28 h-28 rounded-full bg-white/30 animate-pulse"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
         {/* MISSION & VISION */}
         <section className="mission-vision-section" data-aos="fade-up" data-aos-delay="400">

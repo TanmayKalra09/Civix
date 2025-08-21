@@ -45,23 +45,23 @@ function Privacy() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-950 relative overflow-hidden">
-      {/* Decorative background blobs */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-400/20 dark:bg-emerald-500/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-500/20 dark:bg-blue-400/10 rounded-full blur-3xl"></div>
-
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden font-sans">
+      {/* Decorative background blobs - slightly adjusted colors for better contrast */}
+      <div className="absolute top-20 left-10 w-72 h-72 bg-purple-400/20 dark:bg-purple-500/10 rounded-full blur-3xl animate-blob-1"></div>
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-cyan-500/20 dark:bg-cyan-400/10 rounded-full blur-3xl animate-blob-2"></div>
+      
       <div className="relative max-w-6xl mx-auto px-6 py-20">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl mb-8 shadow-xl transform hover:scale-110 rotate-6 hover:rotate-0 transition-all duration-500">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl mb-8 shadow-xl transform hover:scale-110 hover:rotate-6 transition-all duration-500">
             <Shield className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-emerald-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6">
+          <h1 className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-500 bg-clip-text text-transparent mb-6">
             Privacy Policy
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
             Your privacy is important to us. This policy outlines how{" "}
-            <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+            <span className="font-semibold text-indigo-600 dark:text-indigo-400">
               Civix
             </span>{" "}
             collects, uses, and protects your information when you use our
@@ -85,7 +85,7 @@ function Privacy() {
                     className={`flex items-center justify-center w-12 h-12 rounded-xl text-white shadow-md transition-all duration-500 ${
                       expandedSection === section.id
                         ? "bg-gradient-to-br from-indigo-500 to-blue-500 scale-110 rotate-12"
-                        : "bg-gradient-to-br from-emerald-500 to-emerald-600"
+                        : "bg-gradient-to-br from-purple-500 to-fuchsia-600"
                     }`}
                   >
                     {section.icon}
@@ -100,7 +100,7 @@ function Privacy() {
                   </div>
                 </div>
                 <div
-                  className={`text-emerald-500 transition-transform duration-300 ${
+                  className={`text-indigo-500 transition-transform duration-300 ${
                     expandedSection === section.id ? "rotate-180" : "rotate-0"
                   }`}
                 >
@@ -117,7 +117,7 @@ function Privacy() {
                     transition={{ duration: 0.4, ease: "easeInOut" }}
                   >
                     <div className="px-6 pb-6">
-                      <div className="bg-gradient-to-r from-emerald-50 to-blue-50 dark:from-emerald-900/20 dark:to-blue-900/20 rounded-xl p-6 border-l-4 border-emerald-500 shadow-inner">
+                      <div className="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-xl p-6 border-l-4 border-indigo-500 shadow-inner">
                         <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                           {section.content}
                         </p>
@@ -130,8 +130,8 @@ function Privacy() {
           ))}
         </div>
 
-        {/* Policy Updates Section */}
-        <div className="bg-gradient-to-r from-emerald-500 to-blue-600 rounded-2xl p-10 text-white shadow-2xl relative overflow-hidden">
+        {/* Policy Updates Section - improved gradient and shadows */}
+        <div className="bg-gradient-to-r from-indigo-500 to-cyan-600 rounded-2xl p-10 text-white shadow-2xl relative overflow-hidden">
           <div className="absolute inset-0 bg-white/10 backdrop-blur-md rounded-2xl"></div>
           <div className="relative flex items-start space-x-4">
             <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl backdrop-blur-sm">
@@ -139,12 +139,12 @@ function Privacy() {
             </div>
             <div className="flex-1">
               <h3 className="text-2xl font-bold mb-3">Changes to This Policy</h3>
-              <p className="text-emerald-50 leading-relaxed mb-4">
+              <p className="text-indigo-50 leading-relaxed mb-4">
                 We may update this policy periodically to reflect changes in our
                 practices or for legal compliance. Continued use of our services
                 constitutes your agreement to these changes.
               </p>
-              <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-lg backdrop-blur-sm">
+              <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full backdrop-blur-sm shadow-inner-white">
                 <span className="text-sm font-medium">
                   Last updated: August 2025
                 </span>
@@ -155,15 +155,15 @@ function Privacy() {
 
         {/* Footer CTA */}
         <div className="mt-12 text-center">
-          <div className="inline-flex items-center space-x-2 px-6 py-3 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700">
+          <div className="inline-flex items-center space-x-2 px-6 py-3 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200/70 dark:border-gray-700/70 transform hover:scale-105 transition-all duration-300">
             <span className="text-gray-600 dark:text-gray-400">
               Questions about our privacy policy?
             </span>
             <a
               href="/contact"
-              className="text-emerald-600 dark:text-emerald-400 font-semibold hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+              className="text-indigo-600 dark:text-indigo-400 font-semibold hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
             >
-              Contact us 
+              Contact us
             </a>
           </div>
         </div>
