@@ -29,6 +29,7 @@ import UserDashboard from './Pages/UserDashboard';
 import CommunityVotingPage from './Pages/CommunityVotingPage';
 import VotingSystem from './Pages/VotingSystem';
 import Profile from './Pages/Profile';
+import ProfileSetup from './Pages/ProfileSetup';
 import Resources from './Pages/Resources';
 import MyComplaints from './Pages/MyComplaints';
 import CivicEducation from './Pages/CivicEducation';
@@ -107,6 +108,14 @@ const App = () => {
             <Route path="/community-voting" element={<CommunityVotingPage />} />
             <Route path="/voting-system" element={<VotingSystem />} />
             <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/profile-setup"
+              element={
+                <PrivateRoute allowedRoles={['user', 'admin']}>
+                  <ProfileSetup />
+                </PrivateRoute>
+              }
+            />
             <Route path="/resources" element={<Resources />} />
             <Route path="/complaints" element={<MyComplaints />} />
             <Route path="/contributors" element={<Contributors />} />
