@@ -163,7 +163,7 @@ function Privacy() {
               href="/contact"
               className="text-emerald-600 dark:text-emerald-400 font-semibold hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
             >
-              Contact us
+              Contact us 
             </a>
           </div>
         </div>
