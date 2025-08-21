@@ -58,6 +58,7 @@ function About() {
       mq.removeEventListener && mq.removeEventListener('change', handleChange);
     };
   }, []);
+  
 
   const features = [
     {
