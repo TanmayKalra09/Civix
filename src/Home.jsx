@@ -12,6 +12,8 @@ import TestimonialCarousel from "./components/TestimonialCarousel";
 import {  AnimatePresence } from "framer-motion";
 import favv from './favv.svg';
 import EnhancedQRCode from "./components/EnhancedQRCode";
+import ProfileCompletionBanner from "./components/ProfileCompletionBanner";
+import useProfileStatus from "./hooks/useProfileStatus";
 
 
 
@@ -21,6 +23,7 @@ function Home() {
   const navigate = useNavigate();
   const { isSignedIn, signOut } = useAuth();
   const { user } = useUser();
+  const { isProfileComplete, isLoading: profileLoading } = useProfileStatus();
 
   useEffect(() => {
     const animateOnScroll = () => {
@@ -37,6 +40,16 @@ function Home() {
     animateOnScroll();
     return () => window.removeEventListener("scroll", animateOnScroll);
   }, []);
+
+  // Redirect incomplete profiles to profile-setup
+  useEffect(() => {
+    // Check if profile was just submitted to prevent redirect loop
+    const profileJustSubmitted = sessionStorage.getItem('profileJustSubmitted') === 'true';
+    
+    if (isSignedIn && !profileLoading && !isProfileComplete && !profileJustSubmitted) {
+      navigate('/profile-setup');
+    }
+  }, [isSignedIn, profileLoading, isProfileComplete, navigate]);
 
   const handleLogout = async () => {
     try {
@@ -285,6 +298,9 @@ const questions = [
 
 
       <main className="flex-1">
+        {/* Profile Completion Banner */}
+        <ProfileCompletionBanner />
+        
         <section className="py-2 md:py-4 lg:py-6 xl:py-8">
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px] items-center min-h-[calc(100vh-8rem)]">

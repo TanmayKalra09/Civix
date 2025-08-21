@@ -12,7 +12,7 @@ const Signup = () => {
                     {/* Clerk Sign Up Component */}
                     <SignUp
                         routing="hash"
-                        redirectUrl="/home"
+                        redirectUrl="/profile-setup"
                     />
 
                     {/* Footer Links */}
