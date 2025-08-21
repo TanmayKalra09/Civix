@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
-const asyncHandler = require("../utils/asyncHandler");
+const { asyncHandler } = require("../utils/asyncHandler");
 
 const CONTRIBUTORS_FILE = path.join(__dirname, "../cache/contributors.json");
 const GITHUB_API_URL = "https://api.github.com/repos/HarshS16/Civix/contributors";
