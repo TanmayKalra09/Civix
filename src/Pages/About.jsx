@@ -1,6 +1,6 @@
 // src/components/About.js
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -22,25 +22,31 @@ function About() {
     () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
   );
   const [activeFeature, setActiveFeature] = useState(null);
+  const [showMore, setShowMore] = useState(false);
+  const learnMoreRef = useRef(null);
 
   useEffect(() => {
-    // Initialize AOS
+    if (showMore && learnMoreRef.current) {
+      setTimeout(() => {
+        learnMoreRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        AOS.refresh();
+      }, 60);
+    }
+  }, [showMore]);
+
+  useEffect(() => {
     AOS.init({
       duration: 800,
       easing: 'ease-in-out',
-      once: false,   // repeat when scrolling up/down
-      mirror: true,  // animate out while scrolling past
+      once: false,
+      mirror: true,
     });
 
-    // Refresh AOS after layout changes / images load
     const refreshAOS = () => AOS.refresh();
-
-    // refresh on load/resize and a small timeout (helps with images and fonts)
     window.addEventListener('load', refreshAOS);
     window.addEventListener('resize', refreshAOS);
     const timeoutId = setTimeout(refreshAOS, 600);
 
-    // prefer-color-scheme listener
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = () => setIsDarkMode(mq.matches);
     mq.addEventListener && mq.addEventListener('change', handleChange);
@@ -53,7 +59,7 @@ function About() {
     };
   }, []);
 
-   const features = [
+  const features = [
     {
       icon: <Users className="w-7 h-7" />,
       title: "Community Building",
@@ -104,26 +110,6 @@ function About() {
     }
   ];
 
-  const steps = [
-    {
-      number: '01',
-      title: 'Report Issue',
-      description:
-        'Log in via mobile app and describe your issue with location and photo',
-    },
-    {
-      number: '02',
-      title: 'Route & Process',
-      description: 'Civix automatically routes your report to the relevant department',
-    },
-    {
-      number: '03',
-      title: 'Track & Resolve',
-      description:
-        'Monitor updates and resolution status in real-time with notifications',
-    },
-  ];
-
   return (
     <div className={`about-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
       <div className="content-wrapper">
@@ -145,7 +131,6 @@ function About() {
               ))}
             </div>
 
-            {/* small framer animation only for the badge (doesn't conflict with AOS) */}
             <motion.div
               initial={{ scale: 0.85, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -170,163 +155,96 @@ function About() {
               <Link to="/signup">
                 <button className="cta-primary">Get Started</button>
               </Link>
-              <button className="cta-secondary">Learn More</button>
+
+              <button onClick={() => setShowMore(!showMore)}>
+                {showMore ? "Show Less" : "Learn More"}
+              </button>
             </div>
           </div>
         </section>
 
-       <section className="relative py-20 px-6 ">
-      
-      <div className="relative max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 mb-6 bg-green-50/80 dark:bg-green-900/30 rounded-full border border-green-100/60 dark:border-green-700/30">
-            <span className="text-green-700 dark:text-green-300 text-sm font-medium">✨ Powerful Features</span>
-          </div>
-          
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-800 dark:text-slate-100 mb-6 leading-tight">
-            Everything you need to make a 
-            <span className="block text-green-600 dark:text-green-400">real difference</span>
-          </h2>
-          
-          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            Discover powerful tools and features designed to amplify your impact and 
-            connect you with meaningful opportunities in your community
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className={`group relative p-6 rounded-2xl transition-all duration-300 cursor-pointer
-                ${activeFeature === index 
-                  ? 'bg-white dark:bg-slate-800 shadow-xl shadow-green-500/5 dark:shadow-green-500/10 border border-green-200/40 dark:border-green-600/30 transform translate-y-[-4px]' 
-                  : 'bg-white/70 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800 hover:shadow-lg dark:hover:shadow-lg border border-white/50 dark:border-slate-700/50'
-                } backdrop-blur-sm`}
-              onMouseEnter={() => setActiveFeature(index)}
-              onMouseLeave={() => setActiveFeature(null)}
+        {/* EXPANDABLE SECTION */}
+        <AnimatePresence initial={false}>
+          {showMore && (
+            <motion.div
+              key="learn-more"
+              ref={learnMoreRef}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              style={{ overflow: "hidden" }}
+              className="mt-10 space-y-16"
             >
-              <div className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${
-                activeFeature === index 
-                  ? 'bg-gradient-to-br from-green-50/50 to-emerald-50/30 dark:from-green-900/20 dark:to-emerald-900/20 opacity-100' 
-                  : 'opacity-0'
-              }`}></div>
 
-              <div className={`relative mb-5 w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300
-                ${activeFeature === index 
-                  ? 'bg-gradient-to-br from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 text-white shadow-md shadow-green-500/20 dark:shadow-green-500/30' 
-                  : 'bg-green-50 dark:bg-green-900/40 text-green-600 dark:text-green-400 group-hover:bg-green-100 dark:group-hover:bg-green-900/60'
-                }`}
-              >
-                {feature.icon}
-              </div>
+              {/* FEATURES */}
+              <section className="relative py-20 px-6 ">
+                <div className="relative max-w-6xl mx-auto">
+                  <div className="text-center mb-16">
+                    <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                      Everything you need to make a 
+                      <span className="block text-green-600">real difference</span>
+                    </h2>
+                  </div>
 
-              <div className="relative">
-                <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-3 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors duration-200">
-                  {feature.title}
-                </h3>
-                
-                <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-3">
-                  {feature.description}
-                </p>
-                
-                <p className={`text-xs text-slate-500 dark:text-slate-400 leading-relaxed transition-all duration-300 ${
-                  activeFeature === index ? 'opacity-100 max-h-16' : 'opacity-0 max-h-0 overflow-hidden'
-                }`}>
-                  {feature.details}
-                </p>
-              </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {features.map((feature, index) => (
+                      <div
+                        key={index}
+                        className={`group relative p-6 rounded-2xl transition-all duration-300 cursor-pointer
+                          ${activeFeature === index 
+                            ? 'bg-white shadow-xl border border-green-200 transform translate-y-[-4px]' 
+                            : 'bg-white/70 hover:bg-white hover:shadow-lg border border-white/50'
+                          }`}
+                        onMouseEnter={() => setActiveFeature(index)}
+                        onMouseLeave={() => setActiveFeature(null)}
+                      >
+                        <div className="relative mb-5 w-14 h-14 rounded-xl flex items-center justify-center bg-green-50 text-green-600">
+                          {feature.icon}
+                        </div>
+                        <h3 className="text-lg font-semibold mb-3">{feature.title}</h3>
+                        <p className="text-sm mb-3">{feature.description}</p>
+                        {activeFeature === index && (
+                          <p className="text-xs text-slate-500">{feature.details}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
 
-              <div className={`absolute top-4 right-4 w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                activeFeature === index ? 'bg-green-400 dark:bg-green-500' : 'bg-slate-200 dark:bg-slate-600'
-              }`}></div>
+              {/* WHY SECTION */}
+              <section className="why-section py-16 px-6 md:px-12 bg-gradient-to-r from-green-600 to-emerald-500 rounded-2xl shadow-lg" data-aos="fade-up" data-aos-delay="300">
+                <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+                  <div className="why-text text-white md:w-2/3">
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Civix?</h2>
+                    <p className="text-lg opacity-90 leading-relaxed mb-8">
+                      Civix empowers citizens by simplifying the process to voice concerns and foster positive
+                      change in communities. We connect the public with civic authorities for enhanced governance,
+                      transparency, and real results that matter.
+                    </p>
+                  </div>
+                </div>
+              </section>
 
-              <div className={`absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-green-400 to-emerald-500 dark:from-green-500 dark:to-emerald-600 transition-all duration-300 ${
-                activeFeature === index ? 'opacity-100' : 'opacity-0'
-              }`}></div>
-            </div>
-          ))}
-        </div>        
-      </div>
-    </section>
+              {/* MISSION & VISION */}
+              <section className="mission-vision-section" data-aos="fade-up" data-aos-delay="400">
+                <div className="mv-container">
+                  <div className="mv-text">
+                    <h2 className="section-title">Our Mission</h2>
+                    <p>To empower every citizen to take action and improve their city by making civic reporting simple, transparent, and impactful.</p>
+                    <h2 className="section-title">Our Vision</h2>
+                    <p>A world where communities and governments work hand-in-hand to create cleaner, safer, and more livable cities for everyone.</p>
+                  </div>
+                  <div className="mv-image">
+                    <img src={mission} alt="Mission" onLoad={() => AOS.refresh()} />
+                  </div>
+                </div>
+              </section>
 
-        {/* WHY */}
-        <section className="why-section py-16 px-6 md:px-12 bg-gradient-to-r from-green-600 to-emerald-500 rounded-2xl shadow-lg" data-aos="fade-up" data-aos-delay="300">
-  <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
-    
-    {/* Left Content */}
-    <div className="why-text text-white md:w-2/3">
-      <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Civix?</h2>
-      <p className="text-lg opacity-90 leading-relaxed mb-8">
-        Civix empowers citizens by simplifying the process to voice concerns and foster positive
-        change in communities. We connect the public with civic authorities for enhanced governance,
-        transparency, and real results that matter.
-      </p>
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
-        <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-md hover:scale-105 transition">
-          <span className="block text-2xl font-bold text-yellow-300">10K+</span>
-          <span className="block text-sm opacity-90">Issues Resolved</span>
-        </div>
-        <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-md hover:scale-105 transition">
-          <span className="block text-2xl font-bold text-blue-300">50+</span>
-          <span className="block text-sm opacity-90">Cities Connected</span>
-        </div>
-        <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-md hover:scale-105 transition">
-          <span className="block text-2xl font-bold text-pink-300">95%</span>
-          <span className="block text-sm opacity-90">User Satisfaction</span>
-        </div>
-      </div>
-    </div>
-
-    {/* Right Visual */}
-    <div className="why-visual md:w-1/3 flex justify-center">
-      <div className="w-40 h-40 rounded-full bg-white/20 relative flex items-center justify-center">
-        <div className="w-28 h-28 rounded-full bg-white/30 animate-pulse"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-        {/* MISSION & VISION */}
-        <section className="mission-vision-section" data-aos="fade-up" data-aos-delay="400">
-          <div className="mv-container">
-            <div className="mv-text">
-              <h2 className="section-title">Our Mission</h2>
-              <p>
-                To empower every citizen to take action and improve their city by making civic reporting
-                simple, transparent, and impactful.
-              </p>
-              <h2 className="section-title">Our Vision</h2>
-              <p>
-                A world where communities and governments work hand-in-hand to create cleaner, safer, and
-                more livable cities for everyone.
-              </p>
-            </div>
-            <div className="mv-image">
-              {/* refresh AOS once this image is loaded */}
-              <img src={mission} alt="Mission" onLoad={() => AOS.refresh()} />
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="cta-section" data-aos="zoom-in" data-aos-delay="500">
-          <div className="cta-content">
-            <h2 className="cta-title">Ready to Make a Difference?</h2>
-            <p className="cta-description">
-              Join thousands of citizens who are already using Civix to improve their communities.
-            </p>
-            <div className="cta-buttons">
-              <button className="btn-primary">Download App</button>
-              <Link to="/contact">
-                <button className="cta-secondary">Contact Us</button>
-              </Link>
-            </div>
-          </div>
-        </section>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
