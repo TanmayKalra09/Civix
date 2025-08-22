@@ -55,6 +55,9 @@ import Schemes from './Pages/Schemes';
 import Vehical from './Pages/Vehical';
 import MedicalInfo from './Pages/MedicalInfo';
 import Electricity from './Pages/Electricity';
+import SafeWord from './Pages/SafeWord';
+import RecordAudio from './Pages/RecordAudio';
+
 
 
 
@@ -131,6 +134,8 @@ const App = () => {
             <Route path='/chatroom' element={<Chatroom/>}/>
             <Route path='/tax-impact' element={<TaxImpact/>}/>
             <Route path="/medical-info" element={<MedicalInfo />} />
+            <Route path="/safe-word" element={<SafeWord />} />
+            <Route path="/record-audio" element={<RecordAudio />} />
             <Route path='/repersentative-finder' element={<RepersentativeFinder/>}/>
             <Route path='/admin/analytics' element={<Analytics/>}/>
             <Route path='/admin/users' element={<Users/>}/>
