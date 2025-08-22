@@ -53,6 +53,7 @@ import CivicStatistics from './Pages/CivicStatistics'
 import Election from './Pages/Election';
 import Schemes from './Pages/Schemes';
 import Vehical from './Pages/Vehical';
+import MedicalInfo from './Pages/MedicalInfo';
 
 
 
@@ -127,6 +128,7 @@ const App = () => {
             <Route path="/sos" element={<SOS/>}/>
             <Route path='/chatroom' element={<Chatroom/>}/>
             <Route path='/tax-impact' element={<TaxImpact/>}/>
+            <Route path="/medical-info" element={<MedicalInfo />} />
             <Route path='/repersentative-finder' element={<RepersentativeFinder/>}/>
             <Route path='/admin/analytics' element={<Analytics/>}/>
             <Route path='/admin/users' element={<Users/>}/>
