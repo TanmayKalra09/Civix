@@ -54,6 +54,7 @@ import Election from './Pages/Election';
 import Schemes from './Pages/Schemes';
 import Vehical from './Pages/Vehical';
 import MedicalInfo from './Pages/MedicalInfo';
+import Electricity from './Pages/Electricity';
 import SafeWord from './Pages/SafeWord';
 import RecordAudio from './Pages/RecordAudio';
 
@@ -117,6 +118,7 @@ const App = () => {
             <Route path="/community-voting" element={<CommunityVotingPage />} />
             <Route path="/voting-system" element={<VotingSystem />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path='/electricity' element={<Electricity/>}/>
             <Route
               path="/profile-setup"
               element={

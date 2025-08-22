@@ -18,7 +18,8 @@ import {
   ChartColumn,
   Vote,
   Building2,
-  Car
+  Car,
+  Zap
 } from "lucide-react";
 
 const UserDashboard = () => {
@@ -282,6 +283,14 @@ const UserDashboard = () => {
             icon={Car}
             gradient="from-emerald-600 to-teal-700"
             shadowColor="shadow-emerald-600/20"
+          />
+           <DashboardCard
+            title="Water & Electricity Schedule"
+            description="Real-time updates regarding water supply schedules, power outage notifications, and restoration timelines"
+            onClick={() => navigate("/electricity")}
+            icon={Zap}
+            gradient="from-teal-500 to-teal-600"
+            shadowColor="shadow-teal-500/20"
           />
         </div>
       </main>
