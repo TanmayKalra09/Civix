@@ -40,14 +40,20 @@ const SOSPage = () => {
     getLocation();
   }, []);
 
-  const emergencyNumbers = [
+    const emergencyNumbers = [
     { name: 'Police Emergency', number: '100', icon: Shield, color: 'from-blue-500 to-blue-700', description: 'Police assistance and law enforcement' },
     { name: 'Fire Emergency', number: '101', icon: AlertTriangle, color: 'from-red-500 to-red-700', description: 'Fire department and rescue services' },
-    { name: 'Medical Emergency', number: '108', icon: Heart, color: 'from-emerald-500 to-emerald-700', description: 'Ambulance and medical emergency' },
+    { name: 'Medical Emergency / Ambulance', number: '108', icon: Heart, color: 'from-emerald-500 to-emerald-700', description: 'Ambulance and medical emergency' },
     { name: 'Women Helpline', number: '1091', icon: Users, color: 'from-purple-500 to-purple-700', description: '24x7 helpline for women in distress' },
     { name: 'Child Helpline', number: '1098', icon: Users, color: 'from-pink-500 to-pink-700', description: 'Child protection and assistance' },
-    { name: 'Disaster Management', number: '108', icon: Car, color: 'from-orange-500 to-orange-700', description: 'Natural disaster and emergency response' }
+    { name: 'Disaster Management (NDRF)', number: '1078', icon: Car, color: 'from-orange-500 to-orange-700', description: 'National disaster response force emergency helpline' },
+    { name: 'Road Accident Emergency', number: '1073', icon: Car, color: 'from-yellow-500 to-yellow-700', description: 'Emergency response for road accidents' },
+    { name: 'Railway Helpline', number: '139', icon: Home, color: 'from-indigo-500 to-indigo-700', description: 'Railway protection force & train inquiry helpline' },
+    { name: 'Gas Leakage Emergency', number: '1906', icon: AlertTriangle, color: 'from-teal-500 to-teal-700', description: 'Emergency helpline for LPG gas leakage' },
+    { name: 'Senior Citizens Helpline', number: '14567', icon: Users, color: 'from-gray-500 to-gray-700', description: 'Helpline dedicated to assisting senior citizens' },
+    { name: 'Mental Health Helpline', number: '1800-599-0019', icon: Heart, color: 'from-rose-500 to-rose-700', description: 'Support for mental health and suicide prevention (KIRAN Helpline)' },
   ];
+
 
   const navigate = useNavigate();
 
