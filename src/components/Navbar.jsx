@@ -99,6 +99,11 @@ const Navbar = () => {
       href: "/voting-system",
       icon: Vote,
     },
+    {
+    title: "Feedback",          // 👈 New link
+    href: "/feedback",
+    icon: AlertTriangle,        // You can use MessageSquare or another better icon
+  },
   ];
 
   return (
