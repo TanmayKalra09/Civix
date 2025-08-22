@@ -19,7 +19,8 @@ import {
   Vote,
   Building2,
   Car,
-  Zap
+  Zap,
+  ReceiptIndianRupee
 } from "lucide-react";
 
 const UserDashboard = () => {
@@ -292,6 +293,14 @@ const UserDashboard = () => {
             gradient="from-teal-500 to-teal-600"
             shadowColor="shadow-teal-500/20"
           />
+          <DashboardCard
+            title="Budget Estimates"
+            description="Analytics framework for rendering and evaluating Budget Estimates"
+            onClick={() => navigate("/budget")}
+            icon={ReceiptIndianRupee}
+            gradient="from-green-500 to-green-600"
+            shadowColor="shadow-green-500/20"
+            />
         </div>
       </main>
     </div>
