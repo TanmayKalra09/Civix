@@ -1,198 +1,80 @@
-import React, { useEffect, useState } from "react";
+// pages/Holidays.jsx
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { Calendar, Clock, MapPin, Sparkles } from "lucide-react";
+import { Loader2, Calendar, AlertCircle } from "lucide-react";
 
-const CommunityHolidays = () => {
+export default function Holidays() {
   const [holidays, setHolidays] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const countryCode = "IN";
-  const year = new Date().getFullYear();
+  const [error, setError] = useState("");
+
   const apiKey = process.env.REACT_APP_CALENDARIFIC_KEY;
+  const year = new Date().getFullYear();
 
   useEffect(() => {
-    const fetchHolidays = async () => {
-      try {
-        const response = await axios.get(
-          "https://calendarific.com/api/v2/holidays",
-          {
-            params: {
-              api_key: apiKey,
-              country: countryCode,
-              year: year,
-            },
-          }
-        );
-        const upcomingHolidays = response.data.response.holidays.filter(
-          (holiday) => new Date(holiday.date.iso) >= new Date()
-        );
-        setHolidays(upcomingHolidays);
-      } catch (err) {
+    if (!apiKey) {
+      setError("⚠️ API key missing. Please set REACT_APP_CALENDARIFIC_KEY in your .env file.");
+      setLoading(false);
+      return;
+    }
+
+    axios
+      .get("https://calendarific.com/api/v2/holidays", {
+        params: {
+          api_key: apiKey,
+          country: "IN", // you can make this dynamic
+          year: year,
+        },
+      })
+      .then((res) => {
+        const data = res.data?.response?.holidays || [];
+        setHolidays(data);
+      })
+      .catch((err) => {
         console.error("Error fetching holidays:", err);
-        setError("Failed to fetch holidays. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchHolidays();
-  }, [apiKey, countryCode, year]);
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
-  const getDaysUntil = (dateString) => {
-    const today = new Date();
-    const holidayDate = new Date(dateString);
-    const diffTime = holidayDate - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-green-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-        <div className="container mx-auto px-6 py-12">
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 dark:bg-emerald-800 rounded-2xl mb-6">
-              <Sparkles className="w-8 h-8 text-emerald-600 dark:text-emerald-300 animate-pulse" />
-            </div>
-            <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">Civix Community</h1>
-            <p className="text-xl text-slate-600 dark:text-slate-300 mb-8">Loading upcoming holidays...</p>
-            <div className="flex justify-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 dark:border-emerald-400"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-green-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-        <div className="container mx-auto px-6 py-12">
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 dark:bg-red-800 rounded-2xl mb-6">
-              <Calendar className="w-8 h-8 text-red-600 dark:text-red-300" />
-            </div>
-            <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">Civix Community</h1>
-            <div className="bg-white dark:bg-slate-800 border border-red-200 dark:border-red-800 rounded-2xl p-6 max-w-md mx-auto shadow-sm">
-              <p className="text-red-600 dark:text-red-400 font-medium">{error}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+        setError("❌ Failed to fetch holidays. Please check your API key or internet connection.");
+      })
+      .finally(() => setLoading(false));
+  }, [apiKey, year]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-green-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-      <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-emerald-100 dark:border-slate-700 sticky top-0 z-10">
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 dark:from-emerald-400 dark:to-green-500 rounded-xl flex items-center justify-center">
-                <Calendar className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Civix Community</h1>
-                <p className="text-slate-600 dark:text-slate-300">Upcoming Holidays</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2 text-sm text-slate-500 dark:text-slate-400">
-              <MapPin className="w-4 h-4" />
-              <span>India • {year}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold flex items-center gap-2">
+        <Calendar className="text-indigo-600" /> Holidays ({year})
+      </h1>
 
-      <div className="container mx-auto px-6 py-12">
-        {holidays.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {holidays.map((holiday) => {
-              const daysUntil = getDaysUntil(holiday.date.iso);
-              return (
-                <div
-                  key={holiday.date.iso}
-                  className="group bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 border border-emerald-100/50 dark:border-slate-700/50 hover:border-emerald-200 dark:hover:border-emerald-600 hover:-translate-y-1"
-                >
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-3 h-3 bg-gradient-to-r from-emerald-400 to-green-500 dark:from-emerald-300 dark:to-green-400 rounded-full"></div>
-                      <span className="text-sm font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/50 px-3 py-1 rounded-full">
-                        Holiday
-                      </span>
-                    </div>
-                    {daysUntil <= 7 && (
-                      <div className="bg-gradient-to-r from-emerald-500 to-green-600 dark:from-emerald-400 dark:to-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                        Soon
-                      </div>
-                    )}
-                  </div>
-                  <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors">
-                    {holiday.name}
-                  </h2>
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3 text-slate-600 dark:text-slate-300">
-                      <Calendar className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
-                      <span className="font-medium">{formatDate(holiday.date.iso)}</span>
-                    </div>
-                    <div className="flex items-center space-x-3 text-slate-600 dark:text-slate-300">
-                      <Clock className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
-                      <span>
-                        {daysUntil === 0 
-                          ? "Today!" 
-                          : daysUntil === 1 
-                          ? "Tomorrow" 
-                          : `${daysUntil} days away`
-                        }
-                      </span>
-                    </div>
-                  </div>
-                  <div className="mt-6 pt-6 border-t border-emerald-100 dark:border-slate-700">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">Days remaining</span>
-                      <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">{daysUntil}</span>
-                    </div>
-                    <div className="w-full bg-emerald-100 dark:bg-emerald-900/30 rounded-full h-2">
-                      <div 
-                        className="bg-gradient-to-r from-emerald-500 to-green-600 dark:from-emerald-400 dark:to-green-500 h-2 rounded-full transition-all duration-500"
-                        style={{ width: `${Math.max(5, Math.min(100, (30 - daysUntil) * 3))}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="text-center py-20">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-emerald-100 dark:bg-emerald-800 rounded-3xl mb-6">
-              <Calendar className="w-10 h-10 text-emerald-500 dark:text-emerald-300" />
-            </div>
-            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">No Upcoming Holidays</h3>
-            <p className="text-slate-600 dark:text-slate-300 max-w-md mx-auto">
-              We couldn't find any upcoming holidays for this year. Check back later or refresh the page.
-            </p>
-          </div>
-        )}
-        <div className="mt-20 text-center">
-          <div className="inline-flex items-center space-x-2 text-slate-400">
-            <Sparkles className="w-4 h-4" />
-            <span className="text-sm">Powered by Civix Community Platform</span>
-          </div>
+      {loading && (
+        <div className="flex items-center gap-2 text-slate-600">
+          <Loader2 className="animate-spin" /> Fetching holidays...
         </div>
-      </div>
+      )}
+
+      {error && (
+        <div className="p-4 rounded-xl border bg-red-50 text-red-700 flex items-center gap-2">
+          <AlertCircle /> {error}
+        </div>
+      )}
+
+      {!loading && !error && (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {holidays.length === 0 ? (
+            <p className="text-slate-500">No holidays found for {year}.</p>
+          ) : (
+            holidays.map((h, idx) => (
+              <div
+                key={idx}
+                className="rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition"
+              >
+                <p className="font-semibold text-slate-800">{h.name}</p>
+                <p className="text-sm text-slate-600">{h.date.iso}</p>
+                <p className="text-xs text-slate-500 mt-1">
+                  {h.description || "No description available"}
+                </p>
+              </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
-};
-
-export default CommunityHolidays;
+}
