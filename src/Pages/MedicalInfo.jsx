@@ -1,5 +1,5 @@
 // pages/MedicalInfo.jsx
-import { ArrowLeft, Phone, Hospital, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Phone, Hospital, ShieldCheck, Pill, AlertTriangle, HeartPulse, User2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const demo = {
@@ -21,6 +21,7 @@ export default function MedicalInfo() {
 
   return (
     <div className="space-y-6">
+      {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
         className="inline-flex items-center gap-2 text-slate-700 hover:text-black"
@@ -28,50 +29,70 @@ export default function MedicalInfo() {
         <ArrowLeft /> Back
       </button>
 
-      <h1 className="text-2xl font-bold">Medical Information</h1>
+      {/* Header */}
+      <div className="rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white p-6 shadow-md">
+        <h1 className="text-3xl font-bold">{demo.name}</h1>
+        <p className="mt-1 text-lg">Age {demo.age}</p>
+        <span className="mt-2 inline-block bg-white text-rose-600 font-semibold px-3 py-1 rounded-full shadow">
+          Blood Group: {demo.blood}
+        </span>
+      </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
+        {/* Left Section */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="rounded-2xl border bg-white p-6">
-            <h3 className="font-semibold text-xl">{demo.name}</h3>
-            <p className="text-slate-600">Age {demo.age} • Blood Group {demo.blood}</p>
-            <div className="mt-4 grid sm:grid-cols-2 gap-4">
-              <Card title="Allergies" items={demo.allergies} />
-              <Card title="Medications" items={demo.meds} />
-              <Card title="Conditions" items={demo.conditions} />
-              <div className="rounded-xl border p-4">
-                <div className="flex items-center gap-2 font-semibold">
-                  <ShieldCheck className="text-emerald-600" /> Insurance (optional)
+          {/* Medical Details */}
+          <div className="rounded-2xl border bg-white shadow-sm p-6">
+            <h3 className="font-semibold text-xl mb-4 flex items-center gap-2">
+              <HeartPulse className="text-rose-500" /> Health Information
+            </h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Card title="Allergies" items={demo.allergies} icon={<AlertTriangle className="text-red-500 w-4 h-4" />} />
+              <Card title="Medications" items={demo.meds} icon={<Pill className="text-green-500 w-4 h-4" />} />
+              <Card title="Conditions" items={demo.conditions} icon={<ShieldCheck className="text-blue-500 w-4 h-4" />} />
+              <div className="rounded-xl border p-4 bg-slate-50">
+                <div className="flex items-center gap-2 font-semibold text-slate-700">
+                  <ShieldCheck className="text-emerald-600" /> Insurance
                 </div>
                 <p className="text-sm text-slate-600 mt-1">Add provider, ID, and emergency notes.</p>
               </div>
             </div>
           </div>
 
-          <div className="rounded-2xl border bg-white p-6">
-            <div className="flex items-center gap-3 font-semibold">
-              <Hospital className="text-rose-600" />
-              Primary Doctor
+          {/* Doctor Card */}
+          <div className="rounded-2xl border bg-white shadow-sm p-6">
+            <div className="flex items-center gap-3 font-semibold text-lg">
+              <Hospital className="text-rose-600" /> Primary Doctor
             </div>
-            <p className="mt-2">{demo.doctor.name}</p>
+            <p className="mt-3 text-lg font-medium">{demo.doctor.name}</p>
             <p className="text-slate-600">{demo.doctor.hospital}</p>
-            <a href={`tel:${demo.doctor.phone}`} className="inline-flex items-center gap-2 mt-3 text-indigo-600 hover:underline">
+            <a
+              href={`tel:${demo.doctor.phone}`}
+              className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+            >
               <Phone className="w-4 h-4" /> Call Doctor
             </a>
           </div>
         </div>
 
+        {/* Right Section */}
         <div className="space-y-6">
-          <div className="rounded-2xl border bg-white p-6">
-            <h4 className="font-semibold mb-3">Emergency Contacts</h4>
-            <ul className="space-y-3">
+          {/* Emergency Contacts */}
+          <div className="rounded-2xl border bg-white shadow-sm p-6">
+            <h4 className="font-semibold mb-4 text-lg flex items-center gap-2">
+              <User2 className="text-indigo-600" /> Emergency Contacts
+            </h4>
+            <ul className="space-y-4">
               {demo.contacts.map((c, i) => (
                 <li key={i} className="flex items-center justify-between">
                   <div>
                     <p className="font-medium">{c.name}</p>
                     <p className="text-sm text-slate-600">{c.phone}</p>
                   </div>
-                  <a className="px-3 py-1.5 rounded-lg border hover:bg-slate-50" href={`tel:${c.phone}`}>
+                  <a
+                    className="px-4 py-2 rounded-lg bg-rose-600 text-white hover:bg-rose-700"
+                    href={`tel:${c.phone}`}
+                  >
                     Call
                   </a>
                 </li>
@@ -79,12 +100,11 @@ export default function MedicalInfo() {
             </ul>
           </div>
 
-          <div className="rounded-2xl border bg-white p-6 text-center">
-            <p className="text-sm text-slate-600 mb-3">
-              QR for first responders (placeholder)
-            </p>
-            <div className="mx-auto h-40 w-40 bg-slate-200 rounded-lg" />
-            <button className="mt-4 px-3 py-2 rounded-lg border hover:bg-slate-50">
+          {/* QR Code */}
+          <div className="rounded-2xl border bg-white shadow-sm p-6 text-center">
+            <p className="text-sm text-slate-600 mb-3">Scan for full medical history</p>
+            <div className="mx-auto h-40 w-40 bg-slate-200 rounded-lg shadow-inner" />
+            <button className="mt-4 px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">
               Download QR
             </button>
           </div>
@@ -94,10 +114,12 @@ export default function MedicalInfo() {
   );
 }
 
-function Card({ title, items }) {
+function Card({ title, items, icon }) {
   return (
-    <div className="rounded-xl border p-4">
-      <p className="font-semibold">{title}</p>
+    <div className="rounded-xl border p-4 bg-slate-50 shadow-sm">
+      <div className="flex items-center gap-2 font-semibold text-slate-700">
+        {icon} {title}
+      </div>
       <ul className="mt-2 list-disc ml-5 text-sm text-slate-700 space-y-1">
         {items.map((x, i) => <li key={i}>{x}</li>)}
       </ul>
