@@ -55,7 +55,8 @@ const quickActions = [
   { name: 'Send Location to Emergency Contact', action: () => shareLocation(), icon: Send, color: 'from-indigo-500 to-indigo-700' },
   { name: 'Medical Information', action: () => navigate('/medical-info'), icon: Heart, color: 'from-rose-500 to-rose-700' },
   { name: 'Safe Word Alert', action: () => navigate('/safe-word'), icon: Shield, color: 'from-amber-500 to-amber-700' },
-  { name: 'Record Audio', action: () => startRecording(), icon: Zap, color: 'from-violet-500 to-violet-700' }
+  { name: 'Record Audio', action: () => navigate('/record-audio'), icon: Zap, color: 'from-violet-500 to-violet-700' }
+
 ];
 
 
