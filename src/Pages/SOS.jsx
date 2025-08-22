@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Phone, MapPin, Clock, Shield, AlertTriangle, Heart, Car, Home, Users, ChevronRight, Copy, Check, Zap, Send } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const SOSPage = () => {
   const [location, setLocation] = useState(null);
@@ -48,12 +49,15 @@ const SOSPage = () => {
     { name: 'Disaster Management', number: '108', icon: Car, color: 'from-orange-500 to-orange-700', description: 'Natural disaster and emergency response' }
   ];
 
-  const quickActions = [
-    { name: 'Send Location to Emergency Contact', action: () => shareLocation(), icon: Send, color: 'from-indigo-500 to-indigo-700' },
-    { name: 'Medical Information', action: () => alert('Show medical info'), icon: Heart, color: 'from-rose-500 to-rose-700' },
-    { name: 'Safe Word Alert', action: () => sendSafeWordAlert(), icon: Shield, color: 'from-amber-500 to-amber-700' },
-    { name: 'Record Audio', action: () => startRecording(), icon: Zap, color: 'from-violet-500 to-violet-700' }
-  ];
+  const navigate = useNavigate();
+
+const quickActions = [
+  { name: 'Send Location to Emergency Contact', action: () => shareLocation(), icon: Send, color: 'from-indigo-500 to-indigo-700' },
+  { name: 'Medical Information', action: () => navigate('/medical-info'), icon: Heart, color: 'from-rose-500 to-rose-700' },
+  { name: 'Safe Word Alert', action: () => sendSafeWordAlert(), icon: Shield, color: 'from-amber-500 to-amber-700' },
+  { name: 'Record Audio', action: () => startRecording(), icon: Zap, color: 'from-violet-500 to-violet-700' }
+];
+
 
   const callEmergencyNumber = (number) => {
   };
