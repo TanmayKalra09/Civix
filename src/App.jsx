@@ -57,6 +57,7 @@ import MedicalInfo from './Pages/MedicalInfo';
 import Electricity from './Pages/Electricity';
 import SafeWord from './Pages/SafeWord';
 import RecordAudio from './Pages/RecordAudio';
+import SDRF from './Pages/SDRF';
 import Budget from './Pages/Budget';
 
 
@@ -152,6 +153,7 @@ const App = () => {
             <Route path='/elections-info' element={<Election/>}/>
             <Route path='/govt-schemes' element={<Schemes/>}/>
             <Route path='/vehical' element={<Vehical/>}/>
+            <Route path='/sdrf' element={<SDRF/>}/>
             <Route
               path="/admin/dashboard"
               element={

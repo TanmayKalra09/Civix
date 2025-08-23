@@ -20,6 +20,7 @@ import {
   Building2,
   Car,
   Zap,
+  HandCoins,
   ReceiptIndianRupee
 } from "lucide-react";
 
@@ -293,6 +294,14 @@ const UserDashboard = () => {
             gradient="from-teal-500 to-teal-600"
             shadowColor="shadow-teal-500/20"
           />
+           <DashboardCard
+            title="SDRF Allocation and NFSA Beneficiary"
+            description="State Disaster Response Fund (SDRF) Allocation & Release Module and National Food Security Act (NFSA) Beneficiary Coverage."
+            onClick={() => navigate("/sdrf")}
+            icon={HandCoins}
+            gradient="from-green-500 to-green-800"
+            shadowColor="shadow-green-500/20"
+            />
           <DashboardCard
             title="Budget Estimates"
             description="Analytics framework for rendering and evaluating Budget Estimates"
