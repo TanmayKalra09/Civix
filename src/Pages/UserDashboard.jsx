@@ -21,7 +21,8 @@ import {
   Car,
   Zap,
   HandCoins,
-  ReceiptIndianRupee
+  ReceiptIndianRupee,
+  Plane
 } from "lucide-react";
 
 const UserDashboard = () => {
@@ -310,6 +311,14 @@ const UserDashboard = () => {
             gradient="from-green-500 to-green-600"
             shadowColor="shadow-green-500/20"
             />
+             <DashboardCard
+            title="Air Seva"
+            description="Your comprehensive guide to aviation services and resources"
+            onClick={() => navigate("/airseva")}
+            icon={Plane}
+            gradient="from-green-600 to-emerald-700"
+            shadowColor="shadow-green-600/20"
+          />
         </div>
       </main>
     </div>
