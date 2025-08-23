@@ -24,6 +24,7 @@
     "framer-motion": "^12.23.12",
     "jsonwebtoken": "^9.0.2",
     "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.516.0",
     "mongoose": "^8.16.0",

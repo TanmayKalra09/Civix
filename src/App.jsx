@@ -14,7 +14,7 @@ import Error404 from './components/Error404';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-
+import Feedback from "./Pages/Feedback";
 import About from './Pages/About';
 import Privacy from './Pages/Privacy';
 import Terms from './Pages/Terms';
@@ -58,7 +58,7 @@ import Electricity from './Pages/Electricity';
 import SafeWord from './Pages/SafeWord';
 import RecordAudio from './Pages/RecordAudio';
 import SDRF from './Pages/SDRF';
-
+import Budget from './Pages/Budget';
 
 
 
@@ -104,6 +104,7 @@ const App = () => {
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/feedback" element={<Feedback />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/contact" element={<Contact />} />
@@ -120,6 +121,7 @@ const App = () => {
             <Route path="/voting-system" element={<VotingSystem />} />
             <Route path="/profile" element={<Profile />} />
             <Route path='/electricity' element={<Electricity/>}/>
+            <Route path='/budget' element={<Budget/>}/>
             <Route
               path="/profile-setup"
               element={
