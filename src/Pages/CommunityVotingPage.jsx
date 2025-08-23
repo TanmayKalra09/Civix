@@ -1,146 +1,387 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  TrendingUp, Newspaper, MessageCircle, Heart, X
+import {
+  TrendingUp,
+  Newspaper,
+  Heart,
+  MessageCircle,
+  PlusCircle,
 } from "lucide-react";
 
-const CommunityVotingPage = () => {
-  const [selectedTab, setSelectedTab] = useState("voting");
+const CommunityPage = () => {
+  const [selectedTab, setSelectedTab] = useState("voting"); // voting | feed
+  const [selectedArea, setSelectedArea] = useState("All Areas");
+  const [sortBy, setSortBy] = useState("Most Votes");
   const [votedIssues, setVotedIssues] = useState({});
-  const [likedPosts, setLikedPosts] = useState({});
-  const [comments, setComments] = useState({});
-
-  // --- Issues (keep static) ---
-  const [issues, setIssues] = useState([
-    { id: 1, title: "Pothole on Main Street", area: "Noida", daysOpen: 3, votes: 15, accidentsReported: 2, status: "Open", priority: "high" },
-    { id: 2, title: "Broken Street Light", area: "East Delhi", daysOpen: 5, votes: 8, accidentsReported: 1, status: "Open", priority: "medium" },
-    { id: 3, title: "Garbage Not Collected", area: "South Delhi", daysOpen: 7, votes: 22, accidentsReported: 0, status: "Open", priority: "low" },
-    { id: 4, title: "Water Leakage Issue", area: "West Delhi", daysOpen: 2, votes: 32, accidentsReported: 0, status: "In Progress", priority: "high" }
-  ]);
-
-  // --- Feed Posts (dynamic) ---
   const [posts, setPosts] = useState([
-    { id: 1, title: "Main Street Pothole Fixed!", content: "The pothole reported last week has been successfully repaired by the municipal team. Thank you for voting!", likes: 10 },
-    { id: 2, title: "Street Light Update", content: "Engineers have been dispatched to repair the broken street light in East Delhi. Expected resolution within 2 days.", likes: 6 },
+    {
+      id: 1,
+      title: "Main Street Pothole Fixed!",
+      content:
+        "The pothole reported last week has been repaired by the municipal team. Thank you for voting!",
+      likes: 12,
+      comments: ["Great news!", "Finally fixed 👏"],
+    },
+    {
+      id: 2,
+      title: "Waste Collection Improved",
+      content:
+        "Garbage collection in South Delhi is now consistent after community votes highlighted the issue.",
+      likes: 8,
+      comments: [],
+    },
+  ]);
+  const [likedPosts, setLikedPosts] = useState({});
+  const [newPost, setNewPost] = useState({ title: "", content: "" });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // ---- Voting Data ----
+  const [issues, setIssues] = useState([
+    {
+      id: 1,
+      title: "Pothole on Main Street",
+      area: "Noida",
+      daysOpen: 3,
+      votes: 15,
+      accidentsReported: 2,
+      status: "Open",
+      priority: "high",
+    },
+    {
+      id: 2,
+      title: "Broken Street Light",
+      area: "East Delhi",
+      daysOpen: 5,
+      votes: 8,
+      accidentsReported: 1,
+      status: "Open",
+      priority: "medium",
+    },
+    {
+      id: 3,
+      title: "Garbage Not Collected",
+      area: "South Delhi",
+      daysOpen: 7,
+      votes: 22,
+      accidentsReported: 0,
+      status: "Open",
+      priority: "low",
+    },
+    {
+      id: 4,
+      title: "Water Leakage Issue",
+      area: "West Delhi",
+      daysOpen: 2,
+      votes: 32,
+      accidentsReported: 0,
+      status: "In Progress",
+      priority: "high",
+    },
   ]);
 
-  // --- Create Feed Modal ---
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newTitle, setNewTitle] = useState("");
-  const [newContent, setNewContent] = useState("");
+  const areas = [
+    "All Areas",
+    "Noida",
+    "East Delhi",
+    "West Delhi",
+    "North Delhi",
+    "South Delhi",
+    "Ghaziabad",
+  ];
+  const sortOptions = [
+    "Most Votes",
+    "Most Recent",
+    "Longest Open",
+    "Most Accidents",
+  ];
 
-  // --- Voting Logic (unchanged) ---
+  // ---- Voting Logic ----
+  const filteredIssues = issues
+    .filter(
+      (issue) => selectedArea === "All Areas" || issue.area === selectedArea
+    )
+    .sort((a, b) => {
+      if (sortBy === "Most Votes") return b.votes - a.votes;
+      if (sortBy === "Most Recent") return b.daysOpen - a.daysOpen;
+      if (sortBy === "Longest Open") return a.daysOpen - b.daysOpen;
+      if (sortBy === "Most Accidents")
+        return b.accidentsReported - a.accidentsReported;
+      return 0;
+    });
+
   const handleVote = (id) => {
     const hasVoted = votedIssues[id];
-    setIssues(issues.map(issue =>
-      issue.id === id ? { ...issue, votes: hasVoted ? issue.votes - 1 : issue.votes + 1 } : issue
-    ));
-    setVotedIssues(prev => ({ ...prev, [id]: !prev[id] }));
+    setIssues(
+      issues.map((issue) =>
+        issue.id === id
+          ? { ...issue, votes: hasVoted ? issue.votes - 1 : issue.votes + 1 }
+          : issue
+      )
+    );
+    setVotedIssues((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // --- Feed Logic ---
-  const handleLike = (postId) => {
-    setPosts(posts.map(post =>
-      post.id === postId ? { ...post, likes: likedPosts[postId] ? post.likes - 1 : post.likes + 1 } : post
-    ));
-    setLikedPosts(prev => ({ ...prev, [postId]: !prev[postId] }));
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "high":
+        return "bg-red-100 text-red-700";
+      case "medium":
+        return "bg-yellow-100 text-yellow-700";
+      case "low":
+        return "bg-green-100 text-green-700";
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
+  };
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Open":
+        return "bg-blue-100 text-blue-700";
+      case "In Progress":
+        return "bg-orange-100 text-orange-700";
+      case "Resolved":
+        return "bg-green-100 text-green-700";
+      default:
+        return "bg-gray-100 text-gray-700";
+    }
   };
 
-  const handleAddComment = (postId, text) => {
-    if (!text.trim()) return;
-    setComments(prev => ({
-      ...prev,
-      [postId]: [...(prev[postId] || []), text]
-    }));
+  // ---- Feed Logic ----
+  const handleLike = (id) => {
+    setPosts(
+      posts.map((p) =>
+        p.id === id
+          ? { ...p, likes: likedPosts[id] ? p.likes - 1 : p.likes + 1 }
+          : p
+      )
+    );
+    setLikedPosts((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const handleCreateFeed = (e) => {
-    e.preventDefault();
-    if (!newTitle.trim() || !newContent.trim()) return;
+  const handleAddComment = (id, comment) => {
+    if (!comment.trim()) return;
+    setPosts(
+      posts.map((p) =>
+        p.id === id ? { ...p, comments: [...p.comments, comment] } : p
+      )
+    );
+  };
 
-    const newPost = {
-      id: posts.length + 1,
-      title: newTitle,
-      content: newContent,
-      likes: 0,
-    };
-
-    setPosts([newPost, ...posts]);
-    setNewTitle("");
-    setNewContent("");
+  const handleCreatePost = () => {
+    if (!newPost.title.trim() || !newPost.content.trim()) return;
+    setPosts([
+      {
+        id: Date.now(),
+        title: newPost.title,
+        content: newPost.content,
+        likes: 0,
+        comments: [],
+      },
+      ...posts,
+    ]);
+    setNewPost({ title: "", content: "" });
     setIsModalOpen(false);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-green-900/20 transition-colors duration-300">
-      {/* --- Tab Navigation --- */}
-      <div className="max-w-7xl mx-auto px-4 py-6 flex space-x-4">
-        <button 
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
+      {/* Tab Switch */}
+      <div className="max-w-7xl mx-auto px-4 py-6 flex gap-4">
+        <button
           onClick={() => setSelectedTab("voting")}
-          className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 ${selectedTab==="voting" ? "bg-green-600 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"}`}
+          className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 ${
+            selectedTab === "voting"
+              ? "bg-green-600 text-white"
+              : "bg-gray-200 text-gray-700"
+          }`}
         >
-          <TrendingUp className="w-4 h-4"/> Voting
+          <TrendingUp className="w-4 h-4" /> Voting
         </button>
-        <button 
+        <button
           onClick={() => setSelectedTab("feed")}
-          className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 ${selectedTab==="feed" ? "bg-green-600 text-white" : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"}`}
+          className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 ${
+            selectedTab === "feed"
+              ? "bg-green-600 text-white"
+              : "bg-gray-200 text-gray-700"
+          }`}
         >
-          <Newspaper className="w-4 h-4"/> Feed
+          <Newspaper className="w-4 h-4" /> Feed
         </button>
       </div>
 
-      {/* --- Voting Section (Static) --- */}
+      {/* Voting Section */}
       {selectedTab === "voting" && (
-        <motion.div className="max-w-7xl mx-auto px-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <div className="max-w-7xl mx-auto px-4">
+          {/* Filters */}
+          <div className="bg-white/70 p-6 rounded-2xl shadow-sm mb-6">
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div>
+                <label className="text-sm font-medium">Area</label>
+                <select
+                  value={selectedArea}
+                  onChange={(e) => setSelectedArea(e.target.value)}
+                  className="w-full p-2 rounded-xl border"
+                >
+                  {areas.map((area) => (
+                    <option key={area}>{area}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-medium">Sort By</label>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="w-full p-2 rounded-xl border"
+                >
+                  {sortOptions.map((opt) => (
+                    <option key={opt}>{opt}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Issues */}
           <div className="grid gap-6">
-            {issues.map(issue => (
-              <div key={issue.id} className="bg-white/70 dark:bg-gray-800/70 p-6 rounded-2xl shadow-sm">
+            {filteredIssues.map((issue) => (
+              <div
+                key={issue.id}
+                className="bg-white/70 p-6 rounded-2xl shadow-sm"
+              >
                 <h3 className="text-xl font-bold">{issue.title}</h3>
                 <p className="text-sm text-gray-600">{issue.area}</p>
+                <span
+                  className={`px-3 py-1 text-xs rounded-full ${getPriorityColor(
+                    issue.priority
+                  )}`}
+                >
+                  {issue.priority} priority
+                </span>
+                <span
+                  className={`ml-2 px-3 py-1 text-xs rounded-full ${getStatusColor(
+                    issue.status
+                  )}`}
+                >
+                  {issue.status}
+                </span>
                 <div className="mt-4 flex justify-between items-center">
-                  <button onClick={() => handleVote(issue.id)} className={`px-4 py-2 rounded-lg text-white ${votedIssues[issue.id] ? "bg-gray-500" : "bg-green-600"}`}>
+                  <button
+                    onClick={() => handleVote(issue.id)}
+                    className={`px-4 py-2 rounded-lg text-white ${
+                      votedIssues[issue.id] ? "bg-gray-500" : "bg-green-600"
+                    }`}
+                  >
                     {votedIssues[issue.id] ? "Voted" : "Vote"} ({issue.votes})
                   </button>
-                  <p className="text-sm text-gray-600">{issue.daysOpen} days open</p>
+                  <p className="text-sm text-gray-600">
+                    {issue.daysOpen} days open
+                  </p>
                 </div>
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
       )}
 
-      {/* --- Feed Section (Dynamic) --- */}
+      {/* Feed Section */}
       {selectedTab === "feed" && (
-        <motion.div className="max-w-7xl mx-auto px-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          {/* Create Feed Button */}
+        <div className="max-w-4xl mx-auto px-4">
+          {/* Create Post Button */}
           <div className="flex justify-end mb-6">
-            <button 
+            <button
               onClick={() => setIsModalOpen(true)}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg shadow"
             >
-              + Create Feed
+              <PlusCircle className="w-5 h-5" /> Create Post
             </button>
           </div>
 
-          {/* Feeds */}
-          {posts.map(post => (
-            <div key={post.id} className="bg-white/70 dark:bg-gray-800/70 p-6 rounded-2xl shadow-sm mb-6">
+          {/* Modal */}
+          <AnimatePresence>
+            {isModalOpen && (
+              <motion.div
+                className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <motion.div
+                  className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md"
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                >
+                  <h3 className="text-lg font-semibold mb-4">Create Post</h3>
+                  <input
+                    type="text"
+                    placeholder="Post title"
+                    value={newPost.title}
+                    onChange={(e) =>
+                      setNewPost((prev) => ({ ...prev, title: e.target.value }))
+                    }
+                    className="w-full border rounded-lg px-3 py-2 mb-3"
+                  />
+                  <textarea
+                    placeholder="Write something..."
+                    value={newPost.content}
+                    onChange={(e) =>
+                      setNewPost((prev) => ({
+                        ...prev,
+                        content: e.target.value,
+                      }))
+                    }
+                    className="w-full border rounded-lg px-3 py-2 mb-3"
+                  />
+                  <div className="flex justify-end gap-3">
+                    <button
+                      onClick={() => setIsModalOpen(false)}
+                      className="px-4 py-2 bg-gray-300 rounded-lg"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleCreatePost}
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg"
+                    >
+                      Post
+                    </button>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Posts */}
+          {posts.map((post) => (
+            <div
+              key={post.id}
+              className="bg-white/70 p-6 rounded-2xl shadow-sm mb-6"
+            >
               <h3 className="text-lg font-bold">{post.title}</h3>
-              <p className="mt-2 text-gray-700 dark:text-gray-300">{post.content}</p>
-              
+              <p className="mt-2 text-gray-700">{post.content}</p>
+
               {/* Like & Comment */}
               <div className="flex items-center gap-4 mt-4">
-                <button onClick={() => handleLike(post.id)} className="flex items-center gap-1 text-sm text-pink-600">
-                  <Heart className={`w-4 h-4 ${likedPosts[post.id] ? "fill-pink-600" : ""}`}/> {post.likes}
+                <button
+                  onClick={() => handleLike(post.id)}
+                  className="flex items-center gap-1 text-sm text-pink-600"
+                >
+                  <Heart
+                    className={`w-4 h-4 ${
+                      likedPosts[post.id] ? "fill-pink-600" : ""
+                    }`}
+                  />{" "}
+                  {post.likes}
                 </button>
-                <button className="flex items-center gap-1 text-sm text-blue-600">
-                  <MessageCircle className="w-4 h-4"/> {comments[post.id]?.length || 0}
-                </button>
+                <span className="flex items-center gap-1 text-sm text-blue-600">
+                  <MessageCircle className="w-4 h-4" /> {post.comments.length}
+                </span>
               </div>
 
               {/* Comment box */}
               <div className="mt-3">
-                <input 
+                <input
                   type="text"
                   placeholder="Add a comment..."
                   className="w-full border rounded-lg px-3 py-2"
@@ -151,68 +392,25 @@ const CommunityVotingPage = () => {
                     }
                   }}
                 />
-                {comments[post.id]?.length > 0 && (
+                {post.comments.length > 0 && (
                   <ul className="mt-2 space-y-1">
-                    {comments[post.id].map((c, i) => (
-                      <li key={i} className="text-sm text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-lg">{c}</li>
+                    {post.comments.map((c, i) => (
+                      <li
+                        key={i}
+                        className="text-sm text-gray-700 bg-gray-100 px-3 py-1 rounded-lg"
+                      >
+                        {c}
+                      </li>
                     ))}
                   </ul>
                 )}
               </div>
             </div>
           ))}
-        </motion.div>
+        </div>
       )}
-
-      {/* --- Modal for Create Feed --- */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <motion.div 
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div 
-              className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg w-full max-w-md"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-            >
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-bold">Create New Feed</h2>
-                <button onClick={() => setIsModalOpen(false)}>
-                  <X className="w-5 h-5"/>
-                </button>
-              </div>
-              <form onSubmit={handleCreateFeed}>
-                <input 
-                  type="text"
-                  placeholder="Title"
-                  className="w-full border p-2 rounded mb-3"
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                />
-                <textarea 
-                  placeholder="Content"
-                  className="w-full border p-2 rounded mb-3"
-                  rows="4"
-                  value={newContent}
-                  onChange={(e) => setNewContent(e.target.value)}
-                />
-                <button 
-                  type="submit"
-                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg w-full"
-                >
-                  Post
-                </button>
-              </form>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };
 
-export default CommunityVotingPage;
+export default CommunityPage;
