@@ -14,7 +14,7 @@ import Error404 from './components/Error404';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-
+import Feedback from "./Pages/Feedback";
 import About from './Pages/About';
 import Privacy from './Pages/Privacy';
 import Terms from './Pages/Terms';
@@ -103,6 +103,7 @@ const App = () => {
             {/* Public Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/feedback" element={<Feedback />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/contact" element={<Contact />} />
