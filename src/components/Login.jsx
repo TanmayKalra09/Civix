@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSignIn } from '@clerk/clerk-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaExclamationCircle } from "react-icons/fa";
+
 import { motion } from "framer-motion";
 import 'react-toastify/dist/ReactToastify.css';
 import loginImage from "../assets/signup.png"; 
@@ -16,10 +17,45 @@ const Login = () => {
   const [code, setCode] = useState('');
   const [step, setStep] = useState(1);
   const [pendingSignIn, setPendingSignIn] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [isValid, setIsValid] = useState({});
+
+  useEffect(() => {
+    if (email === '') {
+      setErrors(p => ({ ...p, email: null }));
+      setIsValid(p => ({ ...p, email: false }));
+    } else if (/\S+@\S+\.\S+/.test(email)) {
+      setErrors(p => ({ ...p, email: null }));
+      setIsValid(p => ({ ...p, email: true }));
+    } else {
+      setErrors(p => ({ ...p, email: 'Please enter a valid email' }));
+      setIsValid(p => ({ ...p, email: false }));
+    }
+  }, [email]);
+
+  useEffect(() => {
+    // Only clear the "required" error, not API errors
+    if (code && errors.code === 'Verification code is required') {
+      setErrors(p => ({ ...p, code: null }));
+    }
+    if (code) {
+      setIsValid(p => ({ ...p, code: true }));
+    } else {
+      setIsValid(p => ({ ...p, code: false }));
+    }
+  }, [code, errors.code]);
+
 
   // Step 1: Request magic code
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
+    if (!email) {
+      setErrors(p => ({ ...p, email: 'Email is required' }));
+      setIsValid(p => ({ ...p, email: false }));
+      return;
+    }
+    if (!isValid.email) return;
+
     try {
       const result = await signIn.create({
         identifier: email,
@@ -33,9 +69,17 @@ const Login = () => {
     }
   };
 
+
   // Step 2: Verify code
   const handleCodeSubmit = async (e) => {
     e.preventDefault();
+    if (!code) {
+      setErrors(p => ({ ...p, code: 'Verification code is required' }));
+      setIsValid(p => ({ ...p, code: false }));
+      return;
+    }
+    if (!isValid.code) return;
+
     try {
       const result = await pendingSignIn.attemptFirstFactor({
         strategy: 'email_code',
@@ -48,9 +92,15 @@ const Login = () => {
         setTimeout(() => navigate('/home'), 1000);
       }
     } catch (err) {
-      toast.error(err.errors?.[0]?.message || "Invalid code");
+      const errorMessage = "Verification code is wrong.";
+      toast.error(errorMessage);
+      setErrors(p => ({ ...p, code: errorMessage }));
+      setIsValid(p => ({ ...p, code: false }));
     }
+
   };
+
+
 
   // OAuth Sign In
   const handleOAuthSignIn = async (provider) => {
@@ -61,7 +111,20 @@ const Login = () => {
     });
   };
 
+  const emailBorderColor = errors.email
+    ? '#ef4444' // red-500
+    : isValid.email
+    ? '#22c55e' // green-500
+    : '#86efac'; // green-300
+
+  const codeBorderColor = errors.code
+    ? '#ef4444' // red-500
+    : isValid.code
+    ? '#22c55e' // green-500
+    : '#86efac'; // green-300
+
   return (
+
     <div 
       className="flex flex-col md:flex-row min-h-screen items-center justify-center font-inter relative"
       
@@ -111,20 +174,38 @@ const Login = () => {
             {/* Step 1: Enter Email */}
             {step === 1 && (
                 <motion.form
+                noValidate
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4 }}
                 onSubmit={handleEmailSubmit}
                 className="space-y-4"
                 >
-                <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="w-full border border-green-300 focus:border-green-500 rounded-lg p-3 outline-none bg-white/80 text-black"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
+
+                <div>
+                    <input
+                        type="email"
+                        placeholder="Enter your email"
+                        className="w-full rounded-lg p-3 outline-none bg-white/80 text-black"
+                        style={{
+                            border: `1px solid ${emailBorderColor}`,
+                            transition: 'border-color 0.2s'
+                        }}
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+
+                    {errors.email && (
+                        <p className="text-red-500 text-sm flex items-center pt-1">
+
+                            <FaExclamationCircle className="mr-1" />
+                            {errors.email}
+                        </p>
+                    )}
+                </div>
+
+
+
                 <button
                     type="submit"
                     className="w-full bg-green-500 hover:bg-green-600 text-white rounded-lg py-2 font-medium transition"
@@ -137,20 +218,38 @@ const Login = () => {
             {/* Step 2: Enter Code */}
             {step === 2 && (
                 <motion.form
+                noValidate
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4 }}
                 onSubmit={handleCodeSubmit}
                 className="space-y-4"
                 >
-                <input
-                    type="text"
-                    placeholder="Enter verification code"
-                    className="w-full border border-green-300 focus:border-green-500 rounded-lg p-3 outline-none bg-white/80 text-black"
-                    value={code}
-                    onChange={(e) => setCode(e.target.value)}
-                    required
-                />
+
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Enter verification code"
+                        className="w-full rounded-lg p-3 outline-none bg-white/80 text-black"
+                        style={{
+                            border: `1px solid ${codeBorderColor}`,
+                            transition: 'border-color 0.2s'
+                        }}
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
+                    />
+
+                    {errors.code && (
+                        <p className="text-red-500 text-sm flex items-center pt-1">
+
+                            <FaExclamationCircle className="mr-1" />
+                            {errors.code}
+                        </p>
+                    )}
+                </div>
+
+
+
                 <button
                     type="submit"
                     className="w-full bg-green-500 hover:bg-green-600 text-white rounded-lg py-2 font-medium transition"
@@ -193,7 +292,14 @@ const Login = () => {
                 >
                 ← Back to Home
                 </Link>
+                <p className="text-sm text-gray-600 mt-4">
+                    Don’t have an account?{' '}
+                    <Link to="/signup" className="text-green-700 hover:underline font-medium">
+                        Sign up
+                    </Link>
+                </p>
             </div>
+
             </div>
         </motion.div>
 
