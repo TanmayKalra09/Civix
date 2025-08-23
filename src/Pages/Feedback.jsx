@@ -1,49 +1,56 @@
 // pages/Feedback.jsx
 import { useState } from "react";
-import { Send, MessageSquare } from "lucide-react";
+import { Send, MessageSquare, Loader2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-export default function Feedback() {
+const Feedback = () => {
   const [category, setCategory] = useState("");
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    // 👉 Here you can send data to backend / API
-    console.log({
-      category,
-      rating,
-      feedback,
-    });
-
-    setSubmitted(true);
-    setCategory("");
-    setRating(0);
-    setFeedback("");
+    setTimeout(() => {
+      setSubmitted(true);
+      setLoading(false);
+      setCategory("");
+      setRating(0);
+      setFeedback("");
+    }, 1200);
   };
 
+  // Different emojis for rating
+  const emojis = ["😡", "😞", "😐", "🙂", "🤩"];
+
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <h1 className="text-3xl font-bold flex items-center gap-2 text-indigo-600">
+    <div className="max-w-3xl mx-auto p-6 space-y-6">
+      <h1 className="text-3xl font-bold flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
         <MessageSquare className="w-7 h-7" /> Citizen Feedback
       </h1>
 
+      {/* Feedback Form */}
       {!submitted ? (
-        <form
+        <motion.form
           onSubmit={handleSubmit}
-          className="bg-white rounded-2xl shadow-md p-6 space-y-5 border"
+          className="rounded-2xl shadow-md p-6 space-y-6 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 transition-colors"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
         >
           {/* Category */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700">
-              Select Category
-            </label>
-            <select
+          <motion.div
+            whileFocus={{ scale: 1.02 }}
+            className="space-y-2"
+          >
+            <label className="block text-sm font-medium">Select Category</label>
+            <motion.select
+              whileFocus={{ scale: 1.01 }}
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="mt-1 w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50 dark:bg-slate-800 dark:border-slate-600 transition"
               required
             >
               <option value="">-- Choose --</option>
@@ -51,60 +58,93 @@ export default function Feedback() {
               <option value="schemes">Government Schemes</option>
               <option value="transport">Traffic & Vehicle Info</option>
               <option value="others">Others</option>
-            </select>
-          </div>
+            </motion.select>
+          </motion.div>
 
-          {/* Rating */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700">
-              Rate Your Experience
-            </label>
-            <div className="flex gap-2 mt-1">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
+          {/* Emoji Rating */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium">Rate Your Experience</label>
+            <div className="flex gap-4 mt-1 justify-between">
+              {emojis.map((emoji, index) => (
+                <motion.button
+                  key={index}
                   type="button"
-                  onClick={() => setRating(star)}
-                  className={`w-10 h-10 rounded-full border flex items-center justify-center text-lg font-bold transition ${
-                    rating >= star
-                      ? "bg-indigo-500 text-white"
-                      : "bg-gray-100 text-slate-600"
+                  onClick={() => setRating(index + 1)}
+                  whileTap={{ scale: 0.8, rotate: -10 }}
+                  animate={
+                    rating === index + 1
+                      ? { scale: [1, 1.3, 1], rotate: [0, 10, 0] }
+                      : { scale: 1, rotate: 0 }
+                  }
+                  transition={{ duration: 0.4 }}
+                  className={`w-14 h-14 rounded-full border flex items-center justify-center text-2xl transition-all shadow-md ${
+                    rating === index + 1
+                      ? "bg-emerald-500 text-white"
+                      : "bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700"
                   }`}
                 >
-                  {star}
-                </button>
+                  {emoji}
+                </motion.button>
               ))}
             </div>
           </div>
 
           {/* Feedback */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700">
-              Your Feedback
-            </label>
-            <textarea
+          <motion.div
+            whileFocus={{ scale: 1.02 }}
+            className="space-y-2"
+          >
+            <label className="block text-sm font-medium">Your Feedback</label>
+            <motion.textarea
+              whileFocus={{ scale: 1.01 }}
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
-              className="mt-1 w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50 dark:bg-slate-800 dark:border-slate-600 transition"
               rows="4"
               placeholder="Write your feedback here..."
               required
             />
-          </div>
+          </motion.div>
 
-          {/* Submit Button */}
-          <button
+          {/* Progress + Submit */}
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.95 }}
             type="submit"
-            className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white font-medium py-2 px-4 rounded-xl shadow hover:bg-indigo-700 transition"
+            disabled={loading}
+            className="w-full flex items-center justify-center gap-2 font-medium py-3 px-4 rounded-xl shadow-md bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white transition"
           >
-            <Send className="w-4 h-4" /> Submit Feedback
-          </button>
-        </form>
+            {loading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" /> Submitting...
+              </>
+            ) : (
+              <>
+                <Send className="w-4 h-4" /> Submit Feedback
+              </>
+            )}
+          </motion.button>
+        </motion.form>
       ) : (
-        <div className="bg-green-50 text-green-700 p-4 rounded-xl border">
-          ✅ Thank you! Your feedback has been submitted.
-        </div>
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="p-6 rounded-2xl border border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/40 text-center space-y-3 transition-colors"
+        >
+          <p className="text-2xl animate-bounce">🎉</p>
+          <p className="text-xl font-semibold text-emerald-700 dark:text-emerald-300">Thank you!</p>
+          <p>Your feedback has been submitted successfully.</p>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            onClick={() => setSubmitted(false)}
+            className="mt-2 px-5 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-800 shadow-sm hover:bg-slate-200 dark:hover:bg-slate-700 transition"
+          >
+            Submit Another
+          </motion.button>
+        </motion.div>
       )}
     </div>
   );
 }
+
+export default Feedback;
