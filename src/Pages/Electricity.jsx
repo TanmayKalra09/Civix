@@ -101,10 +101,10 @@ const UtilitiesDashboard = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'active': return 'text-green-600 bg-green-100';
-      case 'maintenance': return 'text-yellow-600 bg-yellow-100';
-      case 'outage': return 'text-red-600 bg-red-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'active': return 'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/30';
+      case 'maintenance': return 'text-yellow-600 bg-yellow-100 dark:text-yellow-400 dark:bg-yellow-900/30';
+      case 'outage': return 'text-red-600 bg-red-100 dark:text-red-400 dark:bg-red-900/30';
+      default: return 'text-gray-600 bg-gray-100 dark:text-gray-400 dark:bg-gray-800';
     }
   };
 
@@ -119,10 +119,10 @@ const UtilitiesDashboard = () => {
 
   const getPriorityColor = (priority) => {
     switch (priority) {
-      case 'high': return 'bg-red-500';
-      case 'medium': return 'bg-yellow-500';
-      case 'low': return 'bg-green-500';
-      default: return 'bg-gray-500';
+      case 'high': return 'bg-red-500 dark:bg-red-600';
+      case 'medium': return 'bg-yellow-500 dark:bg-yellow-600';
+      case 'low': return 'bg-green-500 dark:bg-green-600';
+      default: return 'bg-gray-500 dark:bg-gray-600';
     }
   };
 
@@ -153,19 +153,19 @@ const UtilitiesDashboard = () => {
   });
 
   return (
-    <div className="min-h-screen bg-green-50">
-      <div className="bg-white shadow-sm border-b border-green-100">
+    <div className="min-h-screen bg-green-50 dark:bg-gray-900">
+      <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-green-100 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-green-600 dark:bg-green-500 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">C</span>
                 </div>
-                <h1 className="text-2xl font-bold text-green-900">Civix Utilities</h1>
+                <h1 className="text-2xl font-bold text-green-900 dark:text-green-100">Civix Utilities</h1>
               </div>
             </div>
-            <div className="flex items-center space-x-4 text-sm text-green-700">
+            <div className="flex items-center space-x-4 text-sm text-green-700 dark:text-green-300">
               <Clock className="w-4 h-4" />
               <span>{formatTime(currentTime)} • {formatDate(currentTime)}</span>
             </div>
@@ -175,13 +175,13 @@ const UtilitiesDashboard = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-sm border border-green-100 p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-green-100 dark:border-gray-700 p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <Zap className="w-6 h-6 text-green-700" />
+                <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                  <Zap className="w-6 h-6 text-green-700 dark:text-green-400" />
                 </div>
-                <h2 className="text-lg font-semibold text-green-900">Electricity</h2>
+                <h2 className="text-lg font-semibold text-green-900 dark:text-green-100">Electricity</h2>
               </div>
               <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(currentStatus.electricity.status)}`}>
                 {getStatusIcon(currentStatus.electricity.status)}
@@ -190,27 +190,27 @@ const UtilitiesDashboard = () => {
             </div>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-green-600">Uptime (30 days)</span>
-                <span className="font-medium text-green-900">{currentStatus.electricity.uptime}</span>
+                <span className="text-green-600 dark:text-green-400">Uptime (30 days)</span>
+                <span className="font-medium text-green-900 dark:text-green-100">{currentStatus.electricity.uptime}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-green-600">Last outage</span>
-                <span className="font-medium text-green-900">{currentStatus.electricity.lastOutage}</span>
+                <span className="text-green-600 dark:text-green-400">Last outage</span>
+                <span className="font-medium text-green-900 dark:text-green-100">{currentStatus.electricity.lastOutage}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-green-600">Affected areas</span>
-                <span className="font-medium text-green-900">{currentStatus.electricity.affectedAreas}</span>
+                <span className="text-green-600 dark:text-green-400">Affected areas</span>
+                <span className="font-medium text-green-900 dark:text-green-100">{currentStatus.electricity.affectedAreas}</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-green-100 p-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-green-100 dark:border-gray-700 p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <Droplets className="w-6 h-6 text-green-700" />
+                <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                  <Droplets className="w-6 h-6 text-green-700 dark:text-green-400" />
                 </div>
-                <h2 className="text-lg font-semibold text-green-900">Water Supply</h2>
+                <h2 className="text-lg font-semibold text-green-900 dark:text-green-100">Water Supply</h2>
               </div>
               <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(currentStatus.water.status)}`}>
                 {getStatusIcon(currentStatus.water.status)}
@@ -219,30 +219,30 @@ const UtilitiesDashboard = () => {
             </div>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-green-600">Uptime (30 days)</span>
-                <span className="font-medium text-green-900">{currentStatus.water.uptime}</span>
+                <span className="text-green-600 dark:text-green-400">Uptime (30 days)</span>
+                <span className="font-medium text-green-900 dark:text-green-100">{currentStatus.water.uptime}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-green-600">Last outage</span>
-                <span className="font-medium text-green-900">{currentStatus.water.lastOutage}</span>
+                <span className="text-green-600 dark:text-green-400">Last outage</span>
+                <span className="font-medium text-green-900 dark:text-green-100">{currentStatus.water.lastOutage}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-green-600">Affected areas</span>
-                <span className="font-medium text-orange-600">{currentStatus.water.affectedAreas}</span>
+                <span className="text-green-600 dark:text-green-400">Affected areas</span>
+                <span className="font-medium text-orange-600 dark:text-orange-400">{currentStatus.water.affectedAreas}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-green-100 p-6 mb-8">
-          <h3 className="text-lg font-semibold text-green-900 mb-4">Filter Outages</h3>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-green-100 dark:border-gray-700 p-6 mb-8">
+          <h3 className="text-lg font-semibold text-green-900 dark:text-green-100 mb-4">Filter Outages</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-green-700 mb-2">Utility Type</label>
+              <label className="block text-sm font-medium text-green-700 dark:text-green-300 mb-2">Utility Type</label>
               <select 
                 value={selectedUtility} 
                 onChange={(e) => setSelectedUtility(e.target.value)}
-                className="w-full p-2 border border-green-200 rounded-md focus:ring-green-500 focus:border-green-500"
+                className="w-full p-2 border border-green-200 dark:border-gray-600 rounded-md focus:ring-green-500 focus:border-green-500 dark:focus:ring-green-400 dark:focus:border-green-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               >
                 <option value="both">Both Utilities</option>
                 <option value="electricity">Electricity Only</option>
@@ -250,11 +250,11 @@ const UtilitiesDashboard = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-green-700 mb-2">Area</label>
+              <label className="block text-sm font-medium text-green-700 dark:text-green-300 mb-2">Area</label>
               <select 
                 value={selectedArea} 
                 onChange={(e) => setSelectedArea(e.target.value)}
-                className="w-full p-2 border border-green-200 rounded-md focus:ring-green-500 focus:border-green-500"
+                className="w-full p-2 border border-green-200 dark:border-gray-600 rounded-md focus:ring-green-500 focus:border-green-500 dark:focus:ring-green-400 dark:focus:border-green-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               >
                 <option value="all">All Areas</option>
                 {areas.map(area => (
@@ -265,33 +265,33 @@ const UtilitiesDashboard = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-green-100 p-6 mb-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-green-100 dark:border-gray-700 p-6 mb-8">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-green-900">Scheduled Outages</h3>
-            <Bell className="w-5 h-5 text-green-400" />
+            <h3 className="text-lg font-semibold text-green-900 dark:text-green-100">Scheduled Outages</h3>
+            <Bell className="w-5 h-5 text-green-400 dark:text-green-500" />
           </div>
           <div className="space-y-4">
             {filteredOutages.map((outage) => (
-              <div key={outage.id} className={`border rounded-lg p-4 ${isOngoing(outage) ? 'border-orange-200 bg-orange-50' : 'border-green-200'}`}>
+              <div key={outage.id} className={`border rounded-lg p-4 ${isOngoing(outage) ? 'border-orange-200 bg-orange-50 dark:border-orange-700 dark:bg-orange-900/20' : 'border-green-200 dark:border-gray-600 dark:bg-gray-700/50'}`}>
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-4">
-                    <div className={`p-2 rounded-lg ${outage.type === 'electricity' ? 'bg-green-100' : 'bg-green-100'}`}>
+                    <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
                       {outage.type === 'electricity' ? 
-                        <Zap className="w-5 h-5 text-green-700" /> :
-                        <Droplets className="w-5 h-5 text-green-700" />
+                        <Zap className="w-5 h-5 text-green-700 dark:text-green-400" /> :
+                        <Droplets className="w-5 h-5 text-green-700 dark:text-green-400" />
                       }
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-1">
-                        <h4 className="font-medium text-green-900 capitalize">{outage.type}</h4>
+                        <h4 className="font-medium text-green-900 dark:text-green-100 capitalize">{outage.type}</h4>
                         {isOngoing(outage) && (
-                          <span className="px-2 py-1 text-xs font-medium text-orange-700 bg-orange-100 rounded-full">
+                          <span className="px-2 py-1 text-xs font-medium text-orange-700 bg-orange-100 dark:text-orange-300 dark:bg-orange-900/30 rounded-full">
                             ONGOING
                           </span>
                         )}
                         <div className={`w-2 h-2 rounded-full ${getPriorityColor(outage.priority)}`}></div>
                       </div>
-                      <div className="flex items-center space-x-4 text-sm text-green-600 mb-2">
+                      <div className="flex items-center space-x-4 text-sm text-green-600 dark:text-green-400 mb-2">
                         <div className="flex items-center space-x-1">
                           <MapPin className="w-4 h-4" />
                           <span>{outage.area}</span>
@@ -305,7 +305,7 @@ const UtilitiesDashboard = () => {
                           <span>{formatTime(outage.startTime)} - {formatTime(outage.endTime)}</span>
                         </div>
                       </div>
-                      <p className="text-sm text-green-700">{outage.reason}</p>
+                      <p className="text-sm text-green-700 dark:text-green-300">{outage.reason}</p>
                     </div>
                   </div>
                 </div>
@@ -314,21 +314,21 @@ const UtilitiesDashboard = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-green-100 p-6">
-          <h3 className="text-lg font-semibold text-green-900 mb-6">Recent Outages</h3>
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-green-100 dark:border-gray-700 p-6">
+          <h3 className="text-lg font-semibold text-green-900 dark:text-green-100 mb-6">Recent Outages</h3>
           <div className="space-y-4">
             {recentOutages.map((outage) => (
-              <div key={outage.id} className="border border-green-200 rounded-lg p-4">
+              <div key={outage.id} className="border border-green-200 dark:border-gray-600 rounded-lg p-4 dark:bg-gray-700/50">
                 <div className="flex items-start space-x-4">
-                  <div className="p-2 bg-green-100 rounded-lg">
+                  <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
                     {outage.type === 'electricity' ? 
-                      <Zap className="w-5 h-5 text-green-700" /> :
-                      <Droplets className="w-5 h-5 text-green-700" />
+                      <Zap className="w-5 h-5 text-green-700 dark:text-green-400" /> :
+                      <Droplets className="w-5 h-5 text-green-700 dark:text-green-400" />
                     }
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-medium text-green-900 capitalize mb-1">{outage.type}</h4>
-                    <div className="flex items-center space-x-4 text-sm text-green-600 mb-2">
+                    <h4 className="font-medium text-green-900 dark:text-green-100 capitalize mb-1">{outage.type}</h4>
+                    <div className="flex items-center space-x-4 text-sm text-green-600 dark:text-green-400 mb-2">
                       <div className="flex items-center space-x-1">
                         <MapPin className="w-4 h-4" />
                         <span>{outage.area}</span>
@@ -341,9 +341,9 @@ const UtilitiesDashboard = () => {
                         <Clock className="w-4 h-4" />
                         <span>{formatTime(outage.startTime)} - {formatTime(outage.endTime)}</span>
                       </div>
-                      <span className="font-medium text-green-900">Duration: {outage.duration}</span>
+                      <span className="font-medium text-green-900 dark:text-green-100">Duration: {outage.duration}</span>
                     </div>
-                    <p className="text-sm text-green-700">{outage.reason}</p>
+                    <p className="text-sm text-green-700 dark:text-green-300">{outage.reason}</p>
                   </div>
                 </div>
               </div>
