@@ -184,7 +184,7 @@ const CommunityPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
+    <div className="min-h-screen ">
       {/* Tab Switch */}
       <div className="max-w-7xl mx-auto px-4 py-6 flex gap-4">
         <button
@@ -213,14 +213,14 @@ const CommunityPage = () => {
       {selectedTab === "voting" && (
         <div className="max-w-7xl mx-auto px-4">
           {/* Filters */}
-          <div className="bg-white/70 p-6 rounded-2xl shadow-sm mb-6">
+          <div className=" p-6 rounded-2xl shadow-sm mb-6">
             <div className="grid sm:grid-cols-2 gap-6">
               <div>
                 <label className="text-sm font-medium">Area</label>
                 <select
                   value={selectedArea}
                   onChange={(e) => setSelectedArea(e.target.value)}
-                  className="w-full p-2 rounded-xl border"
+                  className="w-full p-2 rounded-xl border text-black"
                 >
                   {areas.map((area) => (
                     <option key={area}>{area}</option>
@@ -232,7 +232,7 @@ const CommunityPage = () => {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full p-2 rounded-xl border"
+                  className="w-full p-2 rounded-xl border text-black"
                 >
                   {sortOptions.map((opt) => (
                     <option key={opt}>{opt}</option>
@@ -247,10 +247,10 @@ const CommunityPage = () => {
             {filteredIssues.map((issue) => (
               <div
                 key={issue.id}
-                className="bg-white/70 p-6 rounded-2xl shadow-sm"
+                className="p-6 rounded-2xl shadow-sm border border-gray-300"
               >
                 <h3 className="text-xl font-bold">{issue.title}</h3>
-                <p className="text-sm text-gray-600">{issue.area}</p>
+                <p className="text-sm">{issue.area}</p>
                 <span
                   className={`px-3 py-1 text-xs rounded-full ${getPriorityColor(
                     issue.priority
@@ -307,12 +307,12 @@ const CommunityPage = () => {
                 exit={{ opacity: 0 }}
               >
                 <motion.div
-                  className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md"
+                  className=" p-6 rounded-2xl shadow-lg w-full max-w-md bg-gray-50"
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.8, opacity: 0 }}
                 >
-                  <h3 className="text-lg font-semibold mb-4">Create Post</h3>
+                  <h3 className="text-lg font-semibold mb-4 text-black">Create Post</h3>
                   <input
                     type="text"
                     placeholder="Post title"
@@ -336,7 +336,7 @@ const CommunityPage = () => {
                   <div className="flex justify-end gap-3">
                     <button
                       onClick={() => setIsModalOpen(false)}
-                      className="px-4 py-2 bg-gray-300 rounded-lg"
+                      className="px-4 py-2 bg-gray-300 rounded-lg text-black"
                     >
                       Cancel
                     </button>
@@ -356,10 +356,10 @@ const CommunityPage = () => {
           {posts.map((post) => (
             <div
               key={post.id}
-              className="bg-white/70 p-6 rounded-2xl shadow-sm mb-6"
+              className=" p-6 rounded-2xl shadow-sm mb-6 border border-gray-300"
             >
               <h3 className="text-lg font-bold">{post.title}</h3>
-              <p className="mt-2 text-gray-700">{post.content}</p>
+              <p className="mt-2 text-gray-400">{post.content}</p>
 
               {/* Like & Comment */}
               <div className="flex items-center gap-4 mt-4">
@@ -397,7 +397,7 @@ const CommunityPage = () => {
                     {post.comments.map((c, i) => (
                       <li
                         key={i}
-                        className="text-sm text-gray-700 bg-gray-100 px-3 py-1 rounded-lg"
+                        className="text-sm text-gray-700 border border-gray-300 px-3 py-1 rounded-lg"
                       >
                         {c}
                       </li>
