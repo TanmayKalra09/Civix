@@ -21,7 +21,8 @@ import {
   Car,
   Zap,
   HandCoins,
-  ReceiptIndianRupee
+  ReceiptIndianRupee,
+  TrainFront
 } from "lucide-react";
 
 const UserDashboard = () => {
@@ -310,6 +311,14 @@ const UserDashboard = () => {
             gradient="from-green-500 to-green-600"
             shadowColor="shadow-green-500/20"
             />
+            <DashboardCard
+            title="Real-Time Train Schedule"
+            description="Real-Time Train Schedule Rendering Subsystem (TSRS)"
+            onClick={() => navigate("/train")}
+            icon={TrainFront}
+            gradient="from-green-500 to-green-600"
+            shadowColor="shadow-green-500/20"
+          />
         </div>
       </main>
     </div>
