@@ -6,7 +6,7 @@ import useProfileStatus from '../hooks/useProfileStatus';
 import csrfManager from '../utils/csrfManager';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ProfileSetup = () => {
+const ProfileSetup = ({onComplete}) => {
   const { user } = useUser();
   const navigate = useNavigate();
   const { refetch } = useProfileStatus();
@@ -61,6 +61,7 @@ const ProfileSetup = () => {
       return;
     }
 
+
     setIsLoading(true);
 
     try {
@@ -98,7 +99,11 @@ const ProfileSetup = () => {
         location: formData.location,
         profilePictureUrl: uploadedProfileUrl
       });
-
+      
+      localStorage.setItem("profileComplete", "true");
+      console.log(localStorage.getItem("profileComplete"));
+      onComplete();
+      
       const profileResponse = await csrfManager.secureFetch('http://localhost:5000/api/profile/create-or-update', {
         method: 'POST',
         body: JSON.stringify({
@@ -128,7 +133,6 @@ const ProfileSetup = () => {
         
         // Update the profile status hook immediately
         refetch();
-        
         // Use a more reliable redirect method
         setTimeout(() => {
           console.log('Redirecting to home page...');
