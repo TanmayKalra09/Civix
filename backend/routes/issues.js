@@ -14,5 +14,6 @@ router.patch("/:id/status", verifyToken, isAdmin, issueController.updateIssueSta
 router.get("/", issueController.getAllIssues);
 router.get("/:id",issueController.getIssueById)
 router.delete("/issues/:id",verifyToken,isAdmin,issueController. deleteIssue);
+router.patch("/issues/:id",verifyToken,issueController.updateIssue)
 
 module.exports = router;

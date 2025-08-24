@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+
   MapPin,
   Clock,
   AlertTriangle,
@@ -19,6 +20,8 @@ const CommunityVotingPage = () => {
   const [votedIssues, setVotedIssues] = useState({});
   const [confetti, setConfetti] = useState(null);
 
+
+  // ---- Voting Data ----
   const [issues, setIssues] = useState([
     {
       id: 1,
@@ -78,6 +81,7 @@ const CommunityVotingPage = () => {
     "Most Accidents",
   ];
 
+  // ---- Voting Logic ----
   const filteredIssues = issues
     .filter(
       (issue) => selectedArea === "All Areas" || issue.area === selectedArea
@@ -122,9 +126,9 @@ const CommunityVotingPage = () => {
         return "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300";
       default:
         return "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300";
+
     }
   };
-
   const getStatusColor = (status) => {
     switch (status) {
       case "Open":
@@ -405,10 +409,12 @@ const CommunityVotingPage = () => {
               </p>
             </motion.div>
           )}
+
         </div>
-      </div>
+      )}
     </div>
   );
 };
 
 export default CommunityVotingPage;
+
