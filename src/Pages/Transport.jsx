@@ -148,6 +148,7 @@ export default function PublicTransportInfo() {
             information  
           </p>
         </div>
+        
       </div>
     </div>
   );
