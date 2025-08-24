@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-
-  MapPin,
+ MapPin,
   Clock,
   AlertTriangle,
   CheckCircle,
@@ -114,6 +113,7 @@ const CommunityVotingPage = () => {
       setConfetti(id);
       setTimeout(() => setConfetti(null), 1200);
     }
+
   };
 
   const getPriorityColor = (priority) => {
@@ -132,6 +132,7 @@ const CommunityVotingPage = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case "Open":
+
         return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300";
       case "In Progress":
         return "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300";
