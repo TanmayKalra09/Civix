@@ -114,6 +114,7 @@ const CommunityVotingPage = () => {
       setConfetti(id);
       setTimeout(() => setConfetti(null), 1200);
     }
+
   };
 
   const getPriorityColor = (priority) => {
