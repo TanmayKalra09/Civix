@@ -412,7 +412,7 @@ const CommunityVotingPage = () => {
           )}
 
         </div>
-      </div>
+      <)}>
     </div>
   );
 };
