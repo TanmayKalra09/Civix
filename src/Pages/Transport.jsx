@@ -145,7 +145,7 @@ export default function PublicTransportInfo() {
         <div className="text-center mt-10 text-gray-500 dark:text-gray-400 text-sm">
           <p>
             🚍 Powered by Delhi Transport Corporation • Real-time transit
-            information 
+            information  
           </p>
         </div>
       </div>
