@@ -18,7 +18,12 @@ import {
   ChartColumn,
   Vote,
   Building2,
-  Car
+  Car,
+  Zap,
+  HandCoins,
+  ReceiptIndianRupee,
+  Plane,
+  TrainFront
 } from "lucide-react";
 
 const UserDashboard = () => {
@@ -282,6 +287,46 @@ const UserDashboard = () => {
             icon={Car}
             gradient="from-emerald-600 to-teal-700"
             shadowColor="shadow-emerald-600/20"
+          />
+           <DashboardCard
+            title="Water & Electricity Schedule"
+            description="Real-time updates regarding water supply schedules, power outage notifications, and restoration timelines"
+            onClick={() => navigate("/electricity")}
+            icon={Zap}
+            gradient="from-teal-500 to-teal-600"
+            shadowColor="shadow-teal-500/20"
+          />
+           <DashboardCard
+            title="SDRF Allocation and NFSA Beneficiary"
+            description="State Disaster Response Fund (SDRF) Allocation & Release Module and National Food Security Act (NFSA) Beneficiary Coverage."
+            onClick={() => navigate("/sdrf")}
+            icon={HandCoins}
+            gradient="from-green-500 to-green-800"
+            shadowColor="shadow-green-500/20"
+            />
+          <DashboardCard
+            title="Budget Estimates"
+            description="Analytics framework for rendering and evaluating Budget Estimates"
+            onClick={() => navigate("/budget")}
+            icon={ReceiptIndianRupee}
+            gradient="from-green-500 to-green-600"
+            shadowColor="shadow-green-500/20"
+            />
+            <DashboardCard
+            title="Air Seva"
+            description="Your comprehensive guide to aviation services and resources"
+            onClick={() => navigate("/airseva")}
+            icon={Plane}
+            gradient="from-green-600 to-emerald-700"
+            shadowColor="shadow-green-600/20"
+            />
+            <DashboardCard
+            title="Real-Time Train Schedule"
+            description="Real-Time Train Schedule Rendering Subsystem (TSRS)"
+            onClick={() => navigate("/train")}
+            icon={TrainFront}
+            gradient="from-green-500 to-green-600"
+            shadowColor="shadow-green-500/20"
           />
         </div>
       </main>

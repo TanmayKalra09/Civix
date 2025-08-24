@@ -19,6 +19,8 @@ const CommunityVotingPage = () => {
   const [votedIssues, setVotedIssues] = useState({});
   const [confetti, setConfetti] = useState(null);
 
+
+  // ---- Voting Data ----
   const [issues, setIssues] = useState([
     {
       id: 1,
@@ -78,6 +80,7 @@ const CommunityVotingPage = () => {
     "Most Accidents",
   ];
 
+  // ---- Voting Logic ----
   const filteredIssues = issues
     .filter(
       (issue) => selectedArea === "All Areas" || issue.area === selectedArea
@@ -110,6 +113,7 @@ const CommunityVotingPage = () => {
       setConfetti(id);
       setTimeout(() => setConfetti(null), 1200);
     }
+n
   };
 
   const getPriorityColor = (priority) => {
@@ -124,10 +128,10 @@ const CommunityVotingPage = () => {
         return "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300";
     }
   };
-
   const getStatusColor = (status) => {
     switch (status) {
       case "Open":
+
         return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300";
       case "In Progress":
         return "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300";
@@ -405,10 +409,13 @@ const CommunityVotingPage = () => {
               </p>
             </motion.div>
           )}
+
         </div>
-      </div>
+      )}
     </div>
   );
 };
 
+
 export default CommunityVotingPage;
+

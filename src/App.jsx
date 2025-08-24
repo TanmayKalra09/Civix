@@ -54,9 +54,13 @@ import Election from './Pages/Election';
 import Schemes from './Pages/Schemes';
 import Vehical from './Pages/Vehical';
 import MedicalInfo from './Pages/MedicalInfo';
+import Electricity from './Pages/Electricity';
 import SafeWord from './Pages/SafeWord';
 import RecordAudio from './Pages/RecordAudio';
-
+import SDRF from './Pages/SDRF';
+import Budget from './Pages/Budget';
+import AirSeva from './Pages/AirSeva';
+import Train from './Pages/Train';
 
 
 
@@ -118,6 +122,9 @@ const App = () => {
             <Route path="/community-voting" element={<CommunityVotingPage />} />
             <Route path="/voting-system" element={<VotingSystem />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path='/electricity' element={<Electricity/>}/>
+            <Route path='/budget' element={<Budget/>}/>
+            <Route path='/train' element={<Train/>}/>
             <Route
               path="/profile-setup"
               element={
@@ -149,6 +156,8 @@ const App = () => {
             <Route path='/elections-info' element={<Election/>}/>
             <Route path='/govt-schemes' element={<Schemes/>}/>
             <Route path='/vehical' element={<Vehical/>}/>
+            <Route path='/sdrf' element={<SDRF/>}/>
+            <Route path='/airseva' element={<AirSeva/>}/>
             <Route
               path="/admin/dashboard"
               element={
