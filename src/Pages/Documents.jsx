@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, Upload, Download, Eye, Edit, Trash2, FileText, Calendar, User, Tag, Plus, MoreHorizontal,  Home, BarChart3, Bell, Settings, ChevronRight,ChevronLeft, Users } from 'lucide-react';
+import { Search, Filter, Upload, Download, Eye, Edit, Trash2, FileText, Calendar, User, Tag, Plus, MoreHorizontal, Home, BarChart3, Bell, Settings, ChevronRight, ChevronLeft, Users } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 
 const DocumentsPage = () => {
@@ -8,6 +8,8 @@ const DocumentsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [selectedDocuments, setSelectedDocuments] = useState([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeRoute, setActiveRoute] = useState('/admin/documents');
 
   const documents = [
     { id: 1, name: 'Budget Proposal 2024', category: 'Finance', status: 'approved', date: '2024-01-15', author: 'John Smith', size: '2.4 MB', type: 'PDF' },
@@ -26,9 +28,6 @@ const DocumentsPage = () => {
     { key: 'notifications', label: 'Notifications', icon: Bell, route: '/admin/notifications' },
     { key: 'settings', label: 'Settings', icon: Settings, route: '/admin/settings' },
   ];
-  
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [activeRoute, setActiveRoute] = useState('/admin/documents');
 
   const categories = ['all', 'Finance', 'Policy', 'Meeting', 'Planning', 'Legal', 'Community'];
   const statuses = ['all', 'draft', 'pending', 'approved', 'published'];
@@ -45,15 +44,15 @@ const DocumentsPage = () => {
 
   const filteredDocuments = documents.filter(doc => {
     const matchesSearch = doc.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         doc.author.toLowerCase().includes(searchTerm.toLowerCase());
+      doc.author.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || doc.category === selectedCategory;
     const matchesStatus = selectedStatus === 'all' || doc.status === selectedStatus;
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
   const toggleDocumentSelection = (docId) => {
-    setSelectedDocuments(prev => 
-      prev.includes(docId) 
+    setSelectedDocuments(prev =>
+      prev.includes(docId)
         ? prev.filter(id => id !== docId)
         : [...prev, docId]
     );
@@ -69,111 +68,115 @@ const DocumentsPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
+      {/* Toggle Sidebar Button for Mobile */}
+      <button
+        type="button"
+        aria-label="Open sidebar"
+        onClick={() => setIsSidebarOpen(true)}
+        className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg hover:bg-gray-50 text-emerald-600 lg:hidden"
+        style={{ display: isSidebarOpen ? 'none' : 'block' }}
+      >
+        <ChevronRight className="w-6 h-6" />
+      </button>
+
       {isSidebarOpen && (
-                <div
-                  className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
-                  onClick={() => setIsSidebarOpen(false)}
-                />
-              )}
-              <aside
-                className={`fixed top-0 left-0 h-full z-50 transition-all duration-300 ease-in-out bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border-r border-gray-200/50 dark:border-gray-700/50 flex flex-col shadow-xl ${
-                  isSidebarOpen ? 'w-[64]' : 'w-16'
-                }`}
-              >
-                <div className="relative flex items-center justify-between p-4 border-b border-gray-200/50 dark:border-gray-700/50">
-                  <div className={`flex items-center transition-all duration-300 ${isSidebarOpen ? 'opacity-100' : 'opacity-0 w-0'}`}>
-                    <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
-                      <span className="text-white font-bold text-sm">C</span>
-                    </div>
+        <div
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+      <aside
+        className={`fixed top-0 left-0 h-full z-50 transition-all duration-300 ease-in-out bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border-r border-gray-200/50 dark:border-gray-700/50 flex flex-col shadow-xl 
+        ${isSidebarOpen ? 'w-64 translate-x-0' : 'w-16 -translate-x-full lg:translate-x-0'}`}
+      >
+        <div className="relative flex items-center justify-between p-4 border-b border-gray-200/50 dark:border-gray-700/50">
+          <div className={`flex items-center transition-all duration-300 ${isSidebarOpen ? 'opacity-100' : 'opacity-0 w-0'}`}>
+            <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
+              <span className="text-white font-bold text-sm">C</span>
+            </div>
+            {isSidebarOpen && (
+              <span className="ml-3 text-xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
+                Civix
+              </span>
+            )}
+          </div>
+          <button
+            type="button"
+            aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className={`p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 ${
+              !isSidebarOpen ? 'mx-auto' : ''
+            }`}
+          >
+            {isSidebarOpen ? (
+              <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            ) : (
+              <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            )}
+          </button>
+        </div>
+        {isSidebarOpen && (
+          <div className="p-4 border-b border-gray-200/50 dark:border-gray-700/50">
+            <div className="relative">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search..."
+                className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm border-0 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+              />
+            </div>
+          </div>
+        )}
+        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+          {sidebarMenu.map((item) => {
+            const isActive = item.route === activeRoute;
+            const Icon = item.icon;
+            return (
+              <div key={item.key} className="relative group">
+                <button
+                  type="button"
+                  className={`
+                    w-full flex items-center py-3 px-3 rounded-xl text-sm font-medium transition-all duration-200 group relative overflow-hidden
+                    ${isSidebarOpen ? '' : 'justify-center'}
+                    ${isActive
+                      ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25 transform scale-[1.02]'
+                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white hover:shadow-md'
+                    }
+                  `}
+                  onClick={() => navigate(item.route)}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  {isActive && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-600 opacity-10 rounded-xl" />
+                  )}
+                  <div className="relative z-10 flex items-center">
+                    <Icon
+                      className={`w-5 h-5 transition-all duration-200 ${
+                        isSidebarOpen ? 'mr-3' : ''
+                      } ${
+                        isActive
+                          ? 'text-white'
+                          : 'text-gray-500 dark:text-gray-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400'
+                      }`}
+                    />
                     {isSidebarOpen && (
-                      <span className="ml-3 text-xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent">
-                        Civix
+                      <span className="relative z-10 transition-all duration-300">
+                        {item.label}
                       </span>
                     )}
                   </div>
-                  <button
-                    type="button"
-                    aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
-                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    className={`p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 ${
-                      !isSidebarOpen ? 'mx-auto' : ''
-                    }`}
-                  >
-                    {isSidebarOpen ? (
-                      <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                    ) : (
-                      <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                    )}
-                  </button>
-                </div>
-                {isSidebarOpen && (
-                  <div className="p-4 border-b border-gray-200/50 dark:border-gray-700/50">
-                    <div className="relative">
-                      <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                      <input
-                        type="text"
-                        placeholder="Search..."
-                        className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg text-sm border-0 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                      />
-                    </div>
-                  </div>
-                )}
-                <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-                  {sidebarMenu.map((item) => {
-                    const isActive = item.route === activeRoute;
-                    const Icon = item.icon;
-                    return (
-                      <div key={item.key} className="relative group">
-                        <button
-                          type="button"
-                          className={`
-                            w-full flex items-center py-3 px-3 rounded-xl text-sm font-medium transition-all duration-200 group relative overflow-hidden
-                            ${isSidebarOpen ? '' : 'justify-center'}
-                            ${isActive
-                              ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25 transform scale-[1.02]'
-                              : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white hover:shadow-md'
-                            }
-                          `}
-                          onClick={() => navigate(item.route)}
-                          aria-current={isActive ? "page" : undefined}
-                        >
-                          {isActive && (
-                            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-600 opacity-10 rounded-xl" />
-                          )}
-                          <div className="relative z-10 flex items-center">
-                            <Icon
-                              className={`w-5 h-5 transition-all duration-200 ${
-                                isSidebarOpen ? 'mr-3' : ''
-                              } ${
-                                isActive
-                                  ? 'text-white'
-                                  : 'text-gray-500 dark:text-gray-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400'
-                              }`}
-                            />
-                            {isSidebarOpen && (
-                              <span className="relative z-10 transition-all duration-300">
-                                {item.label}
-                              </span>
-                            )}
-                          </div>
-                          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                        </button>
-                        {!isSidebarOpen && (
-                          <div className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 px-3 py-2 text-white text-sm rounded-lg opacity-0 group-hover:transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                            {item.label}
-                            <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1 border-4 border-transparent0" />
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </nav>
-              </aside>
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                </button>
+              </div>
+            );
+          })}
+        </nav>
+      </aside>
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold ">Documents Management</h1>
+              <h1 className="text-2xl font-bold">Documents Management</h1>
               <p className="text-gray-600 mt-1">Manage platform documents and files</p>
             </div>
             <div className="flex items-center space-x-4">
@@ -184,7 +187,6 @@ const DocumentsPage = () => {
             </div>
           </div>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           {[
             { label: 'Total Documents', value: '156', color: 'green' },
@@ -198,7 +200,6 @@ const DocumentsPage = () => {
             </div>
           ))}
         </div>
-
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-8">
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="flex-1">
@@ -213,7 +214,6 @@ const DocumentsPage = () => {
                 />
               </div>
             </div>
-
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
@@ -225,7 +225,6 @@ const DocumentsPage = () => {
                 </option>
               ))}
             </select>
-
             {/* Status Filter */}
             <select
               value={selectedStatus}
@@ -238,14 +237,12 @@ const DocumentsPage = () => {
                 </option>
               ))}
             </select>
-
             <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2 text-gray-700 dark:text-gray-300">
               <Filter size={20} />
               More Filters
             </button>
           </div>
         </div>
-
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
             <div className="flex items-center justify-between">
@@ -272,7 +269,6 @@ const DocumentsPage = () => {
               )}
             </div>
           </div>
-
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50 dark:bg-gray-700/50">
@@ -356,7 +352,6 @@ const DocumentsPage = () => {
               </tbody>
             </table>
           </div>
-
           <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
             <div className="flex items-center justify-between">
               <div className="text-sm text-gray-700 dark:text-gray-300">
