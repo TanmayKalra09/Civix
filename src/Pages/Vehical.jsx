@@ -35,30 +35,34 @@ export default function GovtLinksSection() {
   const sections = [
     {
       title: "Vehicle RC / Registration",
-      description: "Vahan Parivahan",
+      description: "Check vehicle registration details on Vahan Parivahan.",
       url: "https://vahan.parivahan.gov.in/vahanservice/vahan/rc/",
       icon: CarIcon,
-      gradient: "from-emerald-50 to-green-50"
+      cta: "Check RC",
+      gradient: "from-blue-50 to-indigo-50"
     },
     {
       title: "Challan / Traffic Fines",
-      description: "Ministry of Road Transport & Highways",
+      description: "View and pay your challans online securely.",
       url: "https://parivahan.gov.in/rcdlstatus/",
       icon: AlertIcon,
-      gradient: "from-green-50 to-teal-50"
+      cta: "Pay Challan",
+      gradient: "from-red-50 to-rose-50"
     },
     {
       title: "Insurance Verification",
-      description: "Insurance Info Portal",
+      description: "Verify vehicle insurance instantly via the Info Portal.",
       url: "https://vahan.parivahan.gov.in/vahanservice/vahan/insurance/",
       icon: ShieldIcon,
-      gradient: "from-teal-50 to-emerald-50"
+      cta: "Verify Insurance",
+      gradient: "from-purple-50 to-pink-50"
     },
     {
       title: "PUC / Pollution Certificate",
-      description: "CPCB / State PUC Portal",
+      description: "Check or renew your vehicle’s PUC online.",
       url: "https://parivahan.gov.in/puc/",
       icon: LeafIcon,
+      cta: "Get PUC",
       gradient: "from-green-50 to-lime-50"
     }
   ];
@@ -81,7 +85,7 @@ export default function GovtLinksSection() {
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${section.gradient} opacity-60`}></div>
               
-              <div className="relative z-10  p-6 pb-2">
+              <div className="relative z-10 p-6 pb-2">
                 <div className="flex items-center space-x-3 mb-2">
                   <div className="p-3 bg-white rounded-2xl shadow-md group-hover:scale-110 transition-transform duration-300">
                     <IconComponent className="text-emerald-600" />
@@ -103,9 +107,10 @@ export default function GovtLinksSection() {
                   href={section.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={section.cta}
                   className="inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold rounded-2xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group/link"
                 >
-                  <span>Visit Official Portal</span>
+                  <span>{section.cta}</span>
                   <ExternalLinkIcon className="group-hover/link:translate-x-1 transition-transform duration-300" />
                 </a>
               </div>
