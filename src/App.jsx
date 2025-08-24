@@ -60,6 +60,7 @@ import RecordAudio from './Pages/RecordAudio';
 import SDRF from './Pages/SDRF';
 import Budget from './Pages/Budget';
 import Train from './Pages/Train';
+import School from './Pages/School';
 
 
 
@@ -124,6 +125,7 @@ const App = () => {
             <Route path='/electricity' element={<Electricity/>}/>
             <Route path='/budget' element={<Budget/>}/>
             <Route path='/train' element={<Train/>}/>
+            <Route path='/school' element={<School/>}/>
             <Route
               path="/profile-setup"
               element={

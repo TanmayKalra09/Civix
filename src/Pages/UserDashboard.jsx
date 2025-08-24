@@ -22,7 +22,8 @@ import {
   Zap,
   HandCoins,
   ReceiptIndianRupee,
-  TrainFront
+  TrainFront,
+  School
 } from "lucide-react";
 
 const UserDashboard = () => {
@@ -318,6 +319,14 @@ const UserDashboard = () => {
             icon={TrainFront}
             gradient="from-green-500 to-green-600"
             shadowColor="shadow-green-500/20"
+          />
+          <DashboardCard
+            title="Pan-India School Statistics"
+            description="Architecture that seamlessly processes nationwide school data"
+            onClick={() => navigate("/school")}
+            icon={School}
+            gradient="from-emerald-600 to-teal-700"
+            shadowColor="shadow-emerald-600/20"
           />
         </div>
       </main>
