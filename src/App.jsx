@@ -59,8 +59,10 @@ import SafeWord from './Pages/SafeWord';
 import RecordAudio from './Pages/RecordAudio';
 import SDRF from './Pages/SDRF';
 import Budget from './Pages/Budget';
+import AirSeva from './Pages/AirSeva';
 import Train from './Pages/Train';
 import School from './Pages/School';
+import UserMap from './Pages/UserMap';
 
 
 
@@ -126,6 +128,8 @@ const App = () => {
             <Route path='/budget' element={<Budget/>}/>
             <Route path='/train' element={<Train/>}/>
             <Route path='/school' element={<School/>}/>
+
+            <Route path='/user-map' element={<UserMap/>}/>
             <Route
               path="/profile-setup"
               element={
@@ -158,6 +162,7 @@ const App = () => {
             <Route path='/govt-schemes' element={<Schemes/>}/>
             <Route path='/vehical' element={<Vehical/>}/>
             <Route path='/sdrf' element={<SDRF/>}/>
+            <Route path='/airseva' element={<AirSeva/>}/>
             <Route
               path="/admin/dashboard"
               element={

@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
-import { Users, FileText, MessageCircle, TrendingUp, Calendar, MapPin, Award, AlertCircle, Home, BarChart3, Bell, Settings, ChevronRight,ChevronLeft,Search } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
+import { Users, FileText, MessageCircle, TrendingUp, Calendar, MapPin, Award, AlertCircle, Home, BarChart3, Bell, Settings, ChevronRight, ChevronLeft, Search } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
+
 
 const Analytics = () => {
   const navigate = useNavigate();
   const [timeRange, setTimeRange] = useState('7d');
-
-  const sidebarMenu = [
-  { key: 'dashboard', label: 'Dashboard', icon: Home, route: '/admin/dashboard' },
-  { key: 'analytics', label: 'Analytics', icon: BarChart3, route: '/admin/analytics' },
-  { key: 'users', label: 'Users', icon: Users, route: '/admin/users' },
-  { key: 'documents', label: 'Documents', icon: FileText, route: '/admin/documents' },
-  { key: 'notifications', label: 'Notifications', icon: Bell, route: '/admin/notifications' },
-  { key: 'settings', label: 'Settings', icon: Settings, route: '/admin/settings' },
-];
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeRoute, setActiveRoute] = useState('/admin/analytics');
+
+  const sidebarMenu = [
+    { key: 'dashboard', label: 'Dashboard', icon: Home, route: '/admin/dashboard' },
+    { key: 'analytics', label: 'Analytics', icon: BarChart3, route: '/admin/analytics' },
+    { key: 'users', label: 'Users', icon: Users, route: '/admin/users' },
+    { key: 'documents', label: 'Documents', icon: FileText, route: '/admin/documents' },
+    { key: 'notifications', label: 'Notifications', icon: Bell, route: '/admin/notifications' },
+    { key: 'settings', label: 'Settings', icon: Settings, route: '/admin/settings' },
+  ];
 
   const userGrowthData = [
     { month: 'Jan', users: 1200, active: 850 },
@@ -57,7 +57,7 @@ const Analytics = () => {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium text-gray-500">{title}</p>
-          <p className="text-2xl font-bold mt-1">{value}</p>
+          <p className="text-2xl font-bold mt-1 truncate">{value}</p>
           <div className="flex items-center mt-2">
             <TrendingUp className={`h-4 w-4 ${trend === 'up' ? 'text-green-500' : 'text-red-500'} mr-1`} />
             <span className={`text-sm ${trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
@@ -72,18 +72,29 @@ const Analytics = () => {
     </div>
   );
 
+
   return (
-    <div className="min-h-screen ml-10 ">
-        {isSidebarOpen && (
+    <div className="min-h-screen ml-0 lg:ml-10">
+      {isSidebarOpen && (
         <div
           className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
+<button
+  type="button"
+  aria-label="Open sidebar"
+  onClick={() => setIsSidebarOpen(true)}
+  className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg hover:bg-gray-50 text-emerald-600 lg:hidden"
+  style={{ display: isSidebarOpen ? 'none' : 'block' }}
+>
+  <ChevronRight className="w-6 h-6" />
+</button>
+
       <aside
-        className={`fixed top-0 left-0 h-full z-50 transition-all duration-300 ease-in-out  backdrop-blur-xl border-r border-gray-200/50 flex flex-col shadow-xl ${
-          isSidebarOpen ? 'w-[64]' : 'w-16'
-        }`}
+        className={`fixed top-0 left-0 h-full z-50 transition-all duration-300 ease-in-out backdrop-blur-xl border-r border-gray-200/50 flex flex-col shadow-xl
+          ${isSidebarOpen ? 'w-64 translate-x-0' : 'w-16 -translate-x-full lg:translate-x-0'}
+        `}
       >
         <div className="relative flex items-center justify-between p-4 border-b border-gray-200/50">
           <div className={`flex items-center transition-all duration-300 ${isSidebarOpen ? 'opacity-100' : 'opacity-0 w-0'}`}>
@@ -163,35 +174,31 @@ const Analytics = () => {
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                 </button>
-                {!isSidebarOpen && (
-                  <div className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 px-3 py-2 text-white text-sm rounded-lg opacity-0 group-hover:transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
-                    {item.label}
-                    <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1 border-4 border-transparent0" />
-                  </div>
-                )}
               </div>
             );
           })}
         </nav>
       </aside>
+
+      {/* Header */}
       <div className="shadow-sm border-b border-green-100">
-        <div className="px-8 py-6">
-          <div className="flex items-center justify-between">
+        <div className="px-4 py-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Civix Analytics</h1>
-              <p className="text-gray-600 mt-1">Monitor platform engagement and community growth</p>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Civix Analytics</h1>
+              <p className="text-gray-600 mt-1 text-sm sm:text-base">Monitor platform engagement and community growth</p>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <select 
                 value={timeRange} 
                 onChange={(e) => setTimeRange(e.target.value)}
-                className="border border-green-200 rounded-lg px-4 py-2  text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                className="border border-green-200 rounded-lg px-3 py-2 text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm sm:text-base"
               >
                 <option value="7d">Last 7 days</option>
                 <option value="30d">Last 30 days</option>
                 <option value="90d">Last 90 days</option>
               </select>
-              <button className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors">
+              <button className="bg-green-600 hover:bg-green-700 px-3 sm:px-4 py-2 rounded-lg transition-colors text-white text-sm sm:text-base">
                 Export Report
               </button>
             </div>
@@ -199,48 +206,27 @@ const Analytics = () => {
         </div>
       </div>
 
-      <div className="px-8 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <StatCard 
-            title="Total Users" 
-            value="3,247" 
-            change="+12.5%" 
-            trend="up" 
-            icon={Users} 
-          />
-          <StatCard 
-            title="Active Posts" 
-            value="1,582" 
-            change="+8.2%" 
-            trend="up" 
-            icon={FileText} 
-          />
-          <StatCard 
-            title="Comments" 
-            value="4,891" 
-            change="+15.7%" 
-            trend="up" 
-            icon={MessageCircle} 
-          />
-          <StatCard 
-            title="Civic Actions" 
-            value="892" 
-            change="+22.1%" 
-            trend="up" 
-            icon={Award} 
-          />
+      {/* Content */}
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
+        {/* Stat Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+          <StatCard title="Total Users" value="3,247" change="+12.5%" trend="up" icon={Users} />
+          <StatCard title="Active Posts" value="1,582" change="+8.2%" trend="up" icon={FileText} />
+          <StatCard title="Comments" value="4,891" change="+15.7%" trend="up" icon={MessageCircle} />
+          <StatCard title="Civic Actions" value="892" change="+22.1%" trend="up" icon={Award} />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <div className="lg:col-span-2 rounded-lg shadow-sm border border-green-100 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold ">User Growth</h3>
-              <div className="flex items-center space-x-4 text-sm">
+        {/* User Growth + Categories */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
+          <div className="lg:col-span-2 rounded-lg shadow-sm border border-green-100 p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+              <h3 className="text-lg font-semibold">User Growth</h3>
+              <div className="flex flex-wrap items-center space-x-4 text-sm mt-2 sm:mt-0">
                 <div className="flex items-center">
                   <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
                   <span className="text-gray-500">Total Users</span>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center mt-1 sm:mt-0">
                   <div className="w-3 h-3 bg-green-300 rounded-full mr-2"></div>
                   <span className="text-gray-500">Active Users</span>
                 </div>
@@ -252,36 +238,22 @@ const Analytics = () => {
                 <XAxis dataKey="month" stroke="#6b7280" />
                 <YAxis stroke="#6b7280" />
                 <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: '#f9fafb', 
-                    border: '1px solid #d1fae5',
-                    borderRadius: '8px'
-                  }} 
+                  contentStyle={{ backgroundColor: '#f9fafb', border: '1px solid #d1fae5', borderRadius: '8px' }} 
                   labelStyle={{ color: '#1f2937' }}
                   itemStyle={{ color: '#1f2937' }}
                 />
-                <Area type="monotone" dataKey="users" stackId="1" stroke="#059669" fill="#059669" fillOpacity={0.6} />
-                <Area type="monotone" dataKey="active" stackId="2" stroke="#34d399" fill="#34d399" fillOpacity={0.4} />
+                <Area type="monotone" dataKey="users" stroke="#059669" fill="#059669" fillOpacity={0.6} />
+                <Area type="monotone" dataKey="active" stroke="#34d399" fill="#34d399" fillOpacity={0.4} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="rounded-lg shadow-sm border border-green-100 p-6">
-            <h3 className="text-lg font-semibold  mb-6">Discussion Categories</h3>
+          <div className="rounded-lg shadow-sm border border-green-100 p-4 sm:p-6">
+            <h3 className="text-lg font-semibold mb-6">Discussion Categories</h3>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
-                <Pie
-                  data={categoryData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={120}
-                  paddingAngle={2}
-                  dataKey="value"
-                >
-                  {categoryData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
+                <Pie data={categoryData} cx="50%" cy="50%" innerRadius={60} outerRadius={120} paddingAngle={2} dataKey="value">
+                  {categoryData.map((entry, index) => (<Cell key={`cell-${index}`} fill={entry.color} />))}
                 </Pie>
                 <Tooltip />
               </PieChart>
@@ -290,33 +262,26 @@ const Analytics = () => {
               {categoryData.map((category, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <div 
-                      className="w-3 h-3 rounded-full mr-3" 
-                      style={{ backgroundColor: category.color }}
-                    ></div>
+                    <div className="w-3 h-3 rounded-full mr-3" style={{ backgroundColor: category.color }}></div>
                     <span className="text-sm text-gray-500">{category.name}</span>
                   </div>
-                  <span className="text-sm font-medium ">{category.value}%</span>
+                  <span className="text-sm font-medium">{category.value}%</span>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="rounded-lg shadow-sm border border-green-100 p-6">
+        {/* Engagement + Activity */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          <div className="rounded-lg shadow-sm border border-green-100 p-4 sm:p-6">
             <h3 className="text-lg font-semibold mb-6">Weekly Engagement</h3>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={engagementData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                 <XAxis dataKey="day" stroke="#6b7280" />
                 <YAxis stroke="#6b7280" />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: '#f9fafb', 
-                    border: '1px solid #d1fae5',
-                    borderRadius: '8px'
-                  }}
+                <Tooltip contentStyle={{ backgroundColor: '#f9fafb', border: '1px solid #d1fae5', borderRadius: '8px' }}
                   labelStyle={{ color: '#1f2937' }}
                   itemStyle={{ color: '#1f2937' }}
                 />
@@ -327,12 +292,10 @@ const Analytics = () => {
             </ResponsiveContainer>
           </div>
 
-          <div className="rounded-lg shadow-sm border border-green-100 p-6">
+          <div className="rounded-lg shadow-sm border border-green-100 p-4 sm:p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold ">Recent Activity</h3>
-              <button className="text-green-600 hover:text-green-800 text-sm font-medium">
-                View All
-              </button>
+              <h3 className="text-lg font-semibold">Recent Activity</h3>
+              <button className="text-green-600 hover:text-green-800 text-sm font-medium">View All</button>
             </div>
             <div className="space-y-4">
               {recentActivity.map((activity, index) => (
@@ -344,9 +307,7 @@ const Analytics = () => {
                     {activity.type === 'new_user' && <Users className="h-5 w-5 text-green-600" />}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-900">
-                      <span className="font-medium">{activity.user}</span> {activity.action}
-                    </p>
+                    <p className="text-sm text-gray-900"><span className="font-medium">{activity.user}</span> {activity.action}</p>
                     <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
                   </div>
                 </div>
@@ -355,43 +316,46 @@ const Analytics = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-          <div className="rounded-lg shadow-sm border border-green-100 p-6">
+        {/* Bottom Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-8">
+          <div className="rounded-lg shadow-sm border border-green-100 p-4 sm:p-6">
             <div className="flex items-center">
               <MapPin className="h-8 w-8 text-green-600 mr-3" />
               <div>
                 <p className="text-sm font-medium text-gray-500">Geographic Reach</p>
-                <p className="text-xl font-bold">47 Cities</p>
+                <p className="text-lg sm:text-xl font-bold">47 Cities</p>
                 <p className="text-sm text-green-600">+3 new this month</p>
               </div>
             </div>
           </div>
           
-          <div className="rounded-lg shadow-sm border border-green-100 p-6">
+          <div className="rounded-lg shadow-sm border border-green-100 p-4 sm:p-6">
             <div className="flex items-center">
               <Calendar className="h-8 w-8 text-green-600 mr-3" />
               <div>
                 <p className="text-sm font-medium text-gray-500">Scheduled Events</p>
-                <p className="text-xl font-bold ">23</p>
+                <p className="text-lg sm:text-xl font-bold">23</p>
                 <p className="text-sm text-green-600">Next: Town Hall</p>
               </div>
             </div>
           </div>
           
-          <div className="rounded-lg shadow-sm border border-green-100 p-6">
+          <div className="rounded-lg shadow-sm border border-green-100 p-4 sm:p-6">
             <div className="flex items-center">
               <AlertCircle className="h-8 w-8 text-green-600 mr-3" />
               <div>
                 <p className="text-sm font-medium text-gray-500">Moderation Queue</p>
-                <p className="text-xl font-bold ">8</p>
+                <p className="text-lg sm:text-xl font-bold">8</p>
                 <p className="text-sm text-yellow-600">Requires attention</p>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
 };
+
 
 export default Analytics;
