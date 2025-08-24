@@ -113,7 +113,7 @@ const CommunityVotingPage = () => {
       setConfetti(id);
       setTimeout(() => setConfetti(null), 1200);
     }
-n
+
   };
 
   const getPriorityColor = (priority) => {
@@ -126,6 +126,7 @@ n
         return "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300";
       default:
         return "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300";
+
     }
   };
   const getStatusColor = (status) => {
@@ -415,7 +416,6 @@ n
     </div>
   );
 };
-
 
 export default CommunityVotingPage;
 

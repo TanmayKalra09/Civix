@@ -61,6 +61,7 @@ import SDRF from './Pages/SDRF';
 import Budget from './Pages/Budget';
 import AirSeva from './Pages/AirSeva';
 import Train from './Pages/Train';
+import UserMap from './Pages/UserMap';
 
 
 
@@ -125,6 +126,7 @@ const App = () => {
             <Route path='/electricity' element={<Electricity/>}/>
             <Route path='/budget' element={<Budget/>}/>
             <Route path='/train' element={<Train/>}/>
+            <Route path='/user-map' element={<UserMap/>}/>
             <Route
               path="/profile-setup"
               element={
