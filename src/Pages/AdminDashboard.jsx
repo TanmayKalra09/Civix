@@ -22,7 +22,6 @@ import {
   ChevronRight,
   User
 } from "lucide-react";
-
 import { motion } from "framer-motion";
 import Switch from '../DarkModeToggle';
 
@@ -34,18 +33,18 @@ const AdminDashboard = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const sidebarMenu = [
-  { key: 'dashboard', label: 'Dashboard', icon: Home, route: '/admin/dashboard' },
-  { key: 'analytics', label: 'Analytics', icon: BarChart3, route: '/admin/analytics' },
-  { key: 'users', label: 'Users', icon: Users, route: '/admin/users' },
-  { key: 'documents', label: 'Documents', icon: FileText, route: '/admin/documents' },
-  { key: 'notifications', label: 'Notifications', icon: Bell, route: '/admin/notifications' },
-  { key: 'settings', label: 'Settings', icon: Settings, route: '/admin/settings' },
-];
+    { key: 'dashboard', label: 'Dashboard', icon: Home, route: '/admin/dashboard' },
+    { key: 'analytics', label: 'Analytics', icon: BarChart3, route: '/admin/analytics' },
+    { key: 'users', label: 'Users', icon: Users, route: '/admin/users' },
+    { key: 'documents', label: 'Documents', icon: FileText, route: '/admin/documents' },
+    { key: 'notifications', label: 'Notifications', icon: Bell, route: '/admin/notifications' },
+    { key: 'settings', label: 'Settings', icon: Settings, route: '/admin/settings' },
+  ];
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeRoute, setActiveRoute] = useState('/admin/dashboard');
 
-  // Mock data for demonstration
+  // Mock data
   const mockIssues = [
     {
       _id: "1",
@@ -86,33 +85,17 @@ const AdminDashboard = () => {
     initial: { opacity: 0 },
     animate: {
       opacity: 1,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.1,
-      },
+      transition: { duration: 0.6, staggerChildren: 0.1 }
     },
   };
-
   const itemVariants = {
     initial: { opacity: 0, y: 20 },
-    animate: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 },
-    },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
-
   const cardVariants = {
     initial: { opacity: 0, scale: 0.95 },
-    animate: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.4 },
-    },
-    hover: {
-      scale: 1.02,
-      transition: { duration: 0.2 },
-    },
+    animate: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
+    hover: { scale: 1.02, transition: { duration: 0.2 } },
   };
 
   const statusConfig = {
@@ -137,7 +120,6 @@ const AdminDashboard = () => {
       dotColor: "bg-red-400 dark:bg-red-500"
     }
   };
-
   const priorityConfig = {
     "High": "bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-700",
     "Medium": "bg-yellow-100 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-700",
@@ -151,14 +133,11 @@ const AdminDashboard = () => {
       setIsRefreshing(false);
     }, 1000);
   }, []);
-
-  useEffect(() => {
-    fetchIssues();
-  }, [fetchIssues]);
+  useEffect(() => { fetchIssues(); }, [fetchIssues]);
 
   const filteredIssues = issues.filter(issue => {
     const matchesSearch = issue.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         issue.description.toLowerCase().includes(searchTerm.toLowerCase());
+                          issue.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === "all" || issue.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -179,9 +158,18 @@ const AdminDashboard = () => {
     );
   };
 
-
   return (
     <div className="min-h-screen ">
+      {/* Sidebar toggle for mobile */}
+      <button
+        type="button"
+        aria-label="Open sidebar"
+        onClick={() => setIsSidebarOpen(true)}
+        className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg hover:bg-gray-50 text-emerald-600 lg:hidden"
+        style={{ display: isSidebarOpen ? 'none' : 'block' }}
+      >
+        <ChevronRight className="w-6 h-6" />
+      </button>
       {isSidebarOpen && (
         <div
           className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
@@ -189,9 +177,9 @@ const AdminDashboard = () => {
         />
       )}
       <aside
-        className={`fixed top-0 left-0 h-full z-50 transition-all duration-300 ease-in-out backdrop-blur-xl border-r border-gray-200/50 flex flex-col shadow-xl ${
-          isSidebarOpen ? 'w-[64]' : 'w-16'
-        }`}
+        className={`fixed top-0 left-0 h-full z-50 transition-all duration-300 ease-in-out backdrop-blur-xl border-r border-gray-200/50 flex flex-col shadow-xl
+          ${isSidebarOpen ? 'w-64 translate-x-0' : 'w-16 -translate-x-full lg:translate-x-0'}
+        `}
       >
         <div className="relative flex items-center justify-between p-4 border-b border-gray-200/50">
           <div className={`flex items-center transition-all duration-300 ${isSidebarOpen ? 'opacity-100' : 'opacity-0 w-0'}`}>
@@ -274,7 +262,6 @@ const AdminDashboard = () => {
                 {!isSidebarOpen && (
                   <div className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 px-3 py-2 text-white text-sm rounded-lg opacity-0 group-hover:transition-opacity duration-200 pointer-events-none whitespace-nowrap z-50">
                     {item.label}
-                    <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1 border-4 border-transparent0" />
                   </div>
                 )}
               </div>
@@ -283,7 +270,7 @@ const AdminDashboard = () => {
         </nav>
       </aside>
       <motion.header 
-        className=" backdrop-blur-md border-b border-green-100 sticky top-0 z-40"
+        className="backdrop-blur-md border-b border-green-100 sticky top-0 z-40"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -303,7 +290,6 @@ const AdminDashboard = () => {
                 </div>
               </div>
             </div>
-            
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => navigate("/admin/notifications")} 
@@ -342,7 +328,6 @@ const AdminDashboard = () => {
             Monitor and manage citizen-reported issues across the city
           </p>
         </motion.div>
-
         <motion.div 
           variants={itemVariants}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8"
@@ -350,7 +335,7 @@ const AdminDashboard = () => {
           <motion.div 
             variants={cardVariants}
             whileHover="hover"
-            className=" backdrop-blur-sm rounded-xl p-6 border border-green-100 shadow-sm"
+            className="backdrop-blur-sm rounded-xl p-6 border border-green-100 shadow-sm"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -367,7 +352,6 @@ const AdminDashboard = () => {
               <span className="text-gray-500 ml-1">from last month</span>
             </div>
           </motion.div>
-
           {Object.entries(statusConfig).map(([status, config]) => {
             const keyMap = {
               "Pending": "pending",
@@ -382,7 +366,7 @@ const AdminDashboard = () => {
                 key={status}
                 variants={cardVariants}
                 whileHover="hover"
-                className=" backdrop-blur-sm rounded-xl p-6 border border-green-100 shadow-sm"
+                className="backdrop-blur-sm rounded-xl p-6 border border-green-100 shadow-sm"
               >
                 <div className="flex items-center justify-between">
                   <div>
@@ -397,10 +381,9 @@ const AdminDashboard = () => {
             );
           })}
         </motion.div>
-
         <motion.div 
           variants={itemVariants}
-          className=" backdrop-blur-sm rounded-xl p-6 border border-green-100 shadow-sm mb-6"
+          className="backdrop-blur-sm rounded-xl p-6 border border-green-100 shadow-sm mb-6"
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
             <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
@@ -414,13 +397,12 @@ const AdminDashboard = () => {
                   className="pl-10 pr-4 py-2 w-full sm:w-64 border text-black border-green-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-white/40 backdrop-blur-sm"
                 />
               </div>
-              
               <div className="relative">
                 <Filter className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="pl-10 pr-8 py-2 border text-black  border-green-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-white/40 backdrop-blur-sm appearance-none"
+                  className="pl-10 pr-8 py-2 border text-black border-green-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-white/40 backdrop-blur-sm appearance-none"
                 >
                   <option value="all">All Status</option>
                   <option value="Pending">Pending</option>
@@ -430,7 +412,6 @@ const AdminDashboard = () => {
                 </select>
               </div>
             </div>
-
             <div className="flex space-x-3">
               <button
                 onClick={() => {/* Handle export */}}
@@ -439,7 +420,6 @@ const AdminDashboard = () => {
                 <Download className="w-4 h-4" />
                 <span>Export</span>
               </button>
-              
               <button
                 onClick={fetchIssues}
                 disabled={isRefreshing}
@@ -451,10 +431,9 @@ const AdminDashboard = () => {
             </div>
           </div>
         </motion.div>
-
         <motion.div 
           variants={itemVariants}
-          className=" backdrop-blur-sm rounded-xl border border-green-100 shadow-sm overflow-hidden"
+          className="backdrop-blur-sm rounded-xl border border-green-100 shadow-sm overflow-hidden"
         >
           <div className="px-6 py-4 border-b border-green-100">
             <h3 className="text-lg font-semibold flex items-center">
@@ -462,7 +441,6 @@ const AdminDashboard = () => {
               Reported Issues ({filteredIssues.length})
             </h3>
           </div>
-
           {filteredIssues.length === 0 ? (
             <div className="p-12 text-center">
               <AlertCircle className="w-12 h-12 text-gray-300 mx-auto mb-4" />
@@ -546,9 +524,6 @@ const AdminDashboard = () => {
           )}
         </motion.div>
       </motion.div>
-
-      <div className="fixed top-4 right-4 z-50">
-      </div>
     </div>
   );
 };
