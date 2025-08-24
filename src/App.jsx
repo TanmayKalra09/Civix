@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { SignIn, SignUp, useAuth } from '@clerk/clerk-react';
 import { AnimatePresence } from 'framer-motion';
@@ -59,7 +59,10 @@ import SafeWord from './Pages/SafeWord';
 import RecordAudio from './Pages/RecordAudio';
 import SDRF from './Pages/SDRF';
 import Budget from './Pages/Budget';
+import AirSeva from './Pages/AirSeva';
 import Train from './Pages/Train';
+import School from './Pages/School';
+import UserMap from './Pages/UserMap';
 
 
 
@@ -67,7 +70,22 @@ const App = () => {
   const { isSignedIn } = useAuth();
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
-  
+  const [isProfileComplete, setIsProfileComplete] = useState(false);
+
+  useEffect(() => {
+    // Example: Fetch from backend/localStorage
+    const profileStatus = localStorage.getItem("profileComplete") === "true";
+    console.log(profileStatus)
+    setIsProfileComplete(profileStatus);
+  }, []);
+
+  const renderDashboard = () => {
+
+    if (!isProfileComplete) return <Navigate to="/profile-setup" replace />;
+
+    return <UserDashboard />;
+  };
+
   return (
     <>
       <ScrollToTop />
@@ -124,14 +142,18 @@ const App = () => {
             <Route path='/electricity' element={<Electricity/>}/>
             <Route path='/budget' element={<Budget/>}/>
             <Route path='/train' element={<Train/>}/>
+            <Route path='/school' element={<School/>}/>
+
+            <Route path='/user-map' element={<UserMap/>}/>
             <Route
               path="/profile-setup"
               element={
                 <PrivateRoute allowedRoles={['user', 'admin']}>
-                  <ProfileSetup />
+                  <ProfileSetup onComplete={() => setIsProfileComplete(true)}/>
                 </PrivateRoute>
               }
             />
+            
             <Route path="/resources" element={<Resources />} />
             <Route path="/complaints" element={<MyComplaints />} />
             <Route path="/contributors" element={<Contributors />} />
@@ -156,6 +178,7 @@ const App = () => {
             <Route path='/govt-schemes' element={<Schemes/>}/>
             <Route path='/vehical' element={<Vehical/>}/>
             <Route path='/sdrf' element={<SDRF/>}/>
+            <Route path='/airseva' element={<AirSeva/>}/>
             <Route
               path="/admin/dashboard"
               element={
@@ -174,13 +197,8 @@ const App = () => {
             />
             <Route
               path="/user/dashboard"
-              element={
-                <PrivateRoute allowedRoles={['user', 'admin']}>
-                  <UserDashboard />
-                </PrivateRoute>
-              }
+              element={ renderDashboard()}
             />
-
             {/* Errors */}
             <Route path="/500" element={<ServerError />} />
             <Route path="*" element={<Error404 />} />

@@ -23,7 +23,8 @@ import {
   HandCoins,
   ReceiptIndianRupee,
   TrainFront,
-  School
+  School,
+  Plane
 } from "lucide-react";
 
 const UserDashboard = () => {
@@ -331,16 +332,186 @@ const UserDashboard = () => {
           </p>
         </div>
 
-        <div className="mb-6 flex justify-center">
-          <input
-            type="text"
-            placeholder="Search dashboard features..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full max-w-md px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 shadow-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
-          />
-        </div>
+<div className="mb-6 flex justify-center">
+  <input
+    type="text"
+    placeholder="Search dashboard features..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    className="w-full max-w-md px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 shadow-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+  />
+</div>
 
+<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+  <DashboardCard
+    title="File a Complaint"
+    description="Submit a new issue with full details."
+    onClick={() => navigate("/report-issue")}
+    icon={FileText}
+    gradient="from-green-500 to-green-600"
+    shadowColor="shadow-green-500/20"
+  />
+  <DashboardCard
+    title="My Complaints"
+    description="Track all complaints you've raised."
+    onClick={() => navigate("/complaints")}
+    icon={List}
+    gradient="from-emerald-500 to-emerald-600"
+    shadowColor="shadow-emerald-500/20"
+  />
+  <DashboardCard
+    title="Profile"
+    description="View or edit your profile details."
+    onClick={() => navigate("/profile")}
+    icon={User}
+    gradient="from-teal-500 to-teal-600"
+    shadowColor="shadow-teal-500/20"
+  />
+  <DashboardCard
+    title="Support"
+    description="Need help? Contact our support."
+    onClick={() => navigate("/contact")}
+    icon={Headphones}
+    gradient="from-green-600 to-emerald-700"
+    shadowColor="shadow-green-600/20"
+  />
+  <DashboardCard
+    title="Community Voting"
+    description="Interact with the community by casting your vote on trending topics, events, and decisions that matter."
+    onClick={() => navigate("/community-voting")}
+    icon={BarChart3}
+    gradient="from-emerald-600 to-teal-700"
+    shadowColor="shadow-emerald-600/20"
+  />
+  <DashboardCard
+    title="Resources"
+    description="Read FAQs, citizen rights, and more."
+    onClick={() => navigate("/resources")}
+    icon={BookOpen}
+    gradient="from-teal-600 to-green-700"
+    shadowColor="shadow-teal-600/20"
+  />
+  <DashboardCard
+    title="Chat Room"
+    description="Join the community chat and engage in real-time discussions."
+    onClick={() => navigate("/chatroom")}
+    icon={MessageCircle}
+    gradient="from-green-700 to-teal-700"
+    shadowColor="shadow-green-700/20"
+  />
+  <DashboardCard
+    title="Nearby Services"
+    description="Find hospitals, police stations, and fire stations close to you."
+    onClick={() => navigate("/nearby-services")}
+    icon={MapPin}
+    gradient="from-green-500 to-green-800"
+    shadowColor="shadow-green-500/20"
+  />
+  <DashboardCard
+    title="Lost & Found"
+    description="Bringing lost items back to their owners."
+    onClick={() => navigate("/lost-found")}
+    icon={Search}
+    gradient="from-green-500 to-green-600"
+    shadowColor="shadow-green-500/20"
+  />
+  <DashboardCard
+    title="Community Holidays"
+    description="Look for the Community Holidays approaching soon to you"
+    onClick={() => navigate("/community-holidays")}
+    icon={Calendar}
+    gradient="from-emerald-600 to-teal-700"
+    shadowColor="shadow-emerald-600/20"
+  />
+  <DashboardCard
+    title="Public Transport"
+    description="Powered by Delhi Transport Corporation the real-time transit information"
+    onClick={() => navigate("/transport")}
+    icon={Bus}
+    gradient="from-teal-500 to-teal-600"
+    shadowColor="shadow-teal-500/20"
+  />
+  <DashboardCard
+    title="Civic Statistics"
+    description="Comprehensive Population & Water Resources Analytics."
+    onClick={() => navigate("/civic-stats")}
+    icon={ChartColumn}
+    gradient="from-teal-600 to-green-700"
+    shadowColor="shadow-teal-600/20"
+  />
+  <DashboardCard
+    title="Election & Governance Info"
+    description="Comprehensive Electoral Information & Voter Analytics."
+    onClick={() => navigate("/elections-info")}
+    icon={Vote}
+    gradient="from-teal-500 to-teal-600"
+    shadowColor="shadow-teal-500/20"
+  />
+  <DashboardCard
+    title="Government Schemes"
+    description="Comprehensive Government Schemes & Financial Analytics"
+    onClick={() => navigate("/govt-schemes")}
+    icon={Building2}
+    gradient="from-green-600 to-emerald-700"
+    shadowColor="shadow-green-600/20"
+  />
+  <DashboardCard
+    title="Traffic Fines & Vehicle Info"
+    description="Quick access to essential vehicle and transport services"
+    onClick={() => navigate("/vehical")}
+    icon={Car}
+    gradient="from-emerald-600 to-teal-700"
+    shadowColor="shadow-emerald-600/20"
+  />
+  <DashboardCard
+    title="Water & Electricity Schedule"
+    description="Real-time updates regarding water supply schedules, power outage notifications, and restoration timelines"
+    onClick={() => navigate("/electricity")}
+    icon={Zap}
+    gradient="from-teal-500 to-teal-600"
+    shadowColor="shadow-teal-500/20"
+  />
+  <DashboardCard
+    title="SDRF Allocation and NFSA Beneficiary"
+    description="State Disaster Response Fund (SDRF) Allocation & Release Module and National Food Security Act (NFSA) Beneficiary Coverage."
+    onClick={() => navigate("/sdrf")}
+    icon={HandCoins}
+    gradient="from-green-500 to-green-800"
+    shadowColor="shadow-green-500/20"
+  />
+  <DashboardCard
+    title="Budget Estimates"
+    description="Analytics framework for rendering and evaluating Budget Estimates"
+    onClick={() => navigate("/budget")}
+    icon={ReceiptIndianRupee}
+    gradient="from-green-500 to-green-600"
+    shadowColor="shadow-green-500/20"
+  />
+  <DashboardCard
+    title="Air Seva"
+    description="Your comprehensive guide to aviation services and resources"
+    onClick={() => navigate("/airseva")}
+    icon={Plane}
+    gradient="from-green-600 to-emerald-700"
+    shadowColor="shadow-green-600/20"
+  />
+  <DashboardCard
+    title="Real-Time Train Schedule"
+    description="Real-Time Train Schedule Rendering Subsystem (TSRS)"
+    onClick={() => navigate("/train")}
+    icon={TrainFront}
+    gradient="from-green-500 to-green-600"
+    shadowColor="shadow-green-500/20"
+  />
+  <DashboardCard
+    title="Pan-India School Statistics"
+    description="Architecture that seamlessly processes nationwide school data"
+    onClick={() => navigate("/school")}
+    icon={School}
+    gradient="from-emerald-600 to-teal-700"
+    shadowColor="shadow-emerald-600/20"
+  />
+</div>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {dashboardItems
             .filter(item =>
