@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plus, 
   Vote, 
@@ -10,6 +10,8 @@ import {
   TrendingUp,
   CheckCircle2
 } from 'lucide-react';
+import VotingFeedbackModal from '../components/voting/VotingFeedbackModal';
+import toast from 'react-hot-toast';
 
 const VotingSystem = () => {
   const [activeTab, setActiveTab] = useState('browse');
@@ -17,6 +19,8 @@ const VotingSystem = () => {
   const [newTitle, setNewTitle] = useState('');
   const [newOptions, setNewOptions] = useState('');
   const [votedPolls, setVotedPolls] = useState(new Set());
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [currentPollForFeedback, setCurrentPollForFeedback] = useState(null);
 
   useEffect(() => {
   }, []);
@@ -35,7 +39,42 @@ const VotingSystem = () => {
       })
     );
     setVotedPolls(prev => new Set([...prev, pollId]));
+    
+    // Show feedback modal after voting
+    const poll = polls.find(p => p.id === pollId);
+    setCurrentPollForFeedback(poll);
+    setShowFeedbackModal(true);
   };
+
+  const handleFeedbackSubmit = async (formData) => {
+    try {
+      // Here you would send feedback to your backend
+      console.log('Submitting voting feedback:', {
+        pollId: currentPollForFeedback?.id,
+        pollTitle: currentPollForFeedback?.title,
+        ...formData
+      });
+      
+      // You can add API call here to save feedback
+      // await fetch('/api/feedback', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({
+      //     pollId: currentPollForFeedback?.id,
+      //     pollTitle: currentPollForFeedback?.title,
+      //     feedbackType: 'voting',
+      //     ...formData
+      //   })
+      // });
+      
+      toast.success('Thank you for your feedback!');
+    } catch (error) {
+      console.error('Failed to submit feedback:', error);
+      toast.error('Failed to submit feedback. Please try again.');
+    }
+  };
+
+
 
   const handleCreatePoll = (e) => {
     e.preventDefault();
@@ -226,9 +265,20 @@ const VotingSystem = () => {
                               </div>
                             );
                           })}
-                          <div className="flex items-center text-green-600 dark:text-green-400 mt-4">
-                            <CheckCircle2 className="w-5 h-5 mr-2" />
-                            <span className="font-medium">You voted in this poll</span>
+                          <div className="flex items-center justify-between text-green-600 dark:text-green-400 mt-4">
+                            <div className="flex items-center">
+                              <CheckCircle2 className="w-5 h-5 mr-2" />
+                              <span className="font-medium">You voted in this poll</span>
+                            </div>
+                            <button
+                              onClick={() => {
+                                setCurrentPollForFeedback(poll);
+                                setShowFeedbackModal(true);
+                              }}
+                              className="text-sm text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 underline"
+                            >
+                              Share feedback
+                            </button>
                           </div>
                         </div>
                       )}
@@ -364,6 +414,14 @@ const VotingSystem = () => {
           )}
         </motion.div>
       </div>
+
+      {/* Feedback Modal */}
+      <VotingFeedbackModal
+        isOpen={showFeedbackModal}
+        onClose={() => setShowFeedbackModal(false)}
+        onSubmit={handleFeedbackSubmit}
+        pollTitle={currentPollForFeedback?.title}
+      />
     </div>
   );
 };

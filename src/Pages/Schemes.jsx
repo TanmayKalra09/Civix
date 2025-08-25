@@ -243,8 +243,6 @@ export default function GovernmentSchemesDashboard() {
     }));
   }, [filteredSchemes, kpiMetrics.totalFunds]);
 
-
-
   // Enhanced KPI Card Component
   const KPICard = ({ title, value, trend, icon, color = 'green', subtitle, unit = '' }) => (
     <motion.div
