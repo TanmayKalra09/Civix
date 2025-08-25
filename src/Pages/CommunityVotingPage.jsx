@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-
   MapPin,
   Clock,
   AlertTriangle,
@@ -20,8 +19,6 @@ const CommunityVotingPage = () => {
   const [votedIssues, setVotedIssues] = useState({});
   const [confetti, setConfetti] = useState(null);
 
-
-  // ---- Voting Data ----
   const [issues, setIssues] = useState([
     {
       id: 1,
@@ -81,7 +78,6 @@ const CommunityVotingPage = () => {
     "Most Accidents",
   ];
 
-  // ---- Voting Logic ----
   const filteredIssues = issues
     .filter(
       (issue) => selectedArea === "All Areas" || issue.area === selectedArea
@@ -104,81 +100,76 @@ const CommunityVotingPage = () => {
           : issue
       )
     );
-
     setVotedIssues((prev) => ({
       ...prev,
       [id]: !prev[id],
     }));
-
     if (!hasVoted) {
       setConfetti(id);
       setTimeout(() => setConfetti(null), 1200);
     }
-
   };
 
   const getPriorityColor = (priority) => {
     switch (priority) {
       case "high":
-        return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300";
+        return "bg-green-100 text-green-700 dark:bg-green-800/40 dark:text-green-300";
       case "medium":
-        return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300";
+        return "bg-lime-100 text-lime-700 dark:bg-lime-800/40 dark:text-lime-300";
       case "low":
-        return "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300";
+        return "bg-emerald-100 text-emerald-700 dark:bg-emerald-800/40 dark:text-emerald-300";
       default:
-        return "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300";
-
+        return "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300";
     }
   };
   const getStatusColor = (status) => {
     switch (status) {
       case "Open":
-        return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300";
+        return "bg-green-200 text-green-900 dark:bg-green-900/40 dark:text-green-200";
       case "In Progress":
-        return "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300";
+        return "bg-lime-200 text-lime-900 dark:bg-lime-800/40 dark:text-lime-200";
       case "Resolved":
-        return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300";
+        return "bg-emerald-200 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-200";
       default:
-        return "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300";
+        return "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300";
     }
   };
-
   const getStatColors = (color) => {
-    const map = {
-      purple:
-        "bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400",
-      blue: "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400",
-      pink: "bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400",
+    const stat = {
+      green:
+        "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300",
+      lime: "bg-lime-100 dark:bg-lime-900/30 text-lime-700 dark:text-lime-300",
+      emerald:
+        "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300",
     };
-    return map[color] || "bg-gray-100 dark:bg-gray-800 text-gray-600";
+    return stat[color] || "bg-neutral-100 dark:bg-neutral-800 text-neutral-700";
   };
 
   return (
     <div className={isDark ? "dark" : ""}>
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950 transition-colors duration-300">
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 dark:from-green-950 dark:via-gray-900 dark:to-emerald-900 transition-colors duration-300">
         {/* Header */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-center relative">
+        <div className="max-w-3xl mx-auto px-4 py-10 text-center relative">
           <motion.h1
-            className="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent"
+            className="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400 bg-clip-text text-transparent"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
           >
             Community Voting
           </motion.h1>
-          <p className="mt-3 text-gray-600 dark:text-gray-400">
-            Help shape your city by supporting the issues that matter most.
+          <p className="mt-3 text-green-700 dark:text-green-300">
+            Support civic issues with one click and make a difference.
           </p>
-
-          {/* 🌙 Dark Mode Toggle */}
           <button
             onClick={() => setIsDark(!isDark)}
-            className="absolute right-4 top-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:scale-105 transition"
+            className="absolute right-4 top-4 p-2 rounded-full bg-green-100 dark:bg-green-900 hover:scale-105 transition"
+            aria-label="Toggle Dark Mode"
           >
             {isDark ? <Sun size={20} /> : <Moon size={20} />}
           </button>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto px-4">
           {/* Stats */}
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8"
@@ -190,29 +181,29 @@ const CommunityVotingPage = () => {
                 label: "Total Issues",
                 value: issues.length,
                 icon: AlertTriangle,
-                color: "purple",
+                color: "green",
               },
               {
                 label: "Total Votes",
                 value: issues.reduce((s, i) => s + i.votes, 0),
                 icon: TrendingUp,
-                color: "blue",
+                color: "lime",
               },
               {
                 label: "Active Areas",
                 value: areas.length - 1,
                 icon: MapPin,
-                color: "pink",
+                color: "emerald",
               },
             ].map((stat, i) => (
               <motion.div
                 key={i}
-                whileHover={{ y: -4, scale: 1.02 }}
-                className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-gray-200/50 dark:border-gray-700/50"
+                whileHover={{ y: -2, scale: 1.02 }}
+                className={`p-5 rounded-xl shadow-sm border border-green-100 dark:border-green-700 ${getStatColors(stat.color)}`}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-sm text-green-800 dark:text-green-300">
                       {stat.label}
                     </p>
                     <p className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -220,7 +211,7 @@ const CommunityVotingPage = () => {
                     </p>
                   </div>
                   <div
-                    className={`p-3 rounded-xl ${getStatColors(stat.color)}`}
+                    className={`p-3 rounded-lg ${getStatColors(stat.color)}`}
                   >
                     <stat.icon className="w-6 h-6" />
                   </div>
@@ -231,13 +222,13 @@ const CommunityVotingPage = () => {
 
           {/* Filters */}
           <motion.div
-            className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-gray-200/50 dark:border-gray-700/50 mb-8"
-            initial={{ opacity: 0, scale: 0.95 }}
+            className="bg-white/90 dark:bg-green-950/70 p-6 rounded-xl shadow border border-green-100 dark:border-green-800 mb-8"
+            initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
           >
             <div className="flex items-center space-x-3 mb-4">
-              <Filter className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <Filter className="w-5 h-5 text-green-600 dark:text-green-400" />
+              <h3 className="text-lg font-semibold text-green-900 dark:text-green-200">
                 Filters
               </h3>
             </div>
@@ -246,14 +237,14 @@ const CommunityVotingPage = () => {
                 { label: "Sort By", value: sortBy, set: setSortBy, options: sortOptions }]
                 .map(({ label, value, set, options }) => (
                   <div key={label} className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label className="text-sm font-medium text-green-900 dark:text-green-300">
                       {label}
                     </label>
                     <div className="relative">
                       <select
                         value={value}
                         onChange={(e) => set(e.target.value)}
-                        className="w-full appearance-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition"
+                        className="w-full appearance-none bg-white dark:bg-green-950 border border-green-200 dark:border-green-700 rounded-xl px-4 py-3 text-green-900 dark:text-green-100 focus:ring-2 focus:ring-green-400 dark:focus:ring-green-700 transition"
                       >
                         {options.map((opt) => (
                           <option key={opt} value={opt}>
@@ -261,85 +252,73 @@ const CommunityVotingPage = () => {
                           </option>
                         ))}
                       </select>
-                      <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                      <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-green-400 pointer-events-none" />
                     </div>
                   </div>
                 ))}
             </div>
           </motion.div>
 
-          {/* Issues */}
+          {/* Issues List */}
           <AnimatePresence>
             {filteredIssues.map((issue, i) => (
               <motion.div
                 key={issue.id}
-                className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-2xl shadow-sm border border-gray-200/50 dark:border-gray-700/50 mb-6 overflow-hidden relative"
+                className="bg-white/95 dark:bg-green-950/80 rounded-xl shadow border border-green-100 dark:border-green-700 mb-6 relative"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                whileHover={{ y: -3, scale: 1.01 }}
+                whileHover={{ y: -2, scale: 1.01 }}
               >
                 <div className="p-6">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4">
                     <div>
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                      <h3 className="text-lg font-bold text-green-900 dark:text-green-100">
                         {issue.title}
                       </h3>
                       <div className="flex items-center gap-3 mt-2">
-                        <span className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
+                        <span className="flex items-center gap-1 text-sm text-green-800 dark:text-green-400">
                           <MapPin size={14} /> {issue.area}
                         </span>
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium ${getPriorityColor(
-                            issue.priority
-                          )}`}
-                        >
+                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${getPriorityColor(issue.priority)}`}>
                           {issue.priority} priority
                         </span>
                       </div>
                     </div>
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium mt-2 sm:mt-0 ${getStatusColor(
-                        issue.status
-                      )}`}
-                    >
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium mt-2 sm:mt-0 ${getStatusColor(issue.status)}`}>
                       {issue.status}
                     </span>
                   </div>
-
-                  {/* Metrics */}
                   <div className="grid grid-cols-3 gap-4 mb-6">
                     {[{ label: "Days Open", value: issue.daysOpen, icon: Clock },
                       { label: "Accidents", value: issue.accidentsReported, icon: AlertTriangle },
                       { label: "Votes", value: issue.votes, icon: TrendingUp }].map((m, idx) => (
                       <div
                         key={idx}
-                        className="text-center p-3 bg-gray-50 dark:bg-gray-700/40 rounded-xl"
+                        className="text-center p-3 bg-green-50 dark:bg-green-900/30 rounded-xl"
                       >
-                        <m.icon className="w-4 h-4 text-gray-500 dark:text-gray-400 mx-auto mb-1" />
-                        <p className="text-lg font-bold text-gray-900 dark:text-white">
+                        <m.icon className="w-4 h-4 text-green-600 dark:text-green-300 mx-auto mb-1" />
+                        <p className="text-lg font-bold text-green-950 dark:text-green-50">
                           {m.value}
                         </p>
-                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                        <p className="text-xs text-green-700 dark:text-green-300">
                           {m.label}
                         </p>
                       </div>
                     ))}
                   </div>
-
-                  {/* Support Bar */}
                   <div className="space-y-3 relative">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 dark:text-gray-400">
+                      <span className="text-green-800 dark:text-green-200">
                         Community Support
                       </span>
-                      <span className="font-medium text-gray-900 dark:text-white">
+                      <span className="font-medium text-green-950 dark:text-green-100">
                         {Math.min(issue.votes * 5, 100)}%
                       </span>
                     </div>
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                    <div className="w-full bg-green-200 dark:bg-green-900 rounded-full h-2 overflow-hidden">
                       <motion.div
-                        className="h-full bg-gradient-to-r from-indigo-500 to-purple-500"
+                        className="h-full bg-gradient-to-r from-green-400 to-emerald-400"
                         initial={{ width: 0 }}
                         animate={{ width: `${Math.min(issue.votes * 5, 100)}%` }}
                         transition={{ duration: 1 }}
@@ -348,12 +327,12 @@ const CommunityVotingPage = () => {
                     </div>
                     <motion.button
                       onClick={() => handleVote(issue.id)}
-                      className={`w-full py-3 rounded-xl flex items-center justify-center gap-2 font-medium transition ${
+                      className={`w-full py-3 mt-1 rounded-xl flex items-center justify-center gap-2 font-medium transition ${
                         votedIssues[issue.id]
-                          ? "bg-gray-500 hover:bg-gray-600 text-white"
-                          : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg"
+                          ? "bg-green-800 hover:bg-green-700 text-green-100"
+                          : "bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white shadow-lg"
                       }`}
-                      whileHover={{ scale: 1.02 }}
+                      whileHover={{ scale: 1.015 }}
                       whileTap={{ scale: 0.97 }}
                     >
                       {votedIssues[issue.id] ? (
@@ -365,8 +344,6 @@ const CommunityVotingPage = () => {
                         ? `Voted (${issue.votes})`
                         : `Vote (${issue.votes})`}
                     </motion.button>
-
-                    {/* 🎉 Confetti burst */}
                     {confetti === issue.id && (
                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         {[...Array(6)].map((_, idx) => (
@@ -392,25 +369,23 @@ const CommunityVotingPage = () => {
               </motion.div>
             ))}
           </AnimatePresence>
-
           {filteredIssues.length === 0 && (
             <motion.div
               className="text-center py-16"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
             >
-              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                <AlertTriangle className="w-8 h-8 text-gray-400 animate-bounce" />
+              <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                <AlertTriangle className="w-8 h-8 text-green-300 animate-bounce" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-green-900 dark:text-green-100">
                 No issues found
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mt-2">
+              <p className="text-green-700 dark:text-green-200 mt-2">
                 Try adjusting your filters to see more issues.
               </p>
             </motion.div>
           )}
-
         </div>
       </div>
     </div>
@@ -418,4 +393,3 @@ const CommunityVotingPage = () => {
 };
 
 export default CommunityVotingPage;
-
