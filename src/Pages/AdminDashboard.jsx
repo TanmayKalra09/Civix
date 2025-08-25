@@ -159,7 +159,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
       {/* Sidebar toggle for mobile */}
       <button
         type="button"
@@ -269,261 +269,226 @@ const AdminDashboard = () => {
           })}
         </nav>
       </aside>
-      <motion.header 
-        className="backdrop-blur-md border-b border-green-100 sticky top-0 z-40"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">C</span>
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-green-700 bg-clip-text text-transparent">
-                    Civix Admin
-                  </h1>
-                  <p className="text-sm text-gray-500">Citizen Issue Management</p>
+
+      {/* Main Content */}
+      <div className={`transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-16'}`}>
+        {/* Header */}
+        <header className="bg-white/70 backdrop-blur-md border-b border-green-100 sticky top-0 z-30 shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-4">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl flex items-center justify-center">
+                    <span className="text-white font-bold text-lg">C</span>
+                  </div>
+                  <div>
+                    <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-green-700 bg-clip-text text-transparent">
+                      Civix Admin
+                    </h1>
+                    <p className="text-sm text-gray-500">Citizen Issue Management</p>
+                  </div>
                 </div>
               </div>
+              <div className="flex items-center space-x-4">
+                <button 
+                  onClick={() => navigate("/admin/notifications")}
+                  className="p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors">
+                  <Bell className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={() => navigate("/admin/settings")}
+                  className="p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors">
+                  <Settings className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={() => navigate("/login")}
+                  className="flex items-center space-x-2 px-4 py-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors">
+                  <LogOut className="w-4 h-4" />
+                  <span className="text-sm font-medium">Logout</span>
+                </button>
+              </div>
             </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => navigate("/admin/notifications")} 
-                className="p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors">
-                <Bell className="w-5 h-5" />
-              </button>
-              <button 
-                onClick={() => navigate("/admin/settings")}
-                className="p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors">
-                <Settings className="w-5 h-5" />
-              </button>
-              <Switch />
-              <button 
-                onClick={() => navigate("/login")}
-                className="flex items-center space-x-2 px-4 py-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="text-sm font-medium ">Logout</span>
-              </button>
+          </div>
+        </header>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+          {/* Welcome Section */}
+          <div>
+            <h2 className="text-3xl font-bold mb-2">Welcome back, Admin! 👋</h2>
+            <p className="text-gray-500">Monitor and manage citizen-reported issues across the city</p>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-green-100 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Total Issues</p>
+                  <p className="text-3xl font-bold">{stats.total}</p>
+                </div>
+                <div className="p-3 bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl">
+                  <BarChart3 className="w-6 h-6 text-white" />
+                </div>
+              </div>
+              <div className="mt-4 flex items-center text-sm">
+                <TrendingUp className="w-4 h-4 text-emerald-500 mr-1" />
+                <span className="text-emerald-600 font-medium">+12%</span>
+                <span className="text-gray-500 ml-1">from last month</span>
+              </div>
             </div>
+
+            {Object.entries(statusConfig).map(([status, config]) => {
+              const keyMap = { "Pending": "pending", "In Progress": "inProgress", "Resolved": "resolved", "Rejected": "rejected" };
+              const count = stats[keyMap[status]];
+              const Icon = config.icon;
+              return (
+                <div key={status} className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-green-100 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">{status}</p>
+                      <p className="text-2xl font-bold">{count || 0}</p>
+                    </div>
+                    <div className={`p-3 rounded-xl ${config.color.split(' ')[0]} ${config.color.split(' ')[0]}/20`}>
+                      <Icon className={`w-5 h-5 ${config.color.split(' ')[1]}`} />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Controls */}
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-green-100 shadow-lg">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+              <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                <div className="relative">
+                  <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search issues..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 pr-4 py-3 w-full sm:w-64 border border-green-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-green-50/50"
+                  />
+                </div>
+                <div className="relative">
+                  <Filter className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <select
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className="pl-10 pr-8 py-3 border border-green-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-green-50/50 appearance-none"
+                  >
+                    <option value="all">All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </div>
+              </div>
+              <div className="flex space-x-3">
+                <button className="flex items-center space-x-2 px-6 py-3 text-emerald-600 bg-emerald-50 hover:bg-emerald-100 rounded-xl transition-colors font-medium">
+                  <Download className="w-4 h-4" />
+                  <span>Export</span>
+                </button>
+                <button
+                  onClick={fetchIssues}
+                  disabled={isRefreshing}
+                  className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white hover:from-emerald-600 hover:to-green-700 rounded-xl transition-all font-medium disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                  <span>Refresh</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Issues Table */}
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl border border-green-100 shadow-lg overflow-hidden">
+            <div className="px-6 py-4 border-b border-green-100">
+              <h3 className="text-lg font-semibold flex items-center">
+                <MessageSquare className="w-5 h-5 text-emerald-600 mr-2" />
+                Reported Issues ({filteredIssues.length})
+              </h3>
+            </div>
+            {filteredIssues.length === 0 ? (
+              <div className="p-12 text-center">
+                <AlertCircle className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500 text-lg mb-2">No issues found</p>
+                <p className="text-gray-400">Try adjusting your search or filter criteria</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-green-50/50">
+                    <tr>
+                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issue</th>
+                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
+                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-green-100">
+                    {filteredIssues.map((issue) => {
+                      const StatusIcon = statusConfig[issue.status]?.icon || AlertCircle;
+                      return (
+                        <tr key={issue._id} className="hover:bg-emerald-50/30 transition-colors">
+                          <td className="px-6 py-4">
+                            <div>
+                              <p className="text-sm font-semibold">{issue.title}</p>
+                              <p className="text-sm text-gray-500 mt-1 line-clamp-2">{issue.description}</p>
+                              <p className="text-xs text-gray-400 mt-1">Reported: {issue.dateReported}</p>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div>
+                              <p className="text-sm">{issue.email}</p>
+                              <p className="text-sm text-gray-500">{issue.phone}</p>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                              {issue.category}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${priorityConfig[issue.priority]}`}>
+                              {issue.priority}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex items-center">
+                              <div className={`w-2 h-2 rounded-full mr-2 ${statusConfig[issue.status]?.dotColor}`}></div>
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${statusConfig[issue.status]?.color}`}>
+                                <StatusIcon className="w-3 h-3 mr-1" />
+                                {issue.status}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <select
+                              value={issue.status}
+                              onChange={(e) => handleStatusChange(issue._id, e.target.value)}
+                              className="text-sm border border-green-200 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-green-50/50"
+                            >
+                              <option value="Pending">Pending</option>
+                              <option value="In Progress">In Progress</option>
+                              <option value="Resolved">Resolved</option>
+                              <option value="Rejected">Rejected</option>
+                            </select>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
-      </motion.header>
-
-      <motion.div 
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
-        variants={containerVariants}
-        initial="initial"
-        animate="animate"
-      >
-        <motion.div variants={itemVariants} className="mb-8">
-          <h2 className="text-3xl font-bold mb-2">
-            Welcome back, Admin! 👋
-          </h2>
-          <p className="text-gray-500">
-            Monitor and manage citizen-reported issues across the city
-          </p>
-        </motion.div>
-        <motion.div 
-          variants={itemVariants}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8"
-        >
-          <motion.div 
-            variants={cardVariants}
-            whileHover="hover"
-            className="backdrop-blur-sm rounded-xl p-6 border border-green-100 shadow-sm"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-500">Total Issues</p>
-                <p className="text-3xl font-bold ">{stats.total}</p>
-              </div>
-              <div className="p-3 bg-gradient-to-r from-emerald-500 to-green-600 rounded-lg">
-                <BarChart3 className="w-6 h-6 " />
-              </div>
-            </div>
-            <div className="mt-4 flex items-center text-sm">
-              <TrendingUp className="w-4 h-4 text-emerald-500 mr-1" />
-              <span className="text-emerald-600 font-medium">+12%</span>
-              <span className="text-gray-500 ml-1">from last month</span>
-            </div>
-          </motion.div>
-          {Object.entries(statusConfig).map(([status, config]) => {
-            const keyMap = {
-              "Pending": "pending",
-              "In Progress": "inProgress",
-              "Resolved": "resolved",
-              "Rejected": "rejected"
-            };
-            const count = stats[keyMap[status]];
-            const Icon = config.icon;
-            return (
-              <motion.div 
-                key={status}
-                variants={cardVariants}
-                whileHover="hover"
-                className="backdrop-blur-sm rounded-xl p-6 border border-green-100 shadow-sm"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">{status}</p>
-                    <p className="text-2xl font-bold ">{count || 0}</p>
-                  </div>
-                  <div className={`p-3 rounded-lg ${config.color.split(' ')[0]} ${config.color.split(' ')[0]}/20`}>
-                    <Icon className={`w-5 h-5 ${config.color.split(' ')[1]}`} />
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-        <motion.div 
-          variants={itemVariants}
-          className="backdrop-blur-sm rounded-xl p-6 border border-green-100 shadow-sm mb-6"
-        >
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-              <div className="relative">
-                <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search issues..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-2 w-full sm:w-64 border text-black border-green-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-white/40 backdrop-blur-sm"
-                />
-              </div>
-              <div className="relative">
-                <Filter className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <select
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="pl-10 pr-8 py-2 border text-black border-green-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-white/40 backdrop-blur-sm appearance-none"
-                >
-                  <option value="all">All Status</option>
-                  <option value="Pending">Pending</option>
-                  <option value="In Progress">In Progress</option>
-                  <option value="Resolved">Resolved</option>
-                  <option value="Rejected">Rejected</option>
-                </select>
-              </div>
-            </div>
-            <div className="flex space-x-3">
-              <button
-                onClick={() => {/* Handle export */}}
-                className="flex items-center space-x-2 px-4 py-2 text-emerald-600 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors font-medium"
-              >
-                <Download className="w-4 h-4" />
-                <span>Export</span>
-              </button>
-              <button
-                onClick={fetchIssues}
-                disabled={isRefreshing}
-                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white hover:from-emerald-600 hover:to-green-700 rounded-lg transition-all font-medium disabled:opacity-50"
-              >
-                <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-                <span>Refresh</span>
-              </button>
-            </div>
-          </div>
-        </motion.div>
-        <motion.div 
-          variants={itemVariants}
-          className="backdrop-blur-sm rounded-xl border border-green-100 shadow-sm overflow-hidden"
-        >
-          <div className="px-6 py-4 border-b border-green-100">
-            <h3 className="text-lg font-semibold flex items-center">
-              <MessageSquare className="w-5 h-5 text-emerald-600 mr-2" />
-              Reported Issues ({filteredIssues.length})
-            </h3>
-          </div>
-          {filteredIssues.length === 0 ? (
-            <div className="p-12 text-center">
-              <AlertCircle className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500 text-lg mb-2">No issues found</p>
-              <p className="text-gray-400">Try adjusting your search or filter criteria</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issue</th>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {filteredIssues.map((issue, index) => {
-                    const StatusIcon = statusConfig[issue.status]?.icon || AlertCircle;
-                    return (
-                      <motion.tr
-                        key={issue._id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="hover:bg-emerald-50/30 transition-colors"
-                      >
-                        <td className="px-6 py-4">
-                          <div>
-                            <p className="text-sm font-semibold">{issue.title}</p>
-                            <p className="text-sm text-gray-500 mt-1 line-clamp-2">{issue.description}</p>
-                            <p className="text-xs text-gray-400 mt-1">Reported: {issue.dateReported}</p>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div>
-                            <p className="text-sm ">{issue.email}</p>
-                            <p className="text-sm text-gray-500">{issue.phone}</p>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                            {issue.category}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${priorityConfig[issue.priority]}`}>
-                            {issue.priority}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4">
-                          <div className="flex items-center">
-                            <div className={`w-2 h-2 rounded-full mr-2 ${statusConfig[issue.status]?.dotColor}`}></div>
-                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${statusConfig[issue.status]?.color}`}>
-                              <StatusIcon className="w-3 h-3 mr-1" />
-                              {issue.status}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4">
-                          <select
-                            value={issue.status}
-                            onChange={(e) => handleStatusChange(issue._id, e.target.value)}
-                            className="text-sm border text-black border-green-200 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-white/50 backdrop-blur-sm"
-                          >
-                            <option value="Pending">Pending</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Resolved">Resolved</option>
-                            <option value="Rejected">Rejected</option>
-                          </select>
-                        </td>
-                      </motion.tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </motion.div>
-      </motion.div>
+      </div>
     </div>
   );
 };
