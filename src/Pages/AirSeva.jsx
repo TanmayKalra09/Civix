@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Papa from "papaparse";
-import { Mail, Phone, Globe, Clock, Search, Filter } from "lucide-react";
+import { Mail, Phone, Globe, Clock, Search, Plane } from "lucide-react";
 
 const AirSevaPage = () => {
   const [airData, setAirData] = useState([]);
@@ -16,7 +16,6 @@ const AirSevaPage = () => {
           header: true,
           skipEmptyLines: true,
           complete: (result) => {
-            console.log("Parsed Stops:", result.data);
             setAirData(result.data);
             setFilteredData(result.data);
           },
@@ -40,45 +39,69 @@ const AirSevaPage = () => {
     setFilteredData(filtered);
   }, [searchTerm, airData]);
 
+  const ContactItem = ({ icon: Icon, href, children, type = "link" }) => (
+    <div className="flex items-center gap-3 group/contact">
+      <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center group-hover/contact:bg-green-100 transition-all duration-200">
+        <Icon className="w-4 h-4 text-gray-600 group-hover/contact:text-green-600" />
+      </div>
+      <a
+        href={href}
+        {...(type === "external" && { target: "_blank", rel: "noopener noreferrer" })}
+        className="text-sm text-gray-600 hover:text-green-600 transition-colors duration-200 flex-1 truncate"
+      >
+        {children}
+      </a>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
-      <div className="bg-white border-b border-green-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-slate-50">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            <div className="flex justify-center items-center mb-4">
+              <div className="w-12 h-12 bg-green-600 rounded-2xl flex items-center justify-center">
+                <Plane className="w-6 h-6 text-white" />
+              </div>
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
               AirSeva Directory
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-gray-600 max-w-2xl mx-auto">
               Your comprehensive guide to aviation services and resources
             </p>
           </div>
           
-          <div className="max-w-2xl mx-auto relative">
+          {/* Search Bar */}
+          <div className="max-w-2xl mx-auto">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-500 w-5 h-5" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
                 placeholder="Search services, categories, or descriptions..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 text-lg border-2 border-green-200 rounded-2xl focus:outline-none focus:border-green-400 focus:ring-4 focus:ring-green-100 transition-all duration-200 bg-white shadow-sm"
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 bg-white"
               />
             </div>
-          </div>
-          
-          <div className="text-center mt-4">
-            <span className="text-sm text-gray-500 bg-green-50 px-3 py-1 rounded-full">
-              {filteredData.length} service{filteredData.length !== 1 ? 's' : ''} found
-            </span>
+            
+            {/* Results Counter */}
+            <div className="text-center mt-4">
+              <span className="text-sm text-gray-500 bg-white px-4 py-2 rounded-full border border-gray-200">
+                {filteredData.length} service{filteredData.length !== 1 ? 's' : ''} found
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Content */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
         {filteredData.length === 0 ? (
           <div className="text-center py-16">
-            <div className="bg-white rounded-2xl shadow-sm p-12 max-w-md mx-auto border border-green-100">
-              <Search className="w-16 h-16 text-green-300 mx-auto mb-4" />
+            <div className="bg-white rounded-2xl p-12 max-w-md mx-auto border border-gray-200">
+              <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-700 mb-2">
                 No services found
               </h3>
@@ -92,17 +115,19 @@ const AirSevaPage = () => {
             {filteredData.map((item, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-green-100 hover:border-green-200 overflow-hidden group"
+                className="bg-white rounded-2xl border border-gray-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group overflow-hidden"
               >
                 <div className="p-6">
+                  {/* Category Badge */}
                   <div className="mb-4">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 border border-green-200">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700 border border-green-200">
                       {item.categoryenglish}
                     </span>
                   </div>
                   
+                  {/* Title Section */}
                   <div className="mb-4">
-                    <h2 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-green-700 transition-colors duration-200">
+                    <h2 className="text-xl font-semibold text-gray-900 mb-1 group-hover:text-green-600 transition-colors duration-200">
                       {item.titleEnglish}
                     </h2>
                     {item.titleHindi && (
@@ -112,68 +137,55 @@ const AirSevaPage = () => {
                     )}
                   </div>
 
+                  {/* Description Section */}
                   <div className="mb-6 space-y-2">
                     {item.descriptionEnglish && (
-                      <p className="text-gray-700 text-sm leading-relaxed">
+                      <p className="text-gray-700 text-sm leading-relaxed line-clamp-3">
                         {item.descriptionEnglish}
                       </p>
                     )}
                     {item.descriptionHindi && (
-                      <p className="text-gray-600 text-sm leading-relaxed">
+                      <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">
                         {item.descriptionHindi}
                       </p>
                     )}
                   </div>
 
+                  {/* Contact Information */}
                   <div className="space-y-3 mb-4">
                     {item.email && (
-                      <div className="flex items-center space-x-3 group/contact">
-                        <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center group-hover/contact:bg-green-200 transition-colors duration-200">
-                          <Mail className="w-4 h-4 text-green-600" />
-                        </div>
-                        <a
-                          href={`mailto:${item.email}`}
-                          className="text-sm text-gray-600 hover:text-green-600 transition-colors duration-200 truncate flex-1"
-                        >
-                          {item.email}
-                        </a>
-                      </div>
+                      <ContactItem 
+                        icon={Mail} 
+                        href={`mailto:${item.email}`}
+                      >
+                        {item.email}
+                      </ContactItem>
                     )}
                     
                     {item.phone && (
-                      <div className="flex items-center space-x-3 group/contact">
-                        <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center group-hover/contact:bg-green-200 transition-colors duration-200">
-                          <Phone className="w-4 h-4 text-green-600" />
-                        </div>
-                        <a
-                          href={`tel:${item.phone}`}
-                          className="text-sm text-gray-600 hover:text-green-600 transition-colors duration-200"
-                        >
-                          {item.phone}
-                        </a>
-                      </div>
+                      <ContactItem 
+                        icon={Phone} 
+                        href={`tel:${item.phone}`}
+                      >
+                        {item.phone}
+                      </ContactItem>
                     )}
                     
                     {item.website && (
-                      <div className="flex items-center space-x-3 group/contact">
-                        <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center group-hover/contact:bg-green-200 transition-colors duration-200">
-                          <Globe className="w-4 h-4 text-green-600" />
-                        </div>
-                        <a
-                          href={item.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-gray-600 hover:text-green-600 transition-colors duration-200 truncate flex-1"
-                        >
-                          Visit Website
-                        </a>
-                      </div>
+                      <ContactItem 
+                        icon={Globe} 
+                        href={item.website}
+                        type="external"
+                      >
+                        Visit Website
+                      </ContactItem>
                     )}
                   </div>
 
+                  {/* Last Updated */}
                   {item.last_updated && (
                     <div className="pt-4 border-t border-gray-100">
-                      <div className="flex items-center space-x-2 text-xs text-gray-500">
+                      <div className="flex items-center gap-2 text-xs text-gray-500">
                         <Clock className="w-3 h-3" />
                         <span>Last updated: {item.last_updated}</span>
                       </div>
