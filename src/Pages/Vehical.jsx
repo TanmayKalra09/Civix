@@ -35,108 +35,98 @@ export default function GovtLinksSection() {
   const sections = [
     {
       title: "Vehicle RC / Registration",
-      description: "Vahan Parivahan",
+      description: "Check vehicle registration details on Vahan Parivahan.",
       url: "https://vahan.parivahan.gov.in/vahanservice/vahan/rc/",
       icon: CarIcon,
-      color: "emerald"
+      cta: "Check RC",
+      gradient: "from-blue-50 to-indigo-50"
     },
     {
       title: "Challan / Traffic Fines",
-      description: "Ministry of Road Transport & Highways",
+      description: "View and pay your challans online securely.",
       url: "https://parivahan.gov.in/rcdlstatus/",
       icon: AlertIcon,
-      color: "green"
+      cta: "Pay Challan",
+      gradient: "from-red-50 to-rose-50"
     },
     {
       title: "Insurance Verification",
-      description: "Insurance Info Portal",
+      description: "Verify vehicle insurance instantly via the Info Portal.",
       url: "https://vahan.parivahan.gov.in/vahanservice/vahan/insurance/",
       icon: ShieldIcon,
-      color: "teal"
+      cta: "Verify Insurance",
+      gradient: "from-purple-50 to-pink-50"
     },
     {
       title: "PUC / Pollution Certificate",
-      description: "CPCB / State PUC Portal",
+      description: "Check or renew your vehicle’s PUC online.",
       url: "https://parivahan.gov.in/puc/",
       icon: LeafIcon,
-      color: "lime"
+      cta: "Get PUC",
+      gradient: "from-green-50 to-lime-50"
     }
   ];
 
-  const getColorClasses = (color) => ({
-    iconBg: {
-      emerald: "bg-emerald-100 text-emerald-600",
-      green: "bg-green-100 text-green-600",
-      teal: "bg-teal-100 text-teal-600",
-      lime: "bg-lime-100 text-lime-600"
-    }[color],
-    button: "bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600"
-  });
-
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12">
-      {/* Header */}
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">
-          Government Services
-        </h2>
-        <div className="w-20 h-1 bg-gradient-to-r from-green-400 to-emerald-500 mx-auto rounded-full mb-4"></div>
-        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-          Quick access to essential vehicle and transport services
-        </p>
+    <div className="space-y-6 mt-8">
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold text-gray-800 mb-2">Government Services</h2>
+        <div className="w-24 h-1 bg-gradient-to-r from-emerald-400 to-green-500 mx-auto rounded-full"></div>
+        <p className="text-gray-600 mt-4 text-lg">Quick access to essential vehicle and transport services</p>
       </div>
-
-      {/* Services Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {sections.map((section, index) => {
           const IconComponent = section.icon;
-          const colors = getColorClasses(section.color);
-          
           return (
-            <div
-              key={index}
-              className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group"
+            <div 
+              key={index} 
+              className="group relative overflow-hidden ml-10 mr-10 border-0 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 bg-white rounded-3xl"
             >
-              {/* Header */}
-              <div className="flex items-start gap-4 mb-4">
-                <div className={`p-3 rounded-xl ${colors.iconBg} group-hover:scale-110 transition-transform duration-300`}>
-                  <IconComponent />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-1 group-hover:text-green-600 transition-colors duration-300">
-                    {section.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 font-medium">
-                    {section.description}
-                  </p>
+              <div className={`absolute inset-0 bg-gradient-to-br ${section.gradient} opacity-60`}></div>
+              
+              <div className="relative z-10 p-6 pb-2">
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="p-3 bg-white rounded-2xl shadow-md group-hover:scale-110 transition-transform duration-300">
+                    <IconComponent className="text-emerald-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gray-800 group-hover:text-emerald-700 transition-colors duration-300">
+                      {section.title}
+                    </h3>
+                  </div>
                 </div>
               </div>
-
-              {/* Button */}
-              <a
-                href={section.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`inline-flex items-center gap-2 px-6 py-3 ${colors.button} text-white font-medium rounded-xl transition-all duration-300 hover:scale-105 shadow-sm hover:shadow-md group/link w-full justify-center`}
-              >
-                <span>Visit Official Portal</span>
-                <ExternalLinkIcon className="group-hover/link:translate-x-1 transition-transform duration-300" />
-              </a>
+              
+              <div className="relative z-10 px-6 pb-6 pt-0">
+                <p className="text-gray-700 mb-4 font-medium text-sm">
+                  {section.description}
+                </p>
+                
+                <a
+                  href={section.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={section.cta}
+                  className="inline-flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold rounded-2xl hover:from-emerald-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group/link"
+                >
+                  <span>{section.cta}</span>
+                  <ExternalLinkIcon className="group-hover/link:translate-x-1 transition-transform duration-300" />
+                </a>
+              </div>
+              
+              <div className="absolute top-4 right-4 w-20 h-20 bg-emerald-100 rounded-full opacity-20 group-hover:scale-125 transition-transform duration-500"></div>
+              <div className="absolute bottom-4 left-4 w-12 h-12 bg-green-100 rounded-full opacity-30 group-hover:scale-110 transition-transform duration-700"></div>
             </div>
           );
         })}
       </div>
-
-      {/* Footer Indicators */}
-      <div className="flex justify-center">
-        <div className="flex gap-2">
-          {[0, 0.5, 1].map((delay, i) => (
-            <div
-              key={i}
-              className="w-2 h-2 bg-green-400 rounded-full animate-pulse"
-              style={{ animationDelay: `${delay}s` }}
-            />
-          ))}
+      
+      <div className="flex justify-center mt-12">
+        <div className="flex space-x-2">
+          <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
+          <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
         </div>
       </div>
     </div>
