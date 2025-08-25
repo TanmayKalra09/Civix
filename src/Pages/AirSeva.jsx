@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Papa from "papaparse";
-import { Mail, Phone, Globe, Clock, Search, Filter } from "lucide-react";
+import { Mail, Phone, Globe, Clock, Search, Plane } from "lucide-react";
 
 const AirSevaPage = () => {
   const [airData, setAirData] = useState([]);
@@ -16,7 +16,6 @@ const AirSevaPage = () => {
           header: true,
           skipEmptyLines: true,
           complete: (result) => {
-            console.log("Parsed Stops:", result.data);
             setAirData(result.data);
             setFilteredData(result.data);
           },
@@ -42,9 +41,15 @@ const AirSevaPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {/* Header */}
       <div className="bg-white dark:bg-gray-800 border-b border-green-100 dark:border-gray-700 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center mb-8">
+            <div className="flex justify-center items-center mb-4">
+              <div className="w-12 h-12 bg-green-600 rounded-2xl flex items-center justify-center">
+                <Plane className="w-6 h-6 text-white" />
+              </div>
+            </div>
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
               AirSeva Directory
             </h1>
@@ -52,8 +57,9 @@ const AirSevaPage = () => {
               Your comprehensive guide to aviation services and resources
             </p>
           </div>
-          
-          <div className="max-w-2xl mx-auto relative">
+
+          {/* Search Bar */}
+          <div className="max-w-2xl mx-auto">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-500 dark:text-green-400 w-5 h-5" />
               <input
@@ -65,7 +71,8 @@ const AirSevaPage = () => {
               />
             </div>
           </div>
-          
+
+          {/* Results Counter */}
           <div className="text-center mt-4">
             <span className="text-sm text-gray-500 dark:text-gray-400 bg-green-50 dark:bg-gray-700 px-3 py-1 rounded-full">
               {filteredData.length} service{filteredData.length !== 1 ? 's' : ''} found
@@ -74,7 +81,8 @@ const AirSevaPage = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Content */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
         {filteredData.length === 0 ? (
           <div className="text-center py-16">
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-12 max-w-md mx-auto border border-green-100 dark:border-gray-700">
@@ -95,12 +103,14 @@ const AirSevaPage = () => {
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-green-100 dark:border-gray-700 hover:border-green-200 dark:hover:border-green-600 overflow-hidden group"
               >
                 <div className="p-6">
+                  {/* Category Badge */}
                   <div className="mb-4">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 border border-green-200 dark:border-green-700">
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 border border-green-200 dark:border-gray-700">
                       {item.categoryenglish}
                     </span>
                   </div>
-                  
+
+                  {/* Title Section */}
                   <div className="mb-4">
                     <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors duration-200">
                       {item.titleEnglish}
@@ -112,6 +122,7 @@ const AirSevaPage = () => {
                     )}
                   </div>
 
+                  {/* Description Section */}
                   <div className="mb-6 space-y-2">
                     {item.descriptionEnglish && (
                       <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
@@ -125,6 +136,7 @@ const AirSevaPage = () => {
                     )}
                   </div>
 
+                  {/* Contact Information */}
                   <div className="space-y-3 mb-4">
                     {item.email && (
                       <div className="flex items-center space-x-3 group/contact">
@@ -139,7 +151,6 @@ const AirSevaPage = () => {
                         </a>
                       </div>
                     )}
-                    
                     {item.phone && (
                       <div className="flex items-center space-x-3 group/contact">
                         <div className="flex-shrink-0 w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center group-hover/contact:bg-green-200 dark:group-hover/contact:bg-green-800 transition-colors duration-200">
@@ -153,7 +164,6 @@ const AirSevaPage = () => {
                         </a>
                       </div>
                     )}
-                    
                     {item.website && (
                       <div className="flex items-center space-x-3 group/contact">
                         <div className="flex-shrink-0 w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center group-hover/contact:bg-green-200 dark:group-hover/contact:bg-green-800 transition-colors duration-200">
@@ -171,6 +181,7 @@ const AirSevaPage = () => {
                     )}
                   </div>
 
+                  {/* Last Updated */}
                   {item.last_updated && (
                     <div className="pt-4 border-t border-gray-100 dark:border-gray-700">
                       <div className="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400">
