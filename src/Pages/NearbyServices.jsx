@@ -35,15 +35,9 @@ export default function NearbyServices() {
     let queryAmenities = "";
     if (filter === "all") {
       queryAmenities = `
-        node["amenity"="hospital"](around:10000,${coords.lat},${coords.lon});
-        way["amenity"="hospital"](around:10000,${coords.lat},${coords.lon});
-        relation["amenity"="hospital"](around:10000,${coords.lat},${coords.lon});
-        node["amenity"="police"](around:10000,${coords.lat},${coords.lon});
-        way["amenity"="police"](around:10000,${coords.lat},${coords.lon});
-        relation["amenity"="police"](around:10000,${coords.lat},${coords.lon});
-        node["amenity"="fire_station"](around:10000,${coords.lat},${coords.lon});
-        way["amenity"="fire_station"](around:10000,${coords.lat},${coords.lon});
-        relation["amenity"="fire_station"](around:10000,${coords.lat},${coords.lon});
+        node["amenity"~"hospital|police|fire_station"](around:10000,${coords.lat},${coords.lon});
+        way["amenity"~"hospital|police|fire_station"](around:10000,${coords.lat},${coords.lon});
+        relation["amenity"~"hospital|police|fire_station"](around:10000,${coords.lat},${coords.lon});
       `;
     } else {
       queryAmenities = `
@@ -62,8 +56,7 @@ export default function NearbyServices() {
     `;
 
     let found = false;
-    for (let i = 0; i < overpassUrls.length; i++) {
-      const url = overpassUrls[i];
+    for (let url of overpassUrls) {
       try {
         const res = await fetch(url, {
           method: "POST",
@@ -71,9 +64,7 @@ export default function NearbyServices() {
         });
         if (!res.ok) continue;
         const data = await res.json();
-        // Log elements for debugging
-        console.log("NearbyServices Overpass elements:", data.elements);
-        if (data.elements && data.elements.length > 0) {
+        if (data.elements?.length > 0) {
           setPlaces(data.elements);
           setStatus("success");
           found = true;
@@ -84,7 +75,8 @@ export default function NearbyServices() {
       }
     }
     if (!found) {
-      setStatus("error");
+      setPlaces([]);
+      setStatus("success");
     }
   }
 
@@ -96,30 +88,29 @@ export default function NearbyServices() {
 
   const getServiceIcon = (amenity) => {
     switch (amenity) {
-      case 'hospital':
+      case "hospital":
         return (
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m0 0l4-4m3 4l3-3" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v12M6 12h12" />
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
         );
-      case 'police':
+      case "police":
         return (
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5l7-2 7 2v6a7 7 0 11-14 0V5z" />
           </svg>
         );
-      case 'fire_station':
+      case "fire_station":
         return (
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2s4 4 4 8a4 4 0 11-8 0c0-4 4-8 4-8z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14v8" />
           </svg>
         );
       default:
         return (
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
           </svg>
         );
     }
@@ -127,162 +118,167 @@ export default function NearbyServices() {
 
   const getServiceColor = (amenity) => {
     switch (amenity) {
-      case 'hospital':
-        return 'bg-emerald-50 border-emerald-200';
-      case 'police':
-        return 'bg-green-50 border-green-200';
-      case 'fire_station':
-        return 'bg-teal-50 border-teal-200';
+      case "hospital":
+        return "bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-950/30 dark:to-red-900/20 border-red-200/60 dark:border-red-800/40";
+      case "police":
+        return "bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/30 dark:to-blue-900/20 border-blue-200/60 dark:border-blue-800/40";
+      case "fire_station":
+        return "bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/30 dark:to-orange-900/20 border-orange-200/60 dark:border-orange-800/40";
       default:
-        return 'bg-gray-50 border-gray-200';
+        return "bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-800/50 dark:to-gray-700/30 border-gray-200/60 dark:border-gray-700/40";
+    }
+  };
+
+  const getIconColor = (amenity) => {
+    switch (amenity) {
+      case "hospital":
+        return "text-red-600 dark:text-red-400";
+      case "police":
+        return "text-blue-600 dark:text-blue-400";
+      case "fire_station":
+        return "text-orange-600 dark:text-orange-400";
+      default:
+        return "text-gray-600 dark:text-gray-400";
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-8 mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 bg-emerald-600 dark:bg-emerald-500 rounded-lg flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+    <div className="min-h-screen bg-gradient-to-br from-green-25 via-white to-green-50/30 dark:from-gray-950 dark:via-gray-900 dark:to-green-950/10 relative">
+      {/* Background orbs */}
+      <div className="absolute top-10 right-20 w-64 h-64 bg-green-200/10 dark:bg-green-400/5 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-20 left-10 w-48 h-48 bg-green-300/15 dark:bg-green-500/8 rounded-full blur-3xl animate-pulse delay-1000"></div>
+
+      <div className="relative z-10 max-w-5xl mx-auto p-6">
+        {/* Header */}
+        <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-3xl border border-green-100/60 dark:border-green-800/40 p-8 mb-8 shadow-lg shadow-green-100/20 dark:shadow-green-900/10">
+          <div className="flex items-center gap-6 mb-8">
+            <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/25">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
             <div>
-              <h1 className="text-3xl font-semibold text-gray-900 dark:text-white">Emergency Services Locator</h1>
-              <p className="text-gray-600 dark:text-slate-300 mt-1">Find essential services within 10-kilometer radius of your location</p>
+              <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-gray-900 via-green-700 to-green-800 dark:from-white dark:via-green-300 dark:to-green-400 bg-clip-text text-transparent">
+                Emergency Services Locator
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400 mt-2">
+                Discover essential services within a 10-kilometer radius of your location
+              </p>
             </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Service Type</label>
+
+          {/* Controls */}
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                Filter by Service Type
+              </label>
               <select
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                className="w-full px-4 py-3 bg-white dark:bg-slate-700 border border-gray-300 dark:border-slate-600 rounded-md text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:border-emerald-500 dark:focus:border-emerald-400 transition-colors"
+                className="w-full px-4 py-3.5 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-green-200/50 dark:border-green-700/50 rounded-xl text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-400 dark:focus:border-green-500 transition-all duration-200 shadow-sm"
               >
-                <option value="all">All Emergency Services</option>
-                <option value="hospital">Medical Facilities</option>
-                <option value="police">Law Enforcement</option>
-                <option value="fire_station">Fire & Rescue Services</option>
+                <option value="all">🚨 All Emergency Services</option>
+                <option value="hospital">🏥 Medical Facilities</option>
+                <option value="police">👮 Law Enforcement</option>
+                <option value="fire_station">🚒 Fire & Rescue Services</option>
               </select>
             </div>
-            
             <div className="flex items-end">
               <button
                 onClick={fetchNearby}
                 disabled={status === "loading" || !coords}
-                className="w-full px-6 py-3 bg-emerald-600 dark:bg-emerald-500 text-white font-medium rounded-md shadow-sm hover:bg-emerald-700 dark:hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-8 py-3.5 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 disabled:from-gray-400 disabled:to-gray-500 text-white font-medium rounded-xl shadow-lg shadow-green-600/25 hover:shadow-green-700/30 focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100"
               >
                 {status === "loading" ? (
-                  <div className="flex items-center justify-center gap-2">
+                  <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    Locating Services
+                    Locating...
                   </div>
                 ) : (
-                  "Search Services"
+                  "🔍 Search Services"
                 )}
               </button>
             </div>
           </div>
         </div>
 
-        {status === "error" && (
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6 mb-8">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-red-100 dark:bg-red-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-red-600 dark:text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z" />
-                </svg>
+        {/* Results */}
+        {places.length > 0 && (
+          <div className="grid gap-4">
+            {places.map((p) => (
+              <div
+                key={p.id}
+                className={`group ${getServiceColor(p.tags?.amenity)} backdrop-blur-sm rounded-2xl border p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
+              >
+                <div className="flex items-start gap-5">
+                  <div className={`w-12 h-12 bg-white dark:bg-gray-800 rounded-xl flex items-center justify-center shadow-sm ${getIconColor(p.tags?.amenity)}`}>
+                    {getServiceIcon(p.tags?.amenity)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                      {p.tags?.name || "Unnamed Service"}
+                    </h3>
+                    <div className="space-y-1 mb-4">
+                      {p.tags?.["addr:street"] && (
+                        <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          </svg>
+                          {p.tags["addr:street"]}
+                        </p>
+                      )}
+                      {p.tags?.phone && (
+                        <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2 font-mono">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                          </svg>
+                          {p.tags.phone}
+                        </p>
+                      )}
+                    </div>
+                    <button
+                      onClick={() =>
+                        openDirections(p.lat || p.center?.lat, p.lon || p.center?.lon)
+                      }
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl shadow-sm hover:shadow-md transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500/50"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5-5 5M6 12h12" />
+                      </svg>
+                      Get Directions
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div>
-                <h3 className="text-red-800 dark:text-red-300 font-semibold text-lg">Service Unavailable</h3>
-                <p className="text-red-700 dark:text-red-400">Unable to retrieve service data. Please verify your connection and try again.</p>
-              </div>
-            </div>
+            ))}
           </div>
         )}
 
-        {places.length > 0 && (
-          <div className="space-y-6">
-            <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Search Results</h2>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300">
-                  {places.length} service{places.length !== 1 ? 's' : ''} found
-                </span>
-              </div>
-            </div>
-            
-            <div className="grid gap-4">
-              {places.map((p) => (
-                <div 
-                  key={p.id} 
-                  className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-6 hover:shadow-md dark:hover:shadow-lg transition-shadow"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-800 rounded-lg flex items-center justify-center text-emerald-600 dark:text-emerald-300 flex-shrink-0">
-                      {getServiceIcon(p.tags?.amenity)}
-                    </div>
-                    
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        {p.tags?.name || "Unnamed Service"}
-                      </h3>
-                      
-                      <div className="space-y-2 mb-4">
-                        {p.tags?.["addr:street"] && (
-                          <div className="flex items-start gap-2 text-gray-600 dark:text-slate-300">
-                            <svg className="w-4 h-4 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            <span className="text-sm">{p.tags["addr:street"]}</span>
-                          </div>
-                        )}
-                        
-                        {p.tags?.phone && (
-                          <div className="flex items-center gap-2 text-gray-600 dark:text-slate-300">
-                            <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                            </svg>
-                            <span className="text-sm font-mono">{p.tags.phone}</span>
-                          </div>
-                        )}
-                      </div>
-                      
-                      <button
-                        onClick={() =>
-                          openDirections(
-                            p.lat || p.center?.lat,
-                            p.lon || p.center?.lon
-                          )
-                        }
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 dark:bg-emerald-500 text-white font-medium rounded-md shadow-sm hover:bg-emerald-700 dark:hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-400 focus:ring-offset-2 transition-colors"
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                        </svg>
-                        Get Directions
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-        
+        {/* Empty state */}
         {status === "success" && places.length === 0 && (
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-12 text-center">
-            <div className="w-16 h-16 bg-gray-100 dark:bg-slate-700 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-gray-400 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-3xl border border-gray-200/50 dark:border-gray-700/50 p-12 text-center">
+            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-3-8.284l3 3-3 3" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No Services Found</h3>
-            <p className="text-gray-600 dark:text-slate-300">No emergency services were found within the specified radius. Please try a different service type or expand your search area.</p>
+            <p className="text-gray-600 dark:text-gray-400 text-lg">No emergency services found in your area</p>
+            <p className="text-gray-500 dark:text-gray-500 text-sm mt-1">Try adjusting your search criteria</p>
+          </div>
+        )}
+
+        {/* Error state */}
+        {status === "error" && (
+          <div className="bg-red-50/90 dark:bg-red-950/50 backdrop-blur-md border border-red-200/60 dark:border-red-800/40 rounded-2xl p-8 text-center">
+            <div className="w-12 h-12 bg-red-100 dark:bg-red-900/50 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <svg className="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.268 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <p className="text-red-800 dark:text-red-300 font-medium">Unable to access location services</p>
+            <p className="text-red-600 dark:text-red-400 text-sm mt-1">Please check your connection and try again</p>
           </div>
         )}
       </div>

@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '@clerk/clerk-react';
 import logo from '../assets/logo.png';
 import { title } from 'process';
-import { Info, Phone, Users, User, LogOut, Shield, LayoutDashboard, BookOpen, Menu, X, AlertTriangle,Vote } from 'lucide-react';
+import { Info, Phone, Users, User, LogOut, Shield, LayoutDashboard, BookOpen, Menu, X, AlertTriangle,Vote,Map } from 'lucide-react';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -99,6 +99,11 @@ const Navbar = () => {
       href: "/voting-system",
       icon: Vote,
     },
+     {
+    title: "Issue Map",          // 👈 New link
+    href: "/user-map",
+    icon: Map,        // You can use MessageSquare or another better icon
+  },
     {
     title: "Feedback",          // 👈 New link
     href: "/feedback",

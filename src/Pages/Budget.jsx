@@ -648,11 +648,6 @@ export default function BudgetDashboard() {
                   <h3 className="text-xl font-semibold mb-1">Raw Data Table</h3>
                   <p className="text-green-100 dark:text-green-200">Detailed financial records for analysis</p>
                 </div>
-                <div className="bg-white/20 dark:bg-white/25 backdrop-blur-sm rounded-lg p-3">
-                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M3 3h18v18H3V3zm16 16V5H5v14h14zM7 7h2v2H7V7zm4 0h2v2h-2V7zm4 0h2v2h-2V7zM7 11h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zM7 15h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z"/>
-                  </svg>
-                </div>
               </div>
             </div>
             
@@ -686,16 +681,6 @@ export default function BudgetDashboard() {
                   ))}
                 </tbody>
               </table>
-            </div>
-            
-            <div className="bg-green-50 dark:bg-gray-700 px-6 py-4 border-t border-green-100 dark:border-gray-600">
-              <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
-                <span>Showing all {rows.length} records</span>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 dark:bg-green-400 rounded-full animate-pulse"></div>
-                  <span>Data loaded successfully</span>
-                </div>
-              </div>
             </div>
           </div>
         </motion.div>
