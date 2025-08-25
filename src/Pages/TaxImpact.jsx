@@ -66,25 +66,16 @@ const TaxImpact = () => {
     const annualIncome = parseFloat(income) || 0;
     const propValue = parseFloat(propertyValue) || 0;
     const data = municipalityData[municipality];
-
     const incomeTax = annualIncome * data.incomeTaxRate;
     const propertyTax = propValue * data.propertyTaxRate;
     const totalTax = incomeTax + propertyTax;
-
     const serviceBreakdown = Object.entries(data.services).map(([service, percentage]) => ({
       service,
       amount: totalTax * percentage,
       percentage: percentage * 100,
       icon: serviceIcons[service] || Building
     })).sort((a, b) => b.amount - a.amount);
-
-    return {
-      incomeTax,
-      propertyTax,
-      totalTax,
-      serviceBreakdown,
-      municipality: data.name
-    };
+    return { incomeTax, propertyTax, totalTax, serviceBreakdown, municipality: data.name };
   }, [income, propertyValue, municipality]);
 
   const formatCurrency = (amount) => {
@@ -97,76 +88,63 @@ const TaxImpact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-green-100 dark:from-gray-900 dark:via-green-900/20 dark:to-emerald-900/20 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-100 dark:from-gray-950 dark:via-green-950/40 dark:to-green-900/30 py-10 px-3">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <div className="flex justify-center items-center mb-6">
-            <div className="bg-gradient-to-br from-green-500 to-emerald-600 dark:from-green-400 dark:to-emerald-500 p-4 rounded-2xl shadow-lg mr-4">
-              <Calculator className="text-white w-12 h-12" />
+        {/* Title and Hero */}
+        <div className="text-center mb-14">
+          <div className="flex items-center justify-center gap-5 mb-6">
+            <div className="bg-gradient-to-br from-emerald-500 to-green-600 dark:from-green-500 dark:to-emerald-700 p-5 rounded-2xl shadow-xl">
+              <Calculator className="text-white w-11 h-11" />
             </div>
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-green-800 via-emerald-700 to-green-900 dark:from-green-400 dark:via-emerald-300 dark:to-green-200 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-emerald-800 via-green-700 to-green-900 dark:from-green-300 dark:via-emerald-300 dark:to-green-100 bg-clip-text text-transparent tracking-tighter">
               Civix Tax Impact Calculator
             </h1>
           </div>
-          <p className="text-green-700 dark:text-green-300 text-xl max-w-3xl mx-auto leading-relaxed">
-            Discover how your tax contributions fund essential local services and build stronger communities across India
+          <p className="text-emerald-700 dark:text-green-200 text-xl md:text-2xl max-w-3xl mx-auto font-medium">
+            Discover how your tax contributions power your community – and build a better future for all.
           </p>
         </div>
-
-        <div className="grid lg:grid-cols-2 gap-8">
-          <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-3xl shadow-2xl border border-green-200/50 dark:border-green-700/50 p-8 hover:shadow-3xl transition-all duration-300">
-            <div className="bg-gradient-to-r from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 rounded-2xl p-6 mb-8 shadow-lg">
-              <h2 className="text-2xl font-semibold text-white mb-2 flex items-center">
-                <div className="w-7 h-7 -ml-7" />
-                ₹ Your Tax Information
-              </h2>
-              <p className="text-green-100 dark:text-emerald-100">Enter your details to see your community impact</p>
+        {/* Main grid */}
+        <div className="grid lg:grid-cols-2 gap-9">
+          {/* Inputs + summary */}
+          <div className="bg-white/80 dark:bg-emerald-950/90 rounded-3xl p-10 shadow-2xl border border-emerald-100/70 dark:border-emerald-800/60 backdrop-blur">
+            <div className="bg-gradient-to-r from-emerald-500 to-green-600 dark:from-green-600 dark:to-emerald-700 rounded-2xl p-6 mb-8 shadow-md">
+              <h2 className="text-2xl font-bold text-white mb-1">Tax Info</h2>
+              <p className="text-emerald-100 dark:text-emerald-200">Enter your household details for a custom impact breakdown:</p>
             </div>
-            
-            <div className="space-y-8">
-              <div className="group">
-                <label className="block text-sm font-semibold text-green-800 dark:text-green-200 mb-3 flex items-center">
-                  <span className="w-2 h-2 bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-400 dark:to-emerald-400 rounded-full mr-2"></span>
-                  Annual Household Income
-                </label>
+            <div className="space-y-9">
+              <div>
+                <label className="block text-sm font-bold text-emerald-800 dark:text-emerald-200 mb-2">Annual Household Income</label>
                 <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500 font-extrabold">₹</span>
                   <input
                     type="number"
                     value={income}
-                    onChange={(e) => setIncome(e.target.value)}
+                    onChange={e => setIncome(e.target.value)}
                     placeholder="e.g., 800000"
-                    className="w-full p-5 pl-12 bg-white dark:bg-gray-700 border-2 border-green-200 dark:border-green-600 rounded-2xl focus:border-green-500 dark:focus:border-green-400 focus:outline-none text-lg dark:text-white shadow-sm group-hover:shadow-md transition-all duration-200 focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50"
+                    className="w-full p-5 pl-12 bg-white/90 dark:bg-emerald-900 border-2 border-emerald-100 dark:border-emerald-800/40 rounded-2xl focus:border-emerald-400 dark:focus:border-emerald-500 text-lg dark:text-white shadow-sm focus:ring-emerald-300 transition"
                   />
-                  <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-600 dark:text-green-400 font-medium">₹</span>
                 </div>
               </div>
-
-              <div className="group">
-                <label className="block text-sm font-semibold text-green-800 dark:text-green-200 mb-3 flex items-center">
-                  <span className="w-2 h-2 bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-400 dark:to-emerald-400 rounded-full mr-2"></span>
-                  Property Value
-                </label>
+              <div>
+                <label className="block text-sm font-bold text-emerald-800 dark:text-emerald-200 mb-2">Property Value</label>
                 <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500 font-extrabold">₹</span>
                   <input
                     type="number"
                     value={propertyValue}
-                    onChange={(e) => setPropertyValue(e.target.value)}
+                    onChange={e => setPropertyValue(e.target.value)}
                     placeholder="e.g., 5000000"
-                    className="w-full p-5 pl-12 bg-white dark:bg-gray-700 border-2 border-green-200 dark:border-green-600 rounded-2xl focus:border-green-500 dark:focus:border-green-400 focus:outline-none text-lg dark:text-white shadow-sm group-hover:shadow-md transition-all duration-200 focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50"
+                    className="w-full p-5 pl-12 bg-white/90 dark:bg-emerald-900 border-2 border-emerald-100 dark:border-emerald-800/40 rounded-2xl focus:border-emerald-400 dark:focus:border-emerald-600 text-lg dark:text-white shadow-sm focus:ring-emerald-300 transition"
                   />
-                  <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-600 dark:text-green-400 font-medium">₹</span>
                 </div>
               </div>
-
-              <div className="group">
-                <label className="block text-sm font-semibold text-green-800 dark:text-green-200 mb-3 flex items-center">
-                  <span className="w-2 h-2 bg-gradient-to-r from-green-500 to-emerald-500 dark:from-green-400 dark:to-emerald-400 rounded-full mr-2"></span>
-                  Municipality Type
-                </label>
+              <div>
+                <label className="block text-sm font-bold text-emerald-800 dark:text-emerald-200 mb-2">Municipality Type</label>
                 <select
                   value={municipality}
-                  onChange={(e) => setMunicipality(e.target.value)}
-                  className="w-full p-5 bg-white dark:bg-gray-700 border-2 border-green-200 dark:border-green-600 rounded-2xl focus:border-green-500 dark:focus:border-green-400 focus:outline-none text-lg dark:text-white shadow-sm group-hover:shadow-md transition-all duration-200 focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50"
+                  onChange={e => setMunicipality(e.target.value)}
+                  className="w-full p-5 bg-white/90 dark:bg-emerald-900 border-2 border-emerald-100 dark:border-emerald-800/40 rounded-2xl focus:border-emerald-400 dark:focus:border-emerald-600 text-lg dark:text-white shadow-sm focus:ring-emerald-300 transition"
                 >
                   <option value="small">Small Town (&lt;50k population)</option>
                   <option value="medium">Medium City (50k-200k)</option>
@@ -174,103 +152,86 @@ const TaxImpact = () => {
                 </select>
               </div>
             </div>
-
-            <div className="mt-8 bg-gradient-to-r from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 rounded-2xl p-8 shadow-lg text-white">
-              <h3 className="text-2xl font-bold mb-6 flex items-center">
-                <div className="w-8 h-8 bg-white/20 dark:bg-white/30 rounded-full flex items-center justify-center mr-3">
-                </div>
-                Your Annual Tax Contribution
-              </h3>
+            <div className="mt-10 bg-gradient-to-r from-emerald-500 to-green-600 dark:from-green-700 dark:to-emerald-700 rounded-2xl p-8 text-white shadow-xl">
+              <h3 className="text-2xl font-bold mb-5">Your Annual Tax Contribution</h3>
               <div className="space-y-4">
-                <div className="flex justify-between items-center text-lg bg-white/10 dark:bg-white/20 rounded-xl p-4">
-                  <span className="text-green-100 dark:text-emerald-100">Local Income Tax:</span>
-                  <span className="font-bold text-2xl">{formatCurrency(calculations.incomeTax)}</span>
+                <div className="flex justify-between items-center text-lg border-b border-white/30 pb-2">
+                  <span>Local Income Tax</span>
+                  <span className="font-bold text-xl">{formatCurrency(calculations.incomeTax)}</span>
                 </div>
-                <div className="flex justify-between items-center text-lg bg-white/10 dark:bg-white/20 rounded-xl p-4">
-                  <span className="text-green-100 dark:text-emerald-100">Property Tax:</span>
-                  <span className="font-bold text-2xl">{formatCurrency(calculations.propertyTax)}</span>
+                <div className="flex justify-between items-center text-lg border-b border-white/30 pb-2">
+                  <span>Property Tax</span>
+                  <span className="font-bold text-xl">{formatCurrency(calculations.propertyTax)}</span>
                 </div>
-                <div className="bg-white/20 dark:bg-white/30 rounded-xl p-6 mt-6">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xl font-semibold">Total Annual Taxes:</span>
-                    <span className="text-3xl font-bold">{formatCurrency(calculations.totalTax)}</span>
-                  </div>
+                <div className="flex justify-between items-center text-xl font-semibold mt-4 pt-3 border-t border-white/40">
+                  <span>Total</span>
+                  <span className="font-bold text-3xl">{formatCurrency(calculations.totalTax)}</span>
                 </div>
               </div>
             </div>
           </div>
-
-          <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-3xl shadow-2xl border border-green-200/50 dark:border-green-700/50 p-8 hover:shadow-3xl transition-all duration-300">
-            <div className="bg-gradient-to-r from-emerald-500 to-green-600 dark:from-emerald-600 dark:to-green-700 rounded-2xl p-6 mb-8 shadow-lg">
-              <h2 className="text-2xl font-bold text-white mb-2">
-                How Your Taxes Fund Local Services
-              </h2>
-              <p className="text-emerald-100 dark:text-green-100">
-                Based on {calculations.municipality} budget allocation
+          {/* Service breakdown impact bars */}
+          <div className="bg-white/80 dark:bg-emerald-950/85 backdrop-blur rounded-3xl shadow-2xl border border-emerald-100/70 dark:border-emerald-800/60 p-10">
+            <div className="bg-gradient-to-r from-emerald-600 to-green-700 dark:from-emerald-700 dark:to-green-700 rounded-2xl p-6 mb-8 shadow-md">
+              <h2 className="text-2xl font-bold text-white mb-2">How Your Taxes Fund Local Services</h2>
+              <p className="text-emerald-100 dark:text-emerald-200 text-base">
+                Based on <span className="font-bold">{calculations.municipality}</span> allocation
               </p>
             </div>
-
-            <div className="space-y-6">
+            <div className="space-y-7">
               {calculations.serviceBreakdown.map((service, index) => {
                 const IconComponent = service.icon;
                 return (
-                  <div key={service.service} className="group bg-gradient-to-r from-white to-green-50/50 dark:from-gray-700 dark:to-green-900/30 rounded-2xl p-6 border-2 border-green-100/50 dark:border-green-600/30 hover:border-green-300 dark:hover:border-green-500 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                  <div key={service.service} className="group bg-gradient-to-r from-white to-emerald-50/50 dark:from-emerald-900 dark:to-green-900/30 rounded-2xl p-6 border-2 border-emerald-100/50 dark:border-emerald-700 hover:border-emerald-400 dark:hover:border-emerald-600 hover:shadow-lg transition duration-200">
                     <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center">
-                        <div className="bg-gradient-to-br from-green-500 to-emerald-600 dark:from-green-400 dark:to-emerald-500 p-3 rounded-xl shadow-lg mr-4 group-hover:scale-110 transition-transform duration-200">
-                          <IconComponent className="w-6 h-6 text-white" />
+                      <div className="flex items-center gap-4">
+                        <div className="bg-gradient-to-br from-emerald-500 to-green-600 dark:from-emerald-500 dark:to-green-500 p-3 rounded-xl shadow-lg group-hover:scale-110 transition-transform">
+                          <IconComponent className="w-7 h-7 text-white" />
                         </div>
-                        <span className="font-bold text-green-900 dark:text-green-100 text-xl">{service.service}</span>
+                        <span className="font-bold text-emerald-900 dark:text-emerald-100 text-xl">{service.service}</span>
                       </div>
                       <div className="text-right">
-                        <div className="font-bold text-green-900 dark:text-green-100 text-2xl">{formatCurrency(service.amount)}</div>
-                        <div className="text-sm text-green-600 dark:text-green-400 font-medium bg-green-100 dark:bg-green-800/50 px-3 py-1 rounded-full">
-                          {service.percentage.toFixed(1)}%
-                        </div>
+                        <div className="text-emerald-900 dark:text-white font-bold text-xl">{formatCurrency(service.amount)}</div>
+                        <div className="bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-200 px-3 py-1 font-medium text-sm rounded-full mt-1 inline-block shadow">{service.percentage.toFixed(1)}%</div>
                       </div>
                     </div>
-                    <div className="w-full bg-green-100 dark:bg-gray-600 rounded-full h-4 shadow-inner">
+                    {/* Bar */}
+                    <div className="h-4 w-full bg-emerald-100 dark:bg-emerald-900 rounded-full shadow-inner relative">
                       <div 
-                        className="bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 dark:from-green-400 dark:via-emerald-400 dark:to-green-500 h-4 rounded-full transition-all duration-1000 shadow-sm"
-                        style={{ width: `${service.percentage}%` }}
-                      ></div>
+                        className="absolute left-0 top-0 h-4 rounded-full bg-gradient-to-r from-emerald-500 via-green-500 to-emerald-700 dark:from-emerald-500 dark:to-emerald-700 transition-all"
+                        style={{ width: `${service.percentage}%`, minWidth: '3%' }}
+                      />
                     </div>
                   </div>
                 );
               })}
             </div>
-
             {calculations.totalTax > 0 && (
-              <div className="mt-10 bg-gradient-to-br from-green-500 via-emerald-500 to-green-600 dark:from-green-600 dark:via-emerald-600 dark:to-green-700 rounded-2xl p-8 shadow-2xl text-white">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-white/20 dark:bg-white/30 rounded-full flex items-center justify-center mr-4">
-                    <Heart className="w-7 h-7" />
-                  </div>
-                  <h3 className="text-2xl font-bold">Your Community Impact</h3>
+              <div className="mt-12 bg-gradient-to-br from-green-500 via-emerald-600 to-green-700 dark:from-emerald-700 dark:via-green-800 dark:to-green-900 rounded-2xl p-8 text-white shadow-xl flex items-center gap-6">
+                <div className="w-12 h-12 bg-white/20 dark:bg-white/30 rounded-full flex items-center justify-center">
+                  <Heart className="w-7 h-7" />
                 </div>
-                <p className="text-green-50 dark:text-emerald-50 text-lg leading-relaxed">
-                  Your {formatCurrency(calculations.totalTax)} in annual local taxes helps fund essential services 
-                  that keep your community safe, educated, and thriving. Every rupee makes a difference in 
-                  building a better place to live, work, and raise families across India.
-                </p>
+                <div>
+                  <h3 className="text-2xl font-bold mb-1">Your Community Impact</h3>
+                  <p className="text-lg text-emerald-50 dark:text-emerald-100 leading-relaxed">
+                    Your {formatCurrency(calculations.totalTax)} in local taxes sustains vital services — safety, health, education, and more — shaping a vibrant, future-ready India.
+                  </p>
+                </div>
               </div>
             )}
           </div>
         </div>
+        {/* footer */}
         <div className="mt-16 text-center">
-          <div className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 rounded-full shadow-xl border border-green-400/30 dark:border-green-500/50">
+          <div className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-emerald-500 to-green-600 dark:from-green-600 dark:to-emerald-700 rounded-full shadow-xl border border-emerald-400/30 dark:border-emerald-500/60">
             <div className="w-6 h-6 bg-white/20 dark:bg-white/30 rounded-full flex items-center justify-center mr-3">
               <span className="text-white font-bold text-sm">C</span>
             </div>
-            <span className="text-white font-bold text-lg">
-              Powered by Civix - Understanding Your Community
-            </span>
+            <span className="text-white font-bold text-lg">Powered by Civix – Understanding Your Community</span>
           </div>
-          <div className="mt-8 max-w-4xl mx-auto bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-green-200/50 dark:border-green-700/50">
-            <p className="text-green-700 dark:text-green-300 text-base leading-relaxed">
-              Tax rates and service allocations are estimates based on typical Indian municipal budgets. 
-              Actual rates may vary by state and local government. Consult your local municipal corporation 
-              or panchayat for precise figures and current tax policies.
+          <div className="mt-8 max-w-4xl mx-auto bg-white/60 dark:bg-emerald-950/60 backdrop-blur rounded-2xl p-6 border border-emerald-100/70 dark:border-emerald-700/60">
+            <p className="text-emerald-800 dark:text-emerald-200 text-base">
+              Tax rates and allocations are for illustration; actual values vary by location. Verify with your local office for real rates and guidance.
             </p>
           </div>
         </div>
