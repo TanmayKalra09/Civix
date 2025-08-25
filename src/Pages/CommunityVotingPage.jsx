@@ -132,7 +132,6 @@ const CommunityVotingPage = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case "Open":
-
         return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300";
       case "In Progress":
         return "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300";
@@ -412,7 +411,7 @@ const CommunityVotingPage = () => {
           )}
 
         </div>
-      )}
+      </div>
     </div>
   );
 };

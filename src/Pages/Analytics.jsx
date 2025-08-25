@@ -74,28 +74,22 @@ const Analytics = () => {
 
 
   return (
-    <div className="min-h-screen ml-0 lg:ml-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-green-50/30 to-emerald-50/50 ml-0 lg:ml-10">
       {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
+        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden" onClick={() => setIsSidebarOpen(false)} />
       )}
-<button
-  type="button"
-  aria-label="Open sidebar"
-  onClick={() => setIsSidebarOpen(true)}
-  className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg hover:bg-gray-50 text-emerald-600 lg:hidden"
-  style={{ display: isSidebarOpen ? 'none' : 'block' }}
->
-  <ChevronRight className="w-6 h-6" />
-</button>
-
-      <aside
-        className={`fixed top-0 left-0 h-full z-50 transition-all duration-300 ease-in-out backdrop-blur-xl border-r border-gray-200/50 flex flex-col shadow-xl
-          ${isSidebarOpen ? 'w-64 translate-x-0' : 'w-16 -translate-x-full lg:translate-x-0'}
-        `}
+      
+      <button
+        type="button"
+        aria-label="Open sidebar"
+        onClick={() => setIsSidebarOpen(true)}
+        className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-lg hover:bg-gray-50 text-emerald-600 lg:hidden"
+        style={{ display: isSidebarOpen ? 'none' : 'block' }}
       >
+        <ChevronRight className="w-6 h-6" />
+      </button>
+
+      <aside className={`fixed top-0 left-0 h-full z-50 transition-all duration-300 ease-in-out backdrop-blur-xl border-r border-gray-200/50 flex flex-col shadow-xl ${isSidebarOpen ? 'w-64 translate-x-0' : 'w-16 -translate-x-full lg:translate-x-0'}`}>
         <div className="relative flex items-center justify-between p-4 border-b border-gray-200/50">
           <div className={`flex items-center transition-all duration-300 ${isSidebarOpen ? 'opacity-100' : 'opacity-0 w-0'}`}>
             <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
@@ -111,26 +105,16 @@ const Analytics = () => {
             type="button"
             aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className={`p-2 rounded-lg hover:bg-gray-100 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 ${
-              !isSidebarOpen ? 'mx-auto' : ''
-            }`}
+            className={`p-2 rounded-lg hover:bg-gray-100 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 ${!isSidebarOpen ? 'mx-auto' : ''}`}
           >
-            {isSidebarOpen ? (
-              <ChevronLeft className="w-5 h-5 text-gray-600" />
-            ) : (
-              <ChevronRight className="w-5 h-5 text-gray-600" />
-            )}
+            {isSidebarOpen ? <ChevronLeft className="w-5 h-5 text-gray-600" /> : <ChevronRight className="w-5 h-5 text-gray-600" />}
           </button>
         </div>
         {isSidebarOpen && (
           <div className="p-4 border-b border-gray-200/50">
             <div className="relative">
               <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-lg text-sm border-0 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
-              />
+              <input type="text" placeholder="Search..." className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-lg text-sm border-0 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all" />
             </div>
           </div>
         )}
@@ -142,35 +126,17 @@ const Analytics = () => {
               <div key={item.key} className="relative group">
                 <button
                   type="button"
-                  className={`
-                    w-full flex items-center py-3 px-3 rounded-xl text-sm font-medium transition-all duration-200 group relative overflow-hidden
+                  className={`w-full flex items-center py-3 px-3 rounded-xl text-sm font-medium transition-all duration-200 group relative overflow-hidden
                     ${isSidebarOpen ? '' : 'justify-center'}
-                    ${isActive
-                      ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25 transform scale-[1.02]'
-                      : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 hover:shadow-md'
-                    }
+                    ${isActive ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25 transform scale-[1.02]' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 hover:shadow-md'}
                   `}
                   onClick={() => navigate(item.route)}
                   aria-current={isActive ? "page" : undefined}
                 >
-                  {isActive && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-600 opacity-10 rounded-xl" />
-                  )}
+                  {isActive && <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-600 opacity-10 rounded-xl" />}
                   <div className="relative z-10 flex items-center">
-                    <Icon
-                      className={`w-5 h-5 transition-all duration-200 ${
-                        isSidebarOpen ? 'mr-3' : ''
-                      } ${
-                        isActive
-                          ? 'text-white'
-                          : 'text-gray-500 group-hover:text-emerald-600'
-                      }`}
-                    />
-                    {isSidebarOpen && (
-                      <span className="relative z-10 transition-all duration-300">
-                        {item.label}
-                      </span>
-                    )}
+                    <Icon className={`w-5 h-5 transition-all duration-200 ${isSidebarOpen ? 'mr-3' : ''} ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-emerald-600'}`} />
+                    {isSidebarOpen && <span className="relative z-10 transition-all duration-300">{item.label}</span>}
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                 </button>
@@ -180,25 +146,20 @@ const Analytics = () => {
         </nav>
       </aside>
 
-      {/* Header */}
-      <div className="shadow-sm border-b border-green-100">
-        <div className="px-4 py-4 sm:px-6 lg:px-8">
+      <div className="backdrop-blur-sm bg-white/80 border-b border-green-100/50 shadow-sm">
+        <div className="px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Civix Analytics</h1>
-              <p className="text-gray-600 mt-1 text-sm sm:text-base">Monitor platform engagement and community growth</p>
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-slate-800 via-slate-700 to-emerald-700 bg-clip-text text-transparent">Analytics Dashboard</h1>
+              <p className="text-slate-600 mt-2">Monitor platform engagement and community growth</p>
             </div>
-            <div className="flex items-center space-x-2 sm:space-x-4">
-              <select 
-                value={timeRange} 
-                onChange={(e) => setTimeRange(e.target.value)}
-                className="border border-green-200 rounded-lg px-3 py-2 text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm sm:text-base"
-              >
+            <div className="flex items-center space-x-4">
+              <select value={timeRange} onChange={(e) => setTimeRange(e.target.value)} className="backdrop-blur-sm bg-white/90 border border-emerald-200/60 rounded-xl px-4 py-2.5 text-slate-700 focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-400 shadow-sm">
                 <option value="7d">Last 7 days</option>
                 <option value="30d">Last 30 days</option>
                 <option value="90d">Last 90 days</option>
               </select>
-              <button className="bg-green-600 hover:bg-green-700 px-3 sm:px-4 py-2 rounded-lg transition-colors text-white text-sm sm:text-base">
+              <button className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 px-5 py-2.5 rounded-xl transition-all duration-200 text-white font-medium shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/30">
                 Export Report
               </button>
             </div>
@@ -206,109 +167,108 @@ const Analytics = () => {
         </div>
       </div>
 
-      {/* Content */}
-      <div className="px-4 py-6 sm:px-6 lg:px-8">
-        {/* Stat Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+      <div className="px-4 py-8 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           <StatCard title="Total Users" value="3,247" change="+12.5%" trend="up" icon={Users} />
           <StatCard title="Active Posts" value="1,582" change="+8.2%" trend="up" icon={FileText} />
           <StatCard title="Comments" value="4,891" change="+15.7%" trend="up" icon={MessageCircle} />
           <StatCard title="Civic Actions" value="892" change="+22.1%" trend="up" icon={Award} />
         </div>
 
-        {/* User Growth + Categories */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
-          <div className="lg:col-span-2 rounded-lg shadow-sm border border-green-100 p-4 sm:p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+          <div className="lg:col-span-2 rounded-2xl bg-white/80 backdrop-blur-sm border border-green-100/50 shadow-xl shadow-green-100/20 p-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-              <h3 className="text-lg font-semibold">User Growth</h3>
-              <div className="flex flex-wrap items-center space-x-4 text-sm mt-2 sm:mt-0">
+              <h3 className="text-xl font-bold text-slate-800">User Growth</h3>
+              <div className="flex items-center space-x-6 text-sm mt-2 sm:mt-0">
                 <div className="flex items-center">
-                  <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                  <span className="text-gray-500">Total Users</span>
+                  <div className="w-3 h-3 bg-emerald-500 rounded-full mr-2 shadow-sm"></div>
+                  <span className="text-slate-600">Total Users</span>
                 </div>
-                <div className="flex items-center mt-1 sm:mt-0">
-                  <div className="w-3 h-3 bg-green-300 rounded-full mr-2"></div>
-                  <span className="text-gray-500">Active Users</span>
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-green-400 rounded-full mr-2 shadow-sm"></div>
+                  <span className="text-slate-600">Active Users</span>
                 </div>
               </div>
             </div>
             <ResponsiveContainer width="100%" height={300}>
               <AreaChart data={userGrowthData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis dataKey="month" stroke="#6b7280" />
-                <YAxis stroke="#6b7280" />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#f9fafb', border: '1px solid #d1fae5', borderRadius: '8px' }} 
-                  labelStyle={{ color: '#1f2937' }}
-                  itemStyle={{ color: '#1f2937' }}
-                />
-                <Area type="monotone" dataKey="users" stroke="#059669" fill="#059669" fillOpacity={0.6} />
-                <Area type="monotone" dataKey="active" stroke="#34d399" fill="#34d399" fillOpacity={0.4} />
+                <defs>
+                  <linearGradient id="totalGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#059669" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#059669" stopOpacity={0.1}/>
+                  </linearGradient>
+                  <linearGradient id="activeGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#34d399" stopOpacity={0.6}/>
+                    <stop offset="95%" stopColor="#34d399" stopOpacity={0.1}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.6} />
+                <XAxis dataKey="month" stroke="#64748b" fontSize={12} />
+                <YAxis stroke="#64748b" fontSize={12} />
+                <Tooltip contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', border: '1px solid #d1fae5', borderRadius: '12px', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }} />
+                <Area type="monotone" dataKey="users" stroke="#059669" fill="url(#totalGradient)" strokeWidth={2} />
+                <Area type="monotone" dataKey="active" stroke="#34d399" fill="url(#activeGradient)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="rounded-lg shadow-sm border border-green-100 p-4 sm:p-6">
-            <h3 className="text-lg font-semibold mb-6">Discussion Categories</h3>
-            <ResponsiveContainer width="100%" height={300}>
+          <div className="rounded-2xl bg-white/80 backdrop-blur-sm border border-green-100/50 shadow-xl shadow-green-100/20 p-6">
+            <h3 className="text-xl font-bold text-slate-800 mb-6">Discussion Categories</h3>
+            <ResponsiveContainer width="100%" height={240}>
               <PieChart>
-                <Pie data={categoryData} cx="50%" cy="50%" innerRadius={60} outerRadius={120} paddingAngle={2} dataKey="value">
+                <Pie data={categoryData} cx="50%" cy="50%" innerRadius={50} outerRadius={100} paddingAngle={3} dataKey="value">
                   {categoryData.map((entry, index) => (<Cell key={`cell-${index}`} fill={entry.color} />))}
                 </Pie>
-                <Tooltip />
+                <Tooltip contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', border: 'none', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)' }} />
               </PieChart>
             </ResponsiveContainer>
-            <div className="mt-4 space-y-2">
+            <div className="space-y-3">
               {categoryData.map((category, index) => (
-                <div key={index} className="flex items-center justify-between">
+                <div key={index} className="flex items-center justify-between p-2 rounded-lg hover:bg-emerald-50/50 transition-colors">
                   <div className="flex items-center">
-                    <div className="w-3 h-3 rounded-full mr-3" style={{ backgroundColor: category.color }}></div>
-                    <span className="text-sm text-gray-500">{category.name}</span>
+                    <div className="w-3 h-3 rounded-full mr-3 shadow-sm" style={{ backgroundColor: category.color }}></div>
+                    <span className="text-sm text-slate-600 font-medium">{category.name}</span>
                   </div>
-                  <span className="text-sm font-medium">{category.value}%</span>
+                  <span className="text-sm font-bold text-slate-700">{category.value}%</span>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Engagement + Activity */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          <div className="rounded-lg shadow-sm border border-green-100 p-4 sm:p-6">
-            <h3 className="text-lg font-semibold mb-6">Weekly Engagement</h3>
-            <ResponsiveContainer width="100%" height={300}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+          <div className="rounded-2xl bg-white/80 backdrop-blur-sm border border-green-100/50 shadow-xl shadow-green-100/20 p-6">
+            <h3 className="text-xl font-bold text-slate-800 mb-6">Weekly Engagement</h3>
+            <ResponsiveContainer width="100%" height={280}>
               <BarChart data={engagementData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis dataKey="day" stroke="#6b7280" />
-                <YAxis stroke="#6b7280" />
-                <Tooltip contentStyle={{ backgroundColor: '#f9fafb', border: '1px solid #d1fae5', borderRadius: '8px' }}
-                  labelStyle={{ color: '#1f2937' }}
-                  itemStyle={{ color: '#1f2937' }}
-                />
-                <Bar dataKey="posts" fill="#059669" radius={[2, 2, 0, 0]} />
-                <Bar dataKey="comments" fill="#10b981" radius={[2, 2, 0, 0]} />
-                <Bar dataKey="votes" fill="#34d399" radius={[2, 2, 0, 0]} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" opacity={0.6} />
+                <XAxis dataKey="day" stroke="#64748b" fontSize={12} />
+                <YAxis stroke="#64748b" fontSize={12} />
+                <Tooltip contentStyle={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', border: '1px solid #d1fae5', borderRadius: '12px', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }} />
+                <Bar dataKey="posts" fill="#059669" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="comments" fill="#10b981" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="votes" fill="#34d399" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="rounded-lg shadow-sm border border-green-100 p-4 sm:p-6">
+          <div className="rounded-2xl bg-white/80 backdrop-blur-sm border border-green-100/50 shadow-xl shadow-green-100/20 p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold">Recent Activity</h3>
-              <button className="text-green-600 hover:text-green-800 text-sm font-medium">View All</button>
+              <h3 className="text-xl font-bold text-slate-800">Recent Activity</h3>
+              <button className="text-emerald-600 hover:text-emerald-700 text-sm font-medium transition-colors">View All</button>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-3">
               {recentActivity.map((activity, index) => (
-                <div key={index} className="flex items-start space-x-3 p-3 bg-green-50 rounded-lg">
-                  <div className="flex-shrink-0">
-                    {activity.type === 'new_post' && <FileText className="h-5 w-5 text-green-600" />}
-                    {activity.type === 'comment' && <MessageCircle className="h-5 w-5 text-green-600" />}
-                    {activity.type === 'vote' && <Award className="h-5 w-5 text-green-600" />}
-                    {activity.type === 'new_user' && <Users className="h-5 w-5 text-green-600" />}
+                <div key={index} className="flex items-start space-x-3 p-4 bg-gradient-to-r from-emerald-50/60 to-green-50/40 rounded-xl border border-emerald-100/30 hover:shadow-md transition-all duration-200">
+                  <div className="flex-shrink-0 p-2 bg-white/80 rounded-lg border border-emerald-200/50">
+                    {activity.type === 'new_post' && <FileText className="h-4 w-4 text-emerald-600" />}
+                    {activity.type === 'comment' && <MessageCircle className="h-4 w-4 text-emerald-600" />}
+                    {activity.type === 'vote' && <Award className="h-4 w-4 text-emerald-600" />}
+                    {activity.type === 'new_user' && <Users className="h-4 w-4 text-emerald-600" />}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-900"><span className="font-medium">{activity.user}</span> {activity.action}</p>
-                    <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
+                    <p className="text-sm text-slate-800"><span className="font-semibold">{activity.user}</span> {activity.action}</p>
+                    <p className="text-xs text-slate-500 mt-1">{activity.time}</p>
                   </div>
                 </div>
               ))}
@@ -316,42 +276,46 @@ const Analytics = () => {
           </div>
         </div>
 
-        {/* Bottom Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-8">
-          <div className="rounded-lg shadow-sm border border-green-100 p-4 sm:p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="rounded-2xl bg-white/80 backdrop-blur-sm border border-green-100/50 shadow-xl shadow-green-100/20 p-6 hover:shadow-2xl hover:shadow-green-200/30 transition-all duration-300">
             <div className="flex items-center">
-              <MapPin className="h-8 w-8 text-green-600 mr-3" />
+              <div className="p-3 bg-gradient-to-br from-emerald-500/10 to-green-500/20 rounded-xl mr-4">
+                <MapPin className="h-7 w-7 text-emerald-600" />
+              </div>
               <div>
-                <p className="text-sm font-medium text-gray-500">Geographic Reach</p>
-                <p className="text-lg sm:text-xl font-bold">47 Cities</p>
-                <p className="text-sm text-green-600">+3 new this month</p>
+                <p className="text-sm font-medium text-slate-500">Geographic Reach</p>
+                <p className="text-2xl font-bold text-slate-800">47 Cities</p>
+                <p className="text-sm text-emerald-600 font-medium">+3 new this month</p>
               </div>
             </div>
           </div>
           
-          <div className="rounded-lg shadow-sm border border-green-100 p-4 sm:p-6">
+          <div className="rounded-2xl bg-white/80 backdrop-blur-sm border border-green-100/50 shadow-xl shadow-green-100/20 p-6 hover:shadow-2xl hover:shadow-green-200/30 transition-all duration-300">
             <div className="flex items-center">
-              <Calendar className="h-8 w-8 text-green-600 mr-3" />
+              <div className="p-3 bg-gradient-to-br from-emerald-500/10 to-green-500/20 rounded-xl mr-4">
+                <Calendar className="h-7 w-7 text-emerald-600" />
+              </div>
               <div>
-                <p className="text-sm font-medium text-gray-500">Scheduled Events</p>
-                <p className="text-lg sm:text-xl font-bold">23</p>
-                <p className="text-sm text-green-600">Next: Town Hall</p>
+                <p className="text-sm font-medium text-slate-500">Scheduled Events</p>
+                <p className="text-2xl font-bold text-slate-800">23</p>
+                <p className="text-sm text-emerald-600 font-medium">Next: Town Hall</p>
               </div>
             </div>
           </div>
           
-          <div className="rounded-lg shadow-sm border border-green-100 p-4 sm:p-6">
+          <div className="rounded-2xl bg-white/80 backdrop-blur-sm border border-green-100/50 shadow-xl shadow-green-100/20 p-6 hover:shadow-2xl hover:shadow-amber-200/30 transition-all duration-300">
             <div className="flex items-center">
-              <AlertCircle className="h-8 w-8 text-green-600 mr-3" />
+              <div className="p-3 bg-gradient-to-br from-amber-500/10 to-orange-500/20 rounded-xl mr-4">
+                <AlertCircle className="h-7 w-7 text-amber-600" />
+              </div>
               <div>
-                <p className="text-sm font-medium text-gray-500">Moderation Queue</p>
-                <p className="text-lg sm:text-xl font-bold">8</p>
-                <p className="text-sm text-yellow-600">Requires attention</p>
+                <p className="text-sm font-medium text-slate-500">Moderation Queue</p>
+                <p className="text-2xl font-bold text-slate-800">8</p>
+                <p className="text-sm text-amber-600 font-medium">Requires attention</p>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );
