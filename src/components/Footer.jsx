@@ -12,7 +12,8 @@ import {
   Sparkles,
   Zap,
   Mail,
-  Phone
+  Phone,
+  MessageSquare
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoF from "../assets/logo.png";
@@ -41,6 +42,7 @@ const Footer = () => {
       links: [
         { name: "About", href: "/about", icon: Info, description: "Learn about our mission" },
         { name: "Features", href: "/#features", icon: Star, description: "Explore platform features" },
+        { name: "Feedback", href: "/feedback", icon: MessageSquare, description: "Share your feedback" },
       ],
     },
     {
