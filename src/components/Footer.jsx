@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { 
-  Github, 
-  Info, 
-  ShieldCheck, 
-  ScrollText, 
-  Star, 
-  UsersIcon, 
+import {
+  Github,
+  Info,
+  ShieldCheck,
+  ScrollText,
+  Star,
+  UsersIcon,
   ArrowUpRight,
   MapPin,
   Heart,
@@ -13,7 +13,9 @@ import {
   Zap,
   Mail,
   Phone,
-  MessageSquare
+  MessageSquare,
+  Send,
+  CheckCircle,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoF from "../assets/logo.png";
@@ -24,6 +26,9 @@ const Footer = () => {
   const [feedbackText, setFeedbackText] = useState("");
   const [message, setMessage] = useState("");
   const [isVisible, setIsVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Performance optimization: Memoize social links
   const socialLinks = [
@@ -40,40 +45,119 @@ const Footer = () => {
       title: "Civix",
       icon: Sparkles,
       links: [
-        { name: "About", href: "/about", icon: Info, description: "Learn about our mission" },
-        { name: "Features", href: "/#features", icon: Star, description: "Explore platform features" },
-        { name: "Feedback", href: "/feedback", icon: MessageSquare, description: "Share your feedback" },
+        {
+          name: "About",
+          href: "/about",
+          icon: Info,
+          description: "Learn about our mission",
+        },
+        {
+          name: "Features",
+          href: "/#features",
+          icon: Star,
+          description: "Explore platform features",
+        },
+        {
+          name: "Feedback",
+          href: "/feedback",
+          icon: MessageSquare,
+          description: "Share your feedback",
+        },
       ],
     },
     {
       title: "Legal",
       icon: ShieldCheck,
       links: [
-        { name: "Privacy", href: "/privacy", icon: ShieldCheck, description: "Privacy policy" },
-        { name: "Terms", href: "/terms", icon: ScrollText, description: "Terms of service" },
-        { name: "Contributors", href: "/contributors", icon: UsersIcon, description: "Meet our team" },
+        {
+          name: "Privacy",
+          href: "/privacy",
+          icon: ShieldCheck,
+          description: "Privacy policy",
+        },
+        {
+          name: "Terms",
+          href: "/terms",
+          icon: ScrollText,
+          description: "Terms of service",
+        },
+        {
+          name: "Contributors",
+          href: "/contributors",
+          icon: UsersIcon,
+          description: "Meet our team",
+        },
       ],
     },
   ];
 
   const emojis = [
-    { emoji: "😡", label: "Very Dissatisfied", color: "hover:bg-red-100 dark:hover:bg-red-900/20" },
-    { emoji: "😕", label: "Dissatisfied", color: "hover:bg-orange-100 dark:hover:bg-orange-900/20" },
-    { emoji: "😐", label: "Neutral", color: "hover:bg-yellow-100 dark:hover:bg-yellow-900/20" },
-    { emoji: "🙂", label: "Satisfied", color: "hover:bg-green-100 dark:hover:bg-green-900/20" },
-    { emoji: "😍", label: "Very Satisfied", color: "hover:bg-purple-100 dark:hover:bg-purple-900/20" },
+    {
+      emoji: "😡",
+      label: "Very Dissatisfied",
+      color: "hover:bg-red-100 dark:hover:bg-red-900/20",
+    },
+    {
+      emoji: "😕",
+      label: "Dissatisfied",
+      color: "hover:bg-orange-100 dark:hover:bg-orange-900/20",
+    },
+    {
+      emoji: "😐",
+      label: "Neutral",
+      color: "hover:bg-yellow-100 dark:hover:bg-yellow-900/20",
+    },
+    {
+      emoji: "🙂",
+      label: "Satisfied",
+      color: "hover:bg-green-100 dark:hover:bg-green-900/20",
+    },
+    {
+      emoji: "😍",
+      label: "Very Satisfied",
+      color: "hover:bg-purple-100 dark:hover:bg-purple-900/20",
+    },
   ];
 
   // Performance optimization: Debounced feedback submission
   const handleSubmitFeedback = useCallback(() => {
     if (!selectedRating && !feedbackText.trim()) return;
-    
+
     setMessage("Thanks for your feedback! 💚");
     setFeedbackText("");
     setSelectedRating(null);
 
     setTimeout(() => setMessage(""), 3000);
   }, [selectedRating, feedbackText]);
+
+  // Handle newsletter subscription
+  const handleNewsletterSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!email.trim()) return;
+
+      setIsSubmitting(true);
+
+      // Simulate API call
+      setTimeout(() => {
+        setIsSubmitting(false);
+        setIsSubscribed(true);
+        setEmail("");
+
+        // Show success message
+        setMessage("Successfully subscribed to our newsletter! 🎉");
+
+        // Reset subscription status after some time
+        setTimeout(() => {
+          setIsSubscribed(false);
+        }, 3000);
+
+        // Hide the message after 3 seconds
+        setTimeout(() => setMessage(""), 3000);
+      }, 1000);
+    },
+    [email]
+  );
 
   // Intersection Observer for animations
   useEffect(() => {
@@ -86,7 +170,7 @@ const Footer = () => {
       { threshold: 0.1 }
     );
 
-    const footer = document.querySelector('#footer');
+    const footer = document.querySelector("#footer");
     if (footer) {
       observer.observe(footer);
     }
@@ -95,10 +179,10 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer 
+    <footer
       id="footer"
       className={`relative overflow-hidden transition-all duration-1000 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
       }`}
     >
       {/* Optimized Background */}
@@ -114,28 +198,33 @@ const Footer = () => {
       </div>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        
         {/* Main Content - Optimized Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
-          
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12 mb-12">
           {/* Brand Section - More Compact */}
-          <div className="md:col-span-2 lg:col-span-1 space-y-6">
+          <div className="md:col-span-2 lg:col-span-2 space-y-6">
             <div className="space-y-4">
               <div className="flex items-center space-x-3 group">
                 <div className="relative">
-                  <img src={logoF} alt="Civix Logo" className="w-12 h-auto transition-transform duration-300 group-hover:scale-105" />
+                  <img
+                    src={logoF}
+                    alt="Civix Logo"
+                    className="w-12 h-auto transition-transform duration-300 group-hover:scale-105"
+                  />
                   <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-blue-500 rounded-full opacity-0 group-hover:opacity-15 blur-sm transition-opacity duration-300"></div>
                 </div>
                 <div>
                   <h2 className="text-xl font-bold bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
                     CIVIX
                   </h2>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Civic Engagement Platform</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                    Civic Engagement Platform
+                  </p>
                 </div>
               </div>
-              
+
               <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-                Empowering citizens through technology. Stay informed, make better decisions, and engage with civic life.
+                Empowering citizens through technology. Stay informed, make
+                better decisions, and engage with civic life.
               </p>
             </div>
 
@@ -167,7 +256,9 @@ const Footer = () => {
               <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-blue-500 rounded-lg flex items-center justify-center">
                 <Mail className="w-4 h-4 text-white" />
               </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white">Contact</h3>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                Contact
+              </h3>
             </div>
             <div className="space-y-2">
               <div className="flex items-center space-x-2 text-slate-600 dark:text-slate-300 text-sm">
@@ -196,7 +287,7 @@ const Footer = () => {
                   {section.title}
                 </h3>
               </div>
-              
+
               <ul className="space-y-2">
                 {section.links.map((link) => (
                   <li key={link.name}>
@@ -215,6 +306,69 @@ const Footer = () => {
               </ul>
             </div>
           ))}
+
+          {/* Newsletter Section */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-blue-500 rounded-lg flex items-center justify-center">
+                <Send className="w-4 h-4 text-white" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                Newsletter
+              </h3>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-slate-600 dark:text-slate-300 text-sm">
+                Subscribe to get updates on new features and civic initiatives.
+              </p>
+
+              {isSubscribed ? (
+                <div className="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 p-3 rounded-lg">
+                  <CheckCircle className="w-4 h-4" />
+                  <span className="text-sm font-medium">
+                    Subscribed! Check your email.
+                  </span>
+                </div>
+              ) : (
+                <form onSubmit={handleNewsletterSubmit} className="space-y-3">
+                  <div className="relative flex items-center">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter email"
+                      className="w-full px-5 py-2 pr-10 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 transition-all duration-300 text-sm"
+                      required
+                    />
+                    <Mail className="absolute right-3 text-slate-400 w-5 h-5 pointer-events-none top-1/2 -translate-y-1/2" />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting || !email.trim()}
+                    className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 disabled:from-slate-300 disabled:to-slate-400 text-white font-medium rounded-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-emerald-500/25 disabled:cursor-not-allowed disabled:scale-100 disabled:shadow-none text-sm"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        <span>Subscribing...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-3.5 h-3.5" />
+                        <span>Subscribe</span>
+                      </>
+                    )}
+                  </button>
+                </form>
+              )}
+
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                We respect your privacy. Unsubscribe at any time.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Optimized Feedback Section */}
@@ -237,9 +391,9 @@ const Footer = () => {
                     key={index}
                     onClick={() => setSelectedRating(index)}
                     className={`group relative p-3 rounded-xl transition-all duration-300 ${
-                      selectedRating === index 
-                        ? 'scale-110 bg-white dark:bg-slate-800 shadow-lg shadow-emerald-500/20 border-2 border-emerald-500' 
-                        : 'hover:scale-105 hover:bg-white/50 dark:hover:bg-slate-800/50'
+                      selectedRating === index
+                        ? "scale-110 bg-white dark:bg-slate-800 shadow-lg shadow-emerald-500/20 border-2 border-emerald-500"
+                        : "hover:scale-105 hover:bg-white/50 dark:hover:bg-slate-800/50"
                     } ${item.color}`}
                     title={item.label}
                   >
@@ -264,7 +418,9 @@ const Footer = () => {
                     onChange={(e) => setFeedbackText(e.target.value)}
                     placeholder="Tell us more..."
                     className="flex-1 max-w-xs px-3 py-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 transition-all duration-300 text-sm"
-                    onKeyPress={(e) => e.key === 'Enter' && handleSubmitFeedback()}
+                    onKeyPress={(e) =>
+                      e.key === "Enter" && handleSubmitFeedback()
+                    }
                   />
                   <button
                     onClick={handleSubmitFeedback}
@@ -303,11 +459,11 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Compact Toast Message */}
+      {/* Toast Message - Positioned at top right */}
       {message && (
-        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-blue-500 text-white px-4 py-2 rounded-lg shadow-xl shadow-emerald-500/25 animate-fadeIn z-50">
+        <div className="fixed top-0 right-8 bg-gradient-to-r from-emerald-500 to-blue-500 text-white px-4 py-3 rounded-lg shadow-xl shadow-emerald-500/25 animate-fadeIn z-50">
           <div className="flex items-center space-x-2">
-            <Sparkles className="w-3 h-3" />
+            <Sparkles className="w-4 h-4" />
             <span className="font-medium text-sm">{message}</span>
           </div>
         </div>
