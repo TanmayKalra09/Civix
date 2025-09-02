@@ -9,7 +9,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import Navbar from "./components/Navbar";
 
 import TestimonialCarousel from "./components/TestimonialCarousel";
-import {  AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import favv from './favv.svg';
 import EnhancedQRCode from "./components/EnhancedQRCode";
 import ProfileCompletionBanner from "./components/ProfileCompletionBanner";
@@ -305,17 +305,22 @@ const questions = [
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px] items-center min-h-[calc(100vh-8rem)]">
               <div className="flex flex-col justify-center space-y-6 animate-on-scroll">
-                <div className="w-full bg-white dark:bg-gray-900 py-16">
+                <div className="w-full bg-white dark:bg-gray-900 pt-8 md:pt-12">
       <div className="max-w-6xl mx-auto px-6 flex flex-col items-center gap-12">
         
         {/* Text + Buttons + Stars */}
         <div className="flex flex-col items-start text-left max-w-[600px] gap-6">
-          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl leading-tight">
-            Report Local Issues. <br />
-            <span className="text-emerald-500 bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
-              Make Your City Better.
-            </span>
-          </h1>
+         <motion.h1
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.7 }}
+  className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl leading-tight"
+>
+  Report Local Issues. <br />
+  <span className="bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
+    Make Your City Better.
+  </span>
+</motion.h1>
 
           <p className="text-muted-foreground md:text-xl leading-relaxed">
             Civix helps citizens report and track local civic issues like potholes,
@@ -324,7 +329,7 @@ const questions = [
           </p>
 
           {/* Buttons aligned with text */}
-          <div className="flex flex-col gap-3 min-[400px]:flex-row">
+          <nav aria-label="primary actions" className="flex flex-col sm:flex-row gap-4">
             <button
               className="flex h-12 items-center justify-center rounded-lg bg-emerald-500 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-emerald-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 duration-300 shadow-lg hover:shadow-xl hover:scale-[1.02] group"
               onClick={() => navigate('/signup')}
@@ -369,7 +374,7 @@ const questions = [
           </svg>
           Watch Demo
         </button>
-      </div>
+      </nav>
 
       {/* ⭐ Rating just below buttons */}
       <div className="flex items-center gap-1 mt-4">
@@ -396,7 +401,7 @@ const questions = [
               </div>
               <div className="flex items-center justify-center animate-on-scroll">
                 <div className="relative w-full max-w-[400px] aspect-[4/3] overflow-hidden rounded-xl border shadow-2xl transition-all duration-500 hover:shadow-3xl hover:scale-[1.02] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900">
-                  <img src="pexels.jpg" alt="Civix App Interface showing issue reporting" className="object-cover w-full h-full" loading="lazy" />
+                  <img src="pexels.jpg" alt="Civix App Interface showing issue reporting" className="shadow-lg object-cover w-full h-full transform transition-transform duration-500 hover:scale-105 hover:rotate-1" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1">
                     <span className="text-xs font-medium text-gray-700">✅ Live Demo</span>
